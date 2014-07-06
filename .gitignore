@@ -16,6 +16,10 @@ tmp/*
 # DIRECTORIOS
 ##########################
 /bin/res/*
+**/android/assets/*
+**/ant-build/*
+**/ant-gen/*
+
 
 ###########
 # BACKUPS #
