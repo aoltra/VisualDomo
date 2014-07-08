@@ -1,20 +1,12 @@
 /*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
+ * Author:              Alfredo Oltra
+ * email:               aoltra@gmail.com, alfredo@uhurulabs.com
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Start date:          3/7/2014
  *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied.  See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * Espacion de nombres app
+ *
+ * app namespace
  */
 var app = {
     // Application Constructor
@@ -33,7 +25,9 @@ var app = {
     // The scope of 'this' is the event. In order to call the 'receivedEvent'
     // function, we must explicitly call 'app.receivedEvent(...);'
     onDeviceReady: function() {
+
         app.receivedEvent('deviceready');
+
     },
     // Update DOM on a Received Event
     receivedEvent: function(id) {
@@ -45,5 +39,52 @@ var app = {
         receivedElement.setAttribute('style', 'display:block;');
 
         console.log('Received Event: ' + id);
-    }
+
+        var odc1 = new ODControl(1,"odc1","prueba","local.opendomo.com","user","opendomo");
+
+        var text = document.createTextNode(odc1.version);
+        console.log('VERSION: ' + text);        
+        var child = document.getElementById('listaodc');
+        child.appendChild(text); 
+
+
+        
+    },
+    // HTTP GET request to access ODControl
+    httpGetRequestToODControl: function(url,syn,user,pass,callbackFun) {
+        var response;
+        var request = new XMLHttpRequest();
+        
+        // FIX: There is a bug in ODControl firmware and the HTTP header is not send (8/7/2014)
+        if (syn == true) {
+            request.open("GET", "http://" + url, true, user, pass);
+            
+            // Call a function when the state changes
+            request.onreadystatechange = function() 
+            {
+                if (request.readyState == 4) {
+
+                    if (request.status == 200 || request.status == 0) {
+                        response = request.responseText;
+                        console.log("asynRES: " + response + " " + request.status);
+                    
+                        callbackFun(response);
+                    }
+
+                }
+            }
+        }
+        else
+            request.open("GET", "http://" + url, false, user, pass);
+
+        request.send(null);
+        
+        if (syn == false)
+        {
+            response = request.responseText;
+            console.log("synRES: " + response);
+        }
+
+        return response;
+    } 
 };
