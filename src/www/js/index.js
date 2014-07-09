@@ -4,7 +4,7 @@
  *
  * Start date:          3/7/2014
  *
- * Espacion de nombres app
+ * Espacio de nombres app
  *
  * app namespace
  */
@@ -28,7 +28,39 @@ var app = {
 
         app.receivedEvent('deviceready');
 
+        // Requesting a file system
+        window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, 
+
+            // Successful request of a file system
+            function (fileSystem) { 
+                var directoryRoot = fileSystem.root; // to get root path to SDCard directory 
+                
+                // if Visual Domo directory doesn't exist, create it
+                directoryRoot.getDirectory("VisualDomo", 
+
+                    {create: true, exclusive: false}, 
+
+                    // Successful request of getDirectory.
+                    function (parent) { 
+                        console.log("OK: VisualDomo directory created. " + parent);
+                    },  
+                    
+                    // Handles a getDirectory error
+                    function (err) { 
+                        console.log("ERROR: Directory error. Code: " + error.code);
+                    }
+                );
+            },
+           
+            // Handles a file system error
+            function (evt) { 
+                console.log("ERROR: File system. Code: " + evt.target.error.code);
+            }
+
+        );
+
     },
+
     // Update DOM on a Received Event
     receivedEvent: function(id) {
         var parentElement = document.getElementById(id);
@@ -57,7 +89,7 @@ var app = {
         
         // FIX: There is a bug in ODControl firmware and the HTTP header is not send (8/7/2014)
         if (syn == true) {
-            request.open("GET", "http://" + url, true, user, pass);
+            request.open("GET", "http://"   + url, true, user, pass);
             
             // Call a function when the state changes
             request.onreadystatechange = function() 
@@ -86,5 +118,7 @@ var app = {
         }
 
         return response;
-    } 
+    },
+
+
 };

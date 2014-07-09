@@ -1,20 +1,24 @@
 #Ejecución
 ###Compilación
 
+####Plugins
+
+Es necesario añadir los plugins indicados en el documentos [Plugins.md](https://github.com/aoltra/VisualDomo/blob/master/doc/Plugins.md)
+
+File
+
+    cordova plugin add org.apache.cordova.file
 
 ####*(Android)* 
 Desde la consola:
-
 
     cordova build android
     
 ####*(iOS)* Desde la consola 
 
-
     cordova build ios
   
-  
- ###Ejecución
+###Ejecución
  
 ####*(Android)* 
 

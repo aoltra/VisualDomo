@@ -19,6 +19,8 @@ tmp/*
 **/android/assets/*
 **/ant-build/*
 **/ant-gen/*
+**/src/plugins/*
+**/src/platforms/*
 
 
 ###########
