@@ -33,30 +33,11 @@ var app = {
 
             // Successful request of a file system
             function (fileSystem) { 
-                var directoryRoot = fileSystem.root; // to get root path to SDCard directory 
-                
-                // if Visual Domo directory doesn't exist, create it
-                directoryRoot.getDirectory("VisualDomo", 
-
-                    {create: true, exclusive: false}, 
-
-                    // Successful request of getDirectory.
-                    function (parent) { 
-                        console.log("OK: VisualDomo directory created. " + parent);
-                    },  
-                    
-                    // Handles a getDirectory error
-                    function (err) { 
-                        console.log("ERROR: Directory error. Code: " + error.code);
-                    }
-                );
+                var path = "VisualDomo/locations";
+                helpFile.createDirectories(fileSystem.root,path.split('/'));
             },
            
-            // Handles a file system error
-            function (evt) { 
-                console.log("ERROR: File system. Code: " + evt.target.error.code);
-            }
-
+            helpFile.errorHandler
         );
 
     },
