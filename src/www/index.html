@@ -29,12 +29,46 @@
     </head>
     <body>
         <div class="app">
-            <h1>Apache Cordova</h1>
-            <div id="deviceready" class="blink">
-                <p class="event listening">Connecting to Device</p>
-                <p class="event received">Device is Ready</p>
-            </div>
-            <div id="listaodc">
+            <div class="logo"> </div>
+            <div>
+                <ul class="mm-menu">
+                    <li id="mm-external">
+                        <a href="#">
+                            <span class="mm-icon">ICON1</span>
+                            <div class="mm-content" >
+                                <h2 class="mm-main">External location</h2>
+                                <h3 class="mm-sub">Connect to external location (disabled)</h3>
+                            </div>
+                        </a>
+                    </li>
+                    <li id="mm-newlocation">
+                        <a href="#">
+                            <span class="mm-icon">ICON2</span>
+                            <div class="mm-content">
+                                <h2 class="mm-main">New location</h2>
+                                <h3 class="mm-sub">Configure a new location</h3>
+                            </div>
+                        </a>
+                    </li>
+                    <li id="mm-assignlocation">
+                        <a href="#">
+                            <span class="mm-icon">ICON3</span>
+                            <div class="mm-content">
+                                <h2 class="mm-main">Assign location</h2>
+                                <h3 class="mm-sub">Assign a previous configuration to this location</h3>
+                            </div>
+                        </a>
+                    </li>
+                     <li id="mm-configurethis">
+                        <a href="#">
+                            <span class="mm-icon">ICON4</span>
+                            <div class="mm-content">
+                                <h2 class="mm-main">Configure this location</h2>
+                                <h3 class="mm-sub">Configure this location</h3>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
             </div>
         </div>
         
@@ -42,6 +76,7 @@
         <script type="text/javascript" src="js/index.js"></script>
         <script type="text/javascript" src="js/ODControl.js"></script>
         <script type="text/javascript" src="js/helpers/FileHelper.js"></script>
+     <!--   <script type="text/javascript" src="js/jquery-2.1.1.min.js"></script> -->
         <script type="text/javascript">
             app.initialize();
         </script>
