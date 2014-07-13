@@ -9,6 +9,14 @@ File
 
     cordova plugin add org.apache.cordova.file
 
+Network-information
+
+    cordova plugin add org.apache.cordova.network-information
+
+WifiInformation
+
+    cordova plugin add https://github.com/aoltra/WifiInformation
+
 ####*(Android)* 
 Desde la consola:
 
@@ -25,7 +33,6 @@ Desde la consola:
 Tenemos la opción de ejecutarlo en un emulador o directamente en un dispositivo físico (recomendado). 
              
 * En el primero caso, una vez tengamos creado el dispositivo virtual:
-    
          
     cordova emulate android
 
