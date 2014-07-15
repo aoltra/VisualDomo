@@ -13,7 +13,7 @@ var app = {
     initialize: function() {
         this.bindEvents();
     },
-    
+
     // Bind Event Listeners
     //
     // Bind any events that are required on startup. Common events are:
@@ -26,23 +26,10 @@ var app = {
     //
     // The scope of 'this' is the event. In order to call the 'receivedEvent'
     // function, we must explicitly call 'app.receivedEvent(...);'
+    // aqui el thos es el evento, se lanza al otro para que sea this la app
     onDeviceReady: function() {
 
         app.receivedEvent('deviceready');
-
-        // Create VisualDomo directories
-        window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, 
-
-            // Successful request of a file system
-            function (fileSystem) { 
-                var path = "VisualDomo/locations";
-                helpFile.createDirectories(fileSystem.root,path.split('/'));
-            },
-           
-            helpFile.errorHandler
-        );
-
-        app.showMainMenu();
 
     },
 
@@ -59,13 +46,83 @@ var app = {
      //   var child = document.getElementById('listaodc');
      //   child.appendChild(text); 
 
+      // Create VisualDomo directories
+        window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, 
+
+            // Successful request of a file system
+            function (fileSystem) { 
+                var path = "VisualDomo/locations";
+                helpFile.createDirectories(fileSystem.root,path.split('/'),function () {
+                        app.getConnectionFeatures(fileSystem.root, 
+                            function (found) {
+                                app.showMainMenu(found);
+                            },
+                            function() {
+                                navigator.app.exitApp();  // TODO: show message in mobile screen
+                            });
+                    },
+                    function() { navigator.app.exitApp(); } 
+                    );
+            },
+           
+            function() { 
+                helpFile.errorHandler(); // TODO: show message in mobile screen
+                navigator.app.exitApp(); 
+            } 
+        );
+
+    },
+
+    getConnectionFeatures: function(root, successCallback, errorCallback) {
+        
+        var _BSSID = null;
+        var path = 'VisualDomo/locations';
+        
+        root.getDirectory(path, {}, 
+
+             // Successful request of directory
+            function(dirEntry) {
+                
+                helpFile.readDirectoryEntries(dirEntry, 
+                    function (results) {
+
+                        wifiinfo.getBSSID(
+                            function(BSSID) { 
+                                var found = false, name;
+                                console.log("BSSID: " + BSSID); 
+                                _BSSID=BSSID;
+
+                                results.forEach(function (value,index) {
+                                    if (value.isDirectory) {
+                                        console.log(index + "-" + value.name);
+
+                                        name = value.name.substring(0, value.name.length-4);
+                                        if ( name == BSSID )
+                                            found = true;
+                                    }
+                                    
+                                    successCallback(found);
+                                });
+
+                            },
+                            function(error) { 
+                                console.log("Error wifiinfo: " + error); 
+                                successCallback(false);
+                            });
+                        
+                    });
+            }, 
+            function() { 
+                errorCallback(); // TODO: show message in mobile screen
+            } 
+        );
+
     },
 
     // Show main menu
-    showMainMenu: function() {
-
+    showMainMenu: function(found) {
         var networkState = navigator.connection.type;
-
+      
         if (networkState == Connection.CELL_2G && networkState == Connection.CELL_3G
             && networkState == Connection.CELL_4G && networkState == Connection.CELL) {
             $( "#mm-configurethis" ).css( "border", "3px solid red" );
@@ -73,13 +130,11 @@ var app = {
         }
 
         if (networkState == Connection.WIFI) {
-            wifiinfo.getBSSID(
-                function(BSSID) { 
-                    console.log("BSSID: " + BSSID); 
-                },
-                function(error) { 
-                    console.log("Error wifiinfo: " + error); 
-                } );   
+
+            if (!found) {
+                $( "#mm-configurethis" ).css( "border", "3px solid red" );
+
+            }
         }
 
         if (networkState == Connection.NONE || networkState == Connection.UNKNOWN || networkState == Connection.ETHERNET) {

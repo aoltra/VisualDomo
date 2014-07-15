@@ -5,6 +5,9 @@
     <feature name="App">
         <param name="android-package" value="org.apache.cordova.App" />
     </feature>
+    <feature name="WifiInformation">
+        <param name="android-package" value="com.uhuru.cordova.wifiinformation.WifiInformation" />
+    </feature>
     <feature name="File">
         <param name="android-package" value="org.apache.cordova.file.FileUtils" />
         <param name="onload" value="true" />
@@ -21,7 +24,4 @@
     </author>
     <content src="index.html" />
     <access origin="*" />
-    <feature name="WifiInformation">
-        <param name="android-package" value="com.uhuru.cordova.wifiinformation.WifiInformation" />
-    </feature>
 </widget>

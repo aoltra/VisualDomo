@@ -12,8 +12,8 @@
 var helpFile = {
 
 	// Allow create recursive directories
-	// Based on the file tutorial from html5rocks.com 
-	createDirectories: function(root, folders) {
+	// Based on the html5rocks.com file tutorial
+	createDirectories: function(root, folders, successCallback, errorCallback) {
 		
 		if (folders[0] == '.' || folders[0] == '') {
 		    folders = folders.slice(1);
@@ -23,14 +23,50 @@ var helpFile = {
 			function(dirEntry) {
 		    	
 		    	if (folders.length - 1) {
-		      		helpFile.createDirectories(dirEntry, folders.slice(1));
+		      		helpFile.createDirectories(dirEntry, folders.slice(1), successCallback);
 		    	}
-
-		    	console.log('Directory ' + dirEntry + ' created');
+		    	else
+		    	{
+		    		console.log('Directory ' + dirEntry.fullPath + ' created');
+		    		successCallback();
+				}
 			}, 
-			helpFile.errorHandler
+			function() {
+				helpFile.errorHandler();
+				errorCallback();
+			}
+			
 		);
 
+	},
+
+	// Read directories entries
+	// Based on the html5rocks.com file tutorial 
+	readDirectoryEntries: function (root, successCallback, errorCallback) {
+
+		var dirReader = root.createReader();
+		var entries = [];
+
+		var read = function() {
+
+  			dirReader.readEntries (
+
+				function(results) {
+					if (!results.length) {
+	        			successCallback(entries.sort());
+	      			} else {	
+	        			entries = entries.concat(Array.prototype.slice.call(results || [], 0));
+	        			read();
+	      			}
+  				},
+	  			function() {
+					helpFile.errorHandler(); // TODO: show message in mobile screen
+					errorCallback();
+				}
+			)
+		};
+
+		read();
 	},
 
 	// handles a File system error
@@ -67,7 +103,7 @@ var helpFile = {
 		      	break;
 	  	};
 
-	  	console.log('File Error: ' + msg);
+	  	console.log('File Plugin Error: ' + msg);
 	}
 
 };
