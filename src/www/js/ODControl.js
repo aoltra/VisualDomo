@@ -1,17 +1,21 @@
 /*
- * Author: 				Alfredo Oltra
- * email: 				aoltra@gmail.com, alfredo@uhurulabs.com
+ * Author:              Alfredo Oltra
+ * email:               aoltra@gmail.com, alfredo@uhurulabs.com
  *
- * Start date:   		4/7/2014
+ * Start date:          4/7/2014
  *
  * Encapsula la funcionalidad de los ODControl.
  *
  * ODControl encapsulation.
  */
 
+/* JSLint options */
+/*global app */
+
 // Constructor
-function ODControl(ID,name,description,IP,user,pass) {
-	
+function ODControl(ID, name, description, IP, user, pass) {
+	"use strict";
+    
 	// access
 	this.IP = IP;								// Local IP
 	this.user = user;							// user
@@ -24,14 +28,14 @@ function ODControl(ID,name,description,IP,user,pass) {
 
 
 	// features
-	this.version = this.version || (function() {  			
-		var ver = app.httpGetRequestToODControl(IP + "/ver",false,"user","opendomo",null);
-  		return ver;
-	})(); 							
+	this.version = this.version || (function () {
+		var ver = app.httpGetRequestToODControl(IP + "/ver", false, "user", "opendomo", null);
+        return ver;
+	}());
 
 	// save the ODControl configuration 
-	ODControl.prototype.save = function(datos) {
+	ODControl.prototype.save = function (datos) {
 		
 
-	};	
+	};
 }
