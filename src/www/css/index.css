@@ -91,6 +91,27 @@ ul {
     display: none;
 }
 
+.sp-info {
+    position: relative;
+    width: 100%;
+    left: 0%;
+    margin: 5% 0%;
+    font-size: 25px;
+    color: #ddd;
+    text-align: center;
+}
+
+.sp-status-icon {
+    font-family: 'WebSymbolsRegular', cursive;
+    font-size: 30px;
+    line-height: 20px;
+    width: 60px;
+    height: 20px;
+    left: 6px;
+    text-align: center;
+    margin-right: 6px;
+}  
+
 .mm-menu {
     width: 100%;
     margin-top: 10%;
