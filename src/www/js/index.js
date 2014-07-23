@@ -76,7 +76,7 @@ var app = {
     showMainMenu: function () {
         "use strict";
         
-        var networkState = navigator.connection.type;
+        var $divSplash = $('.sp-logo'), networkState = navigator.connection.type;
 
         if (networkState === Connection.CELL_2G && networkState === Connection.CELL_3G && networkState === Connection.CELL_4G && networkState === Connection.CELL) {
             $("#mm-configurethis").css("border", "3px solid red");
@@ -99,7 +99,9 @@ var app = {
             $("#mm-assignlocation").css("border", "3px solid red");
             $("#mm-external").css("border", "3px solid red");
         }
-
+        
+        $divSplash.addClass('verticalTranslate');
+        
     },
 
     // HTTP GET request to access ODControl

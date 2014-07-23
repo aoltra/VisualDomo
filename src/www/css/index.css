@@ -72,7 +72,16 @@ ul {
     position: absolute;
     width: 64%;
     left: 18%;
-    top: 10%;
+    top: 45%;
+}
+
+.sp-logo.verticalTranslate {
+    -webkit-transition: 3s;
+    -moz-transition: 3s;
+    -ms-transition: 3s;
+    -o-transition: 3s;
+    transition: 3s;
+    margin-top: -30% !important;
 }
 
 .sp-image img {
@@ -88,7 +97,6 @@ ul {
     position: relative;
     width: 100%;
     height: 50px;
-    display: none;
 }
 
 .sp-info {
@@ -99,6 +107,7 @@ ul {
     font-size: 25px;
     color: #ddd;
     text-align: center;
+    visibility: hidden;
 }
 
 .sp-status-icon {
@@ -116,6 +125,7 @@ ul {
     width: 100%;
     margin-top: 10%;
     padding:0;
+    visibility: hidden;
 }
 
 .mm-menu li {
