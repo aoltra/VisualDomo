@@ -76,12 +76,12 @@ ul {
 }
 
 .sp-logo.verticalTranslate {
-    -webkit-transition: 3s;
-    -moz-transition: 3s;
-    -ms-transition: 3s;
-    -o-transition: 3s;
-    transition: 3s;
-    margin-top: -30% !important;
+    -webkit-transition: 2s;
+    -moz-transition: 2s;
+    -ms-transition: 2s;
+    -o-transition: 2s;
+    transition: 2s;
+    margin-top: -40% !important;
 }
 
 .sp-image img {

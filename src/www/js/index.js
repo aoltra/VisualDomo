@@ -100,10 +100,16 @@ var app = {
             $("#mm-external").css("border", "3px solid red");
         }
         
-        $divSplash.addClass('verticalTranslate');
+        $('.sp-image').parent().bind('transitionend webkitTransitionEnd', function () {
+            $('.sp-info').css('visibility', 'visible');
+            $('.mm-menu').css('visibility', 'visible');
+        });
+        $('.sp-loading').css('display', 'none');
         
+        
+        $divSplash.addClass('verticalTranslate');
     },
-
+    
     // HTTP GET request to access ODControl
     httpGetRequestToODControl: function (url, syn, user, pass, callbackFun) {
         "use strict";
