@@ -28,57 +28,67 @@
         <title>VisualDomo</title>
     </head>
     <body>
-        <div class="app">
-            <div class="logo"> </div>
-            <div>
-                <ul class="mm-menu">
+        <div class="sp-logo">
+            <div class="sp-image">
+                <img src="img/VisualDomo%20logo%20blanco.png">
+            </div>
+            <div class="sp-loading"> 
+            </div>
+            <div class="sp-info">
+                <span class="sp-status-icon">B</span>
+                <span>Connected: </span>
+                <span>Caprica</span>
+            </div>
+            <div class="mm-menu">
+                <ul>
                     <li id="mm-external">
                         <a href="#">
-                            <span class="mm-icon">ICON1</span>
+                            <span class="mm-icon">C</span>
                             <div class="mm-content" >
-                                <h2 class="mm-main">External location</h2>
-                                <h3 class="mm-sub">Connect to external location (disabled)</h3>
+                                <p class="mm-main">External</p>
+                                <p class="mm-sub">Connect to external location</p>
                             </div>
                         </a>
                     </li>
                     <li id="mm-newlocation">
                         <a href="#">
-                            <span class="mm-icon">ICON2</span>
+                            <span class="mm-icon">I</span>
                             <div class="mm-content">
-                                <h2 class="mm-main">New location</h2>
-                                <h3 class="mm-sub">Configure a new location</h3>
+                                <p class="mm-main">New</p>
+                                <p class="mm-sub">Configure a new location</p>
                             </div>
                         </a>
                     </li>
                     <li id="mm-assignlocation">
                         <a href="#">
-                            <span class="mm-icon">ICON3</span>
+                            <span class="mm-icon">K</span>
                             <div class="mm-content">
-                                <h2 class="mm-main">Assign location</h2>
-                                <h3 class="mm-sub">Assign a previous configuration to this location</h3>
+                                <p class="mm-main">Link</p>
+                                <p class="mm-sub">Link to a previous location</p>
                             </div>
                         </a>
                     </li>
                      <li id="mm-configurethis">
                         <a href="#">
-                            <span class="mm-icon">ICON4</span>
+                            <span class="mm-icon">S</span>
                             <div class="mm-content">
-                                <h2 class="mm-main">Configure this location</h2>
-                                <h3 class="mm-sub">Configure this location</h3>
+                                <p class="mm-main">Configure</p>
+                                <p class="mm-sub">Configure location</p>
                             </div>
                         </a>
                     </li>
                 </ul>
             </div>
         </div>
-        
+
         <script type="text/javascript" src="cordova.js"></script>
+        <script type="text/javascript" src="js/lib/jquery-2.1.1.min.js"></script> 
+        <script type="text/javascript" src="js/lib/jquery.mobile-1.4.3.js"></script> 
         <script type="text/javascript" src="js/index.js"></script>
         <script type="text/javascript" src="js/ODControl.js"></script>
         <script type="text/javascript" src="js/helpers/FileHelper.js"></script>
-        <script type="text/javascript" src="js/lib/jquery-2.1.1.min.js"></script> 
         <script type="text/javascript">
-            app.initialize();
+                app.initialize();
         </script>
     </body>
 </html>

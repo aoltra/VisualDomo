@@ -8,9 +8,16 @@
  *
  * app namespace
  */
+
+/* JSLint options */
+/*global Connection, $, helpFile, wifiinfo, console, LocalFileSystem */
+
 var app = {
+    
     // Application Constructor
-    initialize: function() {
+    initialize: function () {
+        "use strict";
+        
         this.bindEvents();
     },
 
@@ -18,7 +25,9 @@ var app = {
     //
     // Bind any events that are required on startup. Common events are:
     // 'load', 'deviceready', 'offline', and 'online'.
-    bindEvents: function() {
+    bindEvents: function () {
+        "use strict";
+        
         document.addEventListener('deviceready', this.onDeviceReady, false);
     },
 
@@ -26,16 +35,31 @@ var app = {
     //
     // The scope of 'this' is the event. In order to call the 'receivedEvent'
     // function, we must explicitly call 'app.receivedEvent(...);'
-    // aqui el thos es el evento, se lanza al otro para que sea this la app
-    onDeviceReady: function() {
-
+    onDeviceReady: function () {
+        "use strict";
+        
         app.receivedEvent('deviceready');
+
+        // Create VisualDomo directories
+        window.requestFileSystem(LocalFileSystem.PERSISTENT, 0,
+
+            // Successful request of a file system
+            function (fileSystem) {
+                var path = "VisualDomo/locations";
+                helpFile.createDirectories(fileSystem.root, path.split('/'));
+            },
+           
+            helpFile.errorHandler
+            );
+
+        app.showMainMenu();
 
     },
 
     // Update DOM on a Received Event
-    receivedEvent: function(id) {
-       
+    receivedEvent: function (id) {
+        "use strict";
+        
         console.log('Received Event: ' + id);
 
      //   var odc1 = new ODControl(1,"odc1","prueba","local.opendomo.com","user","opendomo");
@@ -46,142 +70,152 @@ var app = {
      //   var child = document.getElementById('listaodc');
      //   child.appendChild(text); 
 
-      // Create VisualDomo directories
-        window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, 
-
+        // Create VisualDomo directories
+        window.requestFileSystem(LocalFileSystem.PERSISTENT, 0,
+                                 
             // Successful request of a file system
-            function (fileSystem) { 
+            function (fileSystem) {
                 var path = "VisualDomo/locations";
-                helpFile.createDirectories(fileSystem.root,path.split('/'),function () {
-                        app.getConnectionFeatures(fileSystem.root, 
+                
+                helpFile.createDirectories(fileSystem.root, path.split('/'),
+                    function () {
+                        app.getConnectionFeatures(fileSystem.root,
                             function (found) {
                                 app.showMainMenu(found);
                             },
-                            function() {
+                            function () {
                                 navigator.app.exitApp();  // TODO: show message in mobile screen
                             });
                     },
-                    function() { navigator.app.exitApp(); } 
-                    );
+                    function () {
+                        navigator.app.exitApp();
+                    });
             },
            
-            function() { 
+            function () {
                 helpFile.errorHandler(); // TODO: show message in mobile screen
-                navigator.app.exitApp(); 
-            } 
-        );
-
+                navigator.app.exitApp();
+            });
     },
 
-    getConnectionFeatures: function(root, successCallback, errorCallback) {
+    getConnectionFeatures: function (root, successCallback, errorCallback) {
+        "use strict";
         
-        var _BSSID = null;
-        var path = 'VisualDomo/locations';
+        var lBSSID = null, path = 'VisualDomo/locations';
         
-        root.getDirectory(path, {}, 
+        root.getDirectory(path, {},
 
              // Successful request of directory
-            function(dirEntry) {
+            function (dirEntry) {
                 
-                helpFile.readDirectoryEntries(dirEntry, 
+                helpFile.readDirectoryEntries(dirEntry,
                     function (results) {
 
                         wifiinfo.getBSSID(
-                            function(BSSID) { 
+                            function (BSSID) {
                                 var found = false, name;
-                                console.log("BSSID: " + BSSID); 
-                                _BSSID=BSSID;
+                                console.log("BSSID: " + BSSID);
+                                lBSSID = BSSID;
 
-                                results.forEach(function (value,index) {
+                                results.forEach(function (value, index) {
                                     if (value.isDirectory) {
                                         console.log(index + "-" + value.name);
 
-                                        name = value.name.substring(0, value.name.length-4);
-                                        if ( name == BSSID )
+                                        name = value.name.substring(0, value.name.length - 4);
+                                        if (name === BSSID) {
                                             found = true;
+                                        }
                                     }
                                     
                                     successCallback(found);
                                 });
 
                             },
-                            function(error) { 
-                                console.log("Error wifiinfo: " + error); 
+                            function (error) {
+                                console.log("Error wifiinfo: " + error);
                                 successCallback(false);
-                            });
+                            }
+                        );
                         
                     });
-            }, 
-            function() { 
+            },
+            function () {
                 errorCallback(); // TODO: show message in mobile screen
-            } 
-        );
+            });
 
     },
 
     // Show main menu
-    showMainMenu: function(found) {
-        var networkState = navigator.connection.type;
-      
-        if (networkState == Connection.CELL_2G && networkState == Connection.CELL_3G
-            && networkState == Connection.CELL_4G && networkState == Connection.CELL) {
-            $( "#mm-configurethis" ).css( "border", "3px solid red" );
-            $( "#mm-assignlocation" ).css( "border", "3px solid red" );
+    showMainMenu: function () {
+        "use strict";
+        
+        var $divSplash = $('.sp-logo'), networkState = navigator.connection.type;
+
+        if (networkState === Connection.CELL_2G && networkState === Connection.CELL_3G && networkState === Connection.CELL_4G && networkState === Connection.CELL) {
+            $("#mm-configurethis").css("border", "3px solid red");
+            $("#mm-assignlocation").css("border", "3px solid red");
         }
 
-        if (networkState == Connection.WIFI) {
-
-            if (!found) {
-                $( "#mm-configurethis" ).css( "border", "3px solid red" );
-
-            }
+        if (networkState === Connection.WIFI) {
+            wifiinfo.getBSSID(
+                function (BSSID) {
+                    console.log("BSSID: " + BSSID);
+                },
+                function (error) {
+                    console.log("Error wifiinfo: " + error);
+                }
+            );
         }
 
-        if (networkState == Connection.NONE || networkState == Connection.UNKNOWN || networkState == Connection.ETHERNET) {
-            $( "#mm-configurethis" ).css( "border", "3px solid red" );
-            $( "#mm-assignlocation" ).css( "border", "3px solid red" );
-            $( "#mm-external" ).css( "border", "3px solid red" );
+        if (networkState === Connection.NONE || networkState === Connection.UNKNOWN || networkState === Connection.ETHERNET) {
+            $("#mm-configurethis").css("border", "3px solid red");
+            $("#mm-assignlocation").css("border", "3px solid red");
+            $("#mm-external").css("border", "3px solid red");
         }
-
+        
+        $('.sp-image').parent().bind('transitionend webkitTransitionEnd', function () {
+            $('.sp-info').css('visibility', 'visible');
+            $('.mm-menu').css('visibility', 'visible');
+        });
+        $('.sp-loading').css('display', 'none');
+        
+        
+        $divSplash.addClass('verticalTranslate');
     },
-
+    
     // HTTP GET request to access ODControl
-    httpGetRequestToODControl: function(url,syn,user,pass,callbackFun) {
-        var response;
-        var request = new XMLHttpRequest();
+    httpGetRequestToODControl: function (url, syn, user, pass, callbackFun) {
+        "use strict";
+        
+        var response, request = new XMLHttpRequest();
         
         // FIX: There is a bug in ODControl firmware and the HTTP header is not send (8/7/2014)
-        if (syn == true) {
+        if (syn === true) {
             request.open("GET", "http://"   + url, true, user, pass);
             
             // Call a function when the state changes
-            request.onreadystatechange = function() 
-            {
-                if (request.readyState == 4) {
+            request.onreadystatechange = function () {
+                if (request.readyState === 4) {
 
-                    if (request.status == 200 || request.status == 0) {
+                    if (request.status === 200 || request.status === 0) {
                         response = request.responseText;
                         console.log("asynRES: " + response + " " + request.status);
                     
                         callbackFun(response);
                     }
-
                 }
-            }
-        }
-        else
+            };
+        } else {
             request.open("GET", "http://" + url, false, user, pass);
+        }
 
         request.send(null);
         
-        if (syn == false)
-        {
+        if (syn === false) {
             response = request.responseText;
             console.log("synRES: " + response);
         }
 
         return response;
-    },
-
-
+    }
 };
