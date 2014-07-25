@@ -40,27 +40,27 @@ var helpFile = {
 	// Read directories entries
 	// Based on the html5rocks.com file tutorial 
 	readDirectoryEntries: function (root, successCallback, errorCallback) {
+        "use strict";
+        
+		var dirReader = root.createReader(), entries = [];
 
-		var dirReader = root.createReader();
-		var entries = [];
+		var read = function () {
 
-		var read = function() {
+            dirReader.readEntries(
 
-  			dirReader.readEntries (
-
-				function(results) {
+				function (results) {
 					if (!results.length) {
-	        			successCallback(entries.sort());
-	      			} else {	
-	        			entries = entries.concat(Array.prototype.slice.call(results || [], 0));
-	        			read();
-	      			}
-  				},
-	  			function() {
+                        successCallback(entries.sort());
+                    } else {
+                        entries = entries.concat(Array.prototype.slice.call(results || [], 0));
+                        read();
+                    }
+                },
+                function () {
 					helpFile.errorHandler(); // TODO: show message in mobile screen
 					errorCallback();
 				}
-			)
+			);
 		};
 
 		read();
