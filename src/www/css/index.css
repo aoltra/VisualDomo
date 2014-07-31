@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
- 
+
 * {
     -webkit-tap-highlight-color: rgba(0,0,0,0); /* make transparent link selection, adjust last value opacity 0 to 1.0  */
 }
@@ -42,18 +42,21 @@
     font-style: normal;
 }
 
-#page-main {
+html { 
+    height:100%;  /* Fix banding gradient backgroung problem in Chrome */
+    min-height:100%; 
+}
+
+body {
+    -webkit-backface-visibility: hidden;
     -webkit-touch-callout: none;    /* prevent callout to copy image, etc when tap to hold */
     -webkit-text-size-adjust: none;  /* prevent webkit from resizing text to fit */
     -webkit-user-select: none;       /* prevent copy paste, to allow, change 'none' to 'text' */
-    background-image:-webkit-gradient(
-        linear,
-        left top,
-        left bottom,
-        color-stop(0.20, #30383b),
-        color-stop(0.70, #1f2024)
-    );
-    background-attachment:fixed;
+    
+    background-color: #30383b;
+    background-image: -webkit-linear-gradient(top,#30383b,#1f2024);
+    background-image: linear-gradient(top, #30383b, #1f2024);
+    background-attachment: fixed;
     
     font-family:'HelveticaNeue-Light', 'HelveticaNeue', Helvetica, Arial, sans-serif;
 }
