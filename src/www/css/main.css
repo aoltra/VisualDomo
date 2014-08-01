@@ -17,50 +17,6 @@
  * under the License.
  */
 
-* {
-    -webkit-tap-highlight-color: rgba(0,0,0,0); /* make transparent link selection, adjust last value opacity 0 to 1.0  */
-}
-
-/* Landscape layout (with min-width) *
-@media screen and (min-aspect-ratio: 1/1) and (min-width:400px) {
-    .app {
-        background-position:left center;
-        padding:75px 0px 75px 170px;  /* padding-top + padding-bottom + text area = image height *
-        margin:-90px 0px 0px -198px;  /* offset vertical: half of image height *
-                                      /* offset horizontal: half of image width and text area width *
-    }
-}
-*/
-@font-face {
-    font-family: 'WebSymbolsRegular';
-    src: url('websymbols/websymbols-regular-webfont.eot');
-    src: url('websymbols/websymbols-regular-webfont.eot?#iefix') format('embedded-opentype'),
-        url('websymbols/websymbols-regular-webfont.woff') format('woff'),
-        url('websymbols/websymbols-regular-webfont.ttf') format('truetype'),
-        url('websymbols/websymbols-regular-webfont.svg#WebSymbolsRegular') format('svg');
-    font-weight: normal;
-    font-style: normal;
-}
-
-html { 
-    height:100%;  /* Fix banding gradient backgroung problem in Chrome */
-    min-height:100%; 
-}
-
-body {
-    -webkit-backface-visibility: hidden;
-    -webkit-touch-callout: none;    /* prevent callout to copy image, etc when tap to hold */
-    -webkit-text-size-adjust: none;  /* prevent webkit from resizing text to fit */
-    -webkit-user-select: none;       /* prevent copy paste, to allow, change 'none' to 'text' */
-    
-    background-color: #30383b;
-    background-image: -webkit-linear-gradient(top,#30383b,#1f2024);
-    background-image: linear-gradient(top, #30383b, #1f2024);
-    background-attachment: fixed;
-    
-    font-family:'HelveticaNeue-Light', 'HelveticaNeue', Helvetica, Arial, sans-serif;
-}
-
 a {
 	color: #fff;
 	text-decoration: none;

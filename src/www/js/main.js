@@ -10,7 +10,7 @@
  */
 
 /* JSLint options */
-/*global Connection, $, helpFile, wifiinfo, console, LocalFileSystem */
+/*global Connection, $, helpFile, wifiinfo, console, LocalFileSystem, visual */
 
 var app = {
     
@@ -51,7 +51,7 @@ var app = {
            
             helpFile.errorHandler
             );
-
+        
         app.showMainMenu();
 
     },
@@ -150,6 +150,7 @@ var app = {
         "use strict";
         
         var $divSplash = $('.sp-logo'), networkState = navigator.connection.type;
+       // var $el = $('.link_newlocation');
 
         if (networkState === Connection.CELL_2G && networkState === Connection.CELL_3G && networkState === Connection.CELL_4G && networkState === Connection.CELL) {
             $("#mm-configurethis").css("border", "3px solid red");
@@ -172,6 +173,9 @@ var app = {
             $("#mm-assignlocation").css("border", "3px solid red");
             $("#mm-external").css("border", "3px solid red");
         }
+        
+
+       // $el.onclick = visual.initialize();
         
         $('.sp-image').parent().bind('transitionend webkitTransitionEnd', function () {
             $('.sp-info').css('visibility', 'visible');
