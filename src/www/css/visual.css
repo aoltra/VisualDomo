@@ -16,40 +16,55 @@
  * specific language governing permissions and limitations
  * under the License.
  */
- 
 
-.content {
+.contenedor {
     position: relative;
-    background-color:rgba(0,0,0,1);
+    background-color: #0FF;
+    color: white;
+    width: 100%;
+    height: 100%;
 }
-
-.draw-area {
-    width: auto;
-    height: auto;   
-}
-
-#panel-floor {
+ 
+#draw-area { /* coordinates from "date-role=page" */
     position: absolute;
+    width: 100%;
+    top: 0px;  
+    background-color: #FFA;
+    height:100%;
+}
+
+#bottom-panel {
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+    background-color: #545;
+    
+    //height: 100px;
+}
+
+#button-open-floor-panel {
+    border-radius: 5%;
+    left: 3%;
+    width: 18%;
+    height: 40px;
+    min-height: 40px;
+    max-height: 80px;
+    background-color: red;
+    font-size: large;
+}
+
+#floor-panel {
     left: 0px;
     width: 100%;
-    height: 20%;
-    top:80%;
-    background: red;
+    bottom: 0px;
+    background: rgba(200,30,100,0.5);
+    display: none;
+    height: 100px;
 }
-
-#button-open-panel-floor {
-    position: absolute;
-    border-radius: 15px;
-    left: 3%;
-    top: -15px;
-    widht: 3px;
-    height: 30px;
-    background: red;
-}
-
 
 #canvas-floor {
     width: 100%;
     height: 100%;
-    background: #aaa; 
+    background: #21A; 
+    
 }

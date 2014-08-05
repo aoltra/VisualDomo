@@ -17,14 +17,22 @@ var visual = {
     initialize: function () {
         "use strict";
         
-        console.log("hola");
-        
-     /*   $("#button-open-panel-floor").click(function () {
-            console.log("cucucucucuc");
-            $("#panel-floor").slideToggle("slow", function () {
-    // Animation complete.
-            });
-        });*/
+        $("#button-open-floor-panel").click(function () {
+            var height;
+            
+            if ($('#floor-panel').css('display') === 'block') {
+                height = '-=' + $('#floor-panel').height();
+            } else {
+                height = '+=' + $('#floor-panel').height();
+            }
+            $("#floor-panel").slideToggle("fast");
+            
+            $("#button-open-floor-panel").animate({
+                bottom: height
+            }, "fast");
+
+            console.log("pasando");
+        });
     }
     
 };

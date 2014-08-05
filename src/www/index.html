@@ -64,7 +64,7 @@
                                 </div>
                             </a>
                         </li>
-                    <!--     <li id="mm-assignlocation">
+                        <li id="mm-assignlocation">
                             <a href="#">
                                 <span class="mm-icon">K</span>
                                 <div class="mm-content">
@@ -81,28 +81,25 @@
                                     <p class="mm-sub">Configure location</p>
                                 </div>
                             </a>
-                        </li> -->
+                        </li> 
                     </ul>
                 </div>
             </div>
         </div>
         <div data-role="page" id="page-visual" data-theme="b">
             <div data-role="header">VisualDomo</div>
-            <div data-role="content" class="content">
-               
-                    <canvas id="canvas-location">
-                    </canvas>
-                    <div id="panel-floor">
-                        <div id="button-open-panel-floor">open</div>
-                        <div id="floor-list">
-                            <div class="floor-thumb" id="add-floor">+</div>
-                        </div>
-                    </div>
-                   
+            <div data-role="content">
+                 <div class="contenedor">
+                     <div id="draw-area"></div>
+                     <div id="bottom-panel">
+                        <div id="button-open-floor-panel">OP</div>
+                        <div id="floor-panel"></div>
+                     </div>
+                </div>
             </div>
         </div>
 
-        <script type="text/javascript" src="cordova.js"></script>
+        <script type="text/javascript" src="cordova.js"></script> 
         <script type="text/javascript" src="js/lib/jquery-2.1.1.min.js"></script>  
         <script type="text/javascript" src="js/initjqm.js"></script>  
         <script type="text/javascript" src="js/lib/jquery.mobile-1.4.3.js"></script> 

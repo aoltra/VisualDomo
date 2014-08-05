@@ -149,8 +149,9 @@ var app = {
     showMainMenu: function () {
         "use strict";
         
-        var $divSplash = $('.sp-logo'), networkState = navigator.connection.type;
-       // var $el = $('.link_newlocation');
+        var $divSplash = $('.sp-logo'),
+            networkState = navigator.connection.type,
+            $el = $('.link_newlocation');
 
         if (networkState === Connection.CELL_2G && networkState === Connection.CELL_3G && networkState === Connection.CELL_4G && networkState === Connection.CELL) {
             $("#mm-configurethis").css("border", "3px solid red");
@@ -174,8 +175,13 @@ var app = {
             $("#mm-external").css("border", "3px solid red");
         }
         
-
-       // $el.onclick = visual.initialize();
+        // set content area page-visual 100% screen
+        $(document).on('pageshow', '#page-visual', function () {
+            var height = ($(window).height() - $(this).find('[data-role="header"]').height());
+            $(this).height($(window).height()).find('[data-role="content"]').height(height);
+        });
+        
+        $el.onclick = visual.initialize();
         
         $('.sp-image').parent().bind('transitionend webkitTransitionEnd', function () {
             $('.sp-info').css('visibility', 'visible');
