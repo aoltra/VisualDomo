@@ -38,8 +38,6 @@
     bottom: 0px;
     width: 100%;
     background-color: #545;
-    
-    //height: 100px;
 }
 
 #button-open-floor-panel {
@@ -57,14 +55,29 @@
     left: 0px;
     width: 100%;
     bottom: 0px;
-    background: rgba(200,30,100,0.5);
+    background-color: rgba(200,30,100,0.5);
     display: none;
-    height: 100px;
+    height: 300px;
+    
+    overflow-x: auto;
+    white-space: nowrap;
 }
 
-#canvas-floor {
-    width: 100%;
-    height: 100%;
-    background: #21A; 
+.floor-canvas {
+    width: 310px; 
+    height: 270px;
+    background: #21A;  
+    display: inline-block;
+    margin: 15px 20px 15px 20px;
+}
+
+.floor-canvas p {
+    font-size: 1.3rem;
+    text-align: center;
+}
+
+.floor-canvas img {
+    width: 300px;
+    height: 200px;
     
 }
