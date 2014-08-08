@@ -181,6 +181,7 @@ var app = {
             $(this).height($(window).height()).find('[data-role="content"]').height(height);
         });
         
+        
         $el.onclick = visual.initialize();
         
         $('.sp-image').parent().bind('transitionend webkitTransitionEnd', function () {

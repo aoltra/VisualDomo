@@ -30,7 +30,7 @@ var visual = {
             $("#button-open-floor-panel").animate({
                 bottom: height
             }, "fast");
-
+            
             console.log("pasando");
         });
     }
