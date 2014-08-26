@@ -1,13 +1,17 @@
 .toolbar {
     width: 100%;
-    max-height: 9%;
+  //  max-height: 9%;
+}
+
+#curr-folder {
+    padding-left: 8px;
 }
 
 #panels {
     display: table;
     width: 100%;
     border: 1px solid #f2e1ff;
-    height: 85%;
+    height: 86%;
 }
 
 .panel-fd {

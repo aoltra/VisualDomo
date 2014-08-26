@@ -32,7 +32,7 @@ var fileDialog = {
    can be skipped by subtracting 32px from content var directly. */
         var contentCurrent = $(".ui-content").outerHeight() - $(".ui-content").height();
 
-        var content = screen - header - footer - contentCurrent;
+        var content = screen - header - footer - contentCurrent - 32;
 
         $(".ui-content").height(content - 10);
         console.log("connn :" + content);
@@ -61,7 +61,6 @@ var fileDialog = {
         });
         
         $("#button-back").click(function () {
-            console.log("backf3 " + fileDialog.currFolder.fullPath);
             fileDialog.backFolder(fileDialog.currFolder);
         });
     },
