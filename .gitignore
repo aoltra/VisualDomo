@@ -21,6 +21,7 @@ tmp/*
 **/ant-gen/*
 **/src/plugins/*
 **/src/platforms/*
+**/merges/*
 
 
 ###########
