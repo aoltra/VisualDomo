@@ -32,12 +32,14 @@
 }
 */
 @font-face {
-    font-family: 'WebSymbolsRegular';
-    src: url('websymbols/websymbols-regular-webfont.eot');
+    font-family: 'Entypo';
+    /*src: url('websymbols/websymbols-regular-webfont.eot');
     src: url('websymbols/websymbols-regular-webfont.eot?#iefix') format('embedded-opentype'),
         url('websymbols/websymbols-regular-webfont.woff') format('woff'),
         url('websymbols/websymbols-regular-webfont.ttf') format('truetype'),
         url('websymbols/websymbols-regular-webfont.svg#WebSymbolsRegular') format('svg');
+    */
+    src: url('entypo/Entypo.otf') format('opentype');
     font-weight: normal;
     font-style: normal;
 }

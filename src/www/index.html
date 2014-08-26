@@ -28,6 +28,8 @@
         <link rel="stylesheet" type="text/css" href="css/visual.css" /> 
         <link rel="stylesheet" type="text/css" href="css/jquery.mobile-1.4.3.min.css" />
         <link rel="stylesheet" type="text/css" href="css/global.css" /> 
+      <!--  <link rel="stylesheet" type="text/css" href="css/jquerymobile.nativedroid.css" /> -->
+        <link rel="stylesheet" type="text/css" href="libs/FileDialog/FileDialog.css" />
         <meta name="msapplication-tap-highlight" content="no" />
         <title>VisualDomo</title>
     </head>
@@ -40,7 +42,7 @@
                 <div class="sp-loading"> 
                 </div>
                 <div class="sp-info">
-                    <span class="sp-status-icon">B</span>
+                    <span class="sp-status-icon">T</span>
                     <span>Connected: </span>
                     <span>Caprica</span>
                 </div>
@@ -48,7 +50,7 @@
                     <ul>
                         <li id="mm-external">
                             <a href="#">
-                                <span class="mm-icon">C</span>
+                                <span class="mm-icon">y</span>
                                 <div class="mm-content" >
                                     <p class="mm-main">External</p>
                                     <p class="mm-sub">Connect to external location</p>
@@ -57,7 +59,7 @@
                         </li>
                         <li id="mm-newlocation">
                             <a href="#page-visual" id="link_newlocation">
-                                <span class="mm-icon">I</span>
+                                <span class="mm-icon">5</span>
                                 <div class="mm-content">
                                     <p class="mm-main">New</p>
                                     <p class="mm-sub">Configure a new location</p>
@@ -66,7 +68,7 @@
                         </li>
                         <li id="mm-assignlocation">
                             <a href="#">
-                                <span class="mm-icon">K</span>
+                                <span class="mm-icon">g</span>
                                 <div class="mm-content">
                                     <p class="mm-main">Link</p>
                                     <p class="mm-sub">Link to a previous location</p>
@@ -75,7 +77,7 @@
                         </li>
                          <li id="mm-configurethis">
                             <a href="#">
-                                <span class="mm-icon">S</span>
+                                <span class="mm-icon">r</span>
                                 <div class="mm-content">
                                     <p class="mm-main">Configure</p>
                                     <p class="mm-sub">Configure location</p>
@@ -91,6 +93,7 @@
             <div data-role="content">
                  <div class="contenedor">
                      <div id="draw-area"></div>
+                     <!-- floor panel -->
                      <div id="bottom-panel">
                         <div id="button-open-floor-panel">OP</div>
                         <div id="floor-panel">
@@ -98,25 +101,17 @@
                                 <img src="img/plano1.jpg"/>
                                 <p>Sótano</p>
                             </div>
-                            <div class="floor-canvas" >
-                                <img src="img/plano2.jpg"/>
-                                <p>Planta 1</p>
-                            </div>
-                            <div class="floor-canvas" >
-                                <img src="img/plano2.jpg"/>
-                                <p>Planta 2</p>
-                            </div>
                             <div class="floor-canvas" id="add-floor">
                                 <div class="table-layout">
                                     <div class="cell-layout">
-                                    <div><span>+</span></div>
-                                        </div>
+                                        <div><span>+</span></div>
+                                    </div>
                                 </div>
                             </div>
                          </div>
                      </div>
                 </div>
-            </div>
+            </div>          
         </div>
 
         <script type="text/javascript" src="cordova.js"></script> 
@@ -127,6 +122,10 @@
         <script type="text/javascript" src="js/main.js"></script>
         <script type="text/javascript" src="js/ODControl.js"></script>
         <script type="text/javascript" src="js/helpers/FileHelper.js"></script>
+        <script type="text/javascript" src="js/helpers/UrlHelper.js"></script>
+        <script type="text/javascript" src="js/nativedroid.script.js"></script>
+
+        <script type="text/javascript" src="libs/FileDialog/FileDialog.js"></script>
         <script type="text/javascript">
                 app.initialize();
         </script>

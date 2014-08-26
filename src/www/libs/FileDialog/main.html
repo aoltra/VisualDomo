@@ -1,0 +1,246 @@
+<!DOCTYPE HTML>
+<html>
+	
+    <head>
+        <title>File Dialog</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    </head>
+
+    <body>
+        <div data-role="page" id="file-dialog"  data-theme="b">
+            <div data-role="header" data-position="fixed">
+                <h1 id="header-title">File Dialog</h1>
+            </div>
+            <div data-role="content">
+                
+                    <div class="toolbar">                    
+                        <a id="button-home" data-role="button" data-icon="home" data-inline="true">Raíz</a>
+                        <a id="button-back" data-role="button" data-icon="back" data-inline="true">Atrás</a>
+                        <b><span>Folder:</span><span id="curr-folder">Folder</span></b>
+                    </div>
+
+                  <div id="panels">
+                    <div id="panel-row-fd">
+                        <div class="panel-fd">
+                            <div style="position:relative; height: 100%">
+                                <div style="overflow-y: scroll; position: absolute; top: 0; right:0; bottom: 0; left: 0;">
+                                    <div class="table-fd" id="folder"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="panel-fd" >
+                            <div style="position:relative; height: 100%">
+                                <div style="overflow-y: scroll; position: absolute; top: 0; right:0; bottom: 0; left: 0;">
+                                    <div class="table-fd" id="files"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
+
+
+
+	
+	
+<!--		<style media="screen" type="text/css">
+		.file_icon{
+			font-size:x-large;
+			font-weight:bolder;
+			background-color:#AAA;
+			vertical-align:top;	
+		}
+		
+		.small_btn {
+			font-size:medium;
+		}	
+		
+		.file_list_row {
+			font-size:x-large;
+		}
+	</style>
+
+<script language="JavaScript">
+		   	var currPath = "";
+		var currEntry = null;
+		
+	
+			
+		function init()
+		{
+			if (!fileDialogParams.selectFloor)
+				$("#title").text="Selecciona planta";
+
+			if (!file_Browser_params.new_folder_btn)
+				$("#new_dir_btn").hide();
+			
+			
+			
+			$("#new_dir_btn").click(function(){
+				if (currEntry == null)
+					return;
+				var fileName = prompt("Enter Folder Name","untitled");
+				if (fileName == null || fileName == '')
+					return;
+				currEntry.getDirectory(fileName,{create:false},function(){
+					alert("Folder already exists");
+				}, 
+				function(){
+					currEntry.getDirectory(fileName,{create:true}, function(){
+						//refresh current folder
+						getEntries(currEntry);
+					}, function(){
+						alert("Error creating file " + fileName);
+					});
+				});
+			});
+			
+			$("#file_browser_ok").click(function(){
+				if (file_Browser_params.on_ok == null)
+					return;
+				file_Browser_params.on_ok(currEntry);
+			});			
+			
+			if (typeof file_Browser_params.initial_folder == 'undefined' ||
+				file_Browser_params.initial_folder == null)
+			{
+				file_Browser_params.initial_folder = null;
+				getRootAndDisplay();
+			} 
+			else
+			{
+				getEntries(file_Browser_params.initial_folder);
+			}
+		}
+		
+		function getRootAndDisplay()
+		{
+			getRoot(function(dirEntry){
+				try {
+					getEntries(dirEntry);
+				} catch (err)
+				{
+					alertError(err);
+				}
+			});
+		}
+
+		function getRoot(onGetRoot)
+		{		
+			if (typeof window.requestFileSystem != 'undefined') {
+				window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function(fileSystem){
+					if (typeof onGetRoot != 'undefined')
+						onGetRoot(fileSystem.root);
+				}, function(){
+					log("Error accessing local file system");
+				});
+			}
+			
+			return null;
+		}
+		
+		function upOneLevel()
+		{
+			if (currEntry == null)
+				return;
+			currEntry.getParent(function(parentArg){
+				getEntries(parentArg);
+			}, function(error){
+				alert("Error getting parent folder");
+			})
+		}
+		
+		function getEntries(dirEntry)
+		{
+			if (dirEntry == null)
+				return;
+			
+			currPath = dirEntry.fullPath;
+			currEntry = dirEntry;
+			$("#curr_folder").html(currPath);
+			var dirReader = dirEntry.createReader();
+			dirReader.readEntries(function(entries){
+				displayEntries(entries);			
+			}, function(err){
+				if (typeof err.message != 'undefined')
+					err = err.message;
+				alert(err);	
+			});
+		}
+		
+		function displayEntries(entriesArray)
+		{
+			entriesArray.sort(function(a,b){
+				var str1 = a.name.toLowerCase();
+				var str2 = b.name.toLowerCase();
+				if (str1 < str2)
+					return -1;
+				if (str1 > str2)
+					return 1;
+				return 0;
+			});				
+			
+			$("#fileBrowser_entries").empty();
+			var table = $("<table id='file_entry_table'></table>").appendTo("#fileBrowser_entries");
+			
+			var row = $("<tr class='file_list_row'><td class='file_icon'>D</td><td>..</td></tr>").appendTo(table);
+			$(row).click(function(event){
+				upOneLevel();
+			});
+			
+			for (var i in entriesArray)
+			{
+				var isFolder = entriesArray[i].isDirectory;
+				var name = entriesArray[i].name;
+				
+				if (file_Browser_params.directory_browser && !isFolder)
+					continue;
+				
+				var row = $("<tr class='file_list_row'></tr>").appendTo(table);
+				$(row).data("entry", entriesArray[i]);
+				$("<td class='file_icon'>" + (isFolder ? 'D' : 'F') + "</td>").appendTo(row);
+				$("<td class='file_name'>" + name + "</td>").appendTo(row);
+				$(row).click(function(event){
+					var entryData = $(this).data("entry");
+					if (entryData.isDirectory) {
+						if (file_Browser_params.on_folder_select != null)
+						{
+							var ret = file_Browser_params.on_folder_select(entryData);
+							if (ret == false) {
+								$('.ui-dialog').dialog('close');
+								return;
+							}
+						}
+						getEntries(entryData);
+					} else if (file_Browser_params.on_file_select != null)
+					{
+						var ret = file_Browser_params.on_file_select(entryData);
+						if (ret == false) {
+							$('.ui-dialog').dialog('close');
+							return;
+						}
+					}
+				});
+			}
+		}
+		
+		function alertError(err){
+			if (typeof err.message != 'undefined')
+				err = err.message;
+			alert(err);
+		}
+		
+		init();
+        **/
+	</script>-->
+	
+<!--	<div data-role="content">
+		
+		<div id="fileBrowser_entries"></div>
+		
+		<a href="#" id="file_browser_ok" data-role="button" data-rel="back" data-theme="b" data-inline="true" id="file_browser_ok">OK</a>       
+		<a href="#" data-role="button" data-rel="back" data-theme="b" data-inline="true" id="file_browser_cancel">Cancel</a>       -->

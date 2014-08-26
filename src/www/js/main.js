@@ -10,7 +10,7 @@
  */
 
 /* JSLint options */
-/*global Connection, $, helpFile, wifiinfo, console, LocalFileSystem, visual */
+/*global Connection, $, helpFile, wifiinfo, console, LocalFileSystem, visual, fileDialog */
 
 var app = {
     
@@ -39,6 +39,15 @@ var app = {
         "use strict";
         
         app.receivedEvent('deviceready');
+        
+        // beforeshow events
+        // lib: FileDialog
+        $(document).on("pagebeforeshow", "#file-dialog", function () {
+            
+            var parameters =  $(this).data("url").split('?');
+            fileDialog.initialize(parameters[1]);
+            
+        });
 
         // Create VisualDomo directories
         window.requestFileSystem(LocalFileSystem.PERSISTENT, 0,

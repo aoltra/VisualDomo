@@ -10,10 +10,22 @@
  */
 
 /* JSLint options */
-/*global console, FileError */
+/*global console, FileError, LocalFileSystem */
 
 var helpFile = {
+    
+    //rootFolder: helpFile.rootFolder || helpFile.getRootFolder(),
+    
+    getRootFolder: function () {
+        "use strict";
 
+        return window.requestFileSystem(LocalFileSystem.PERSISTENT, 0,
+            function (fileSystem) {
+                return fileSystem.root;
+            },
+            helpFile.errorHandler);
+    },
+    
 	// Allow create recursive directories
 	// Based on the file tutorial from html5rocks.com 
 	createDirectories: function (root, folders) {
@@ -42,26 +54,26 @@ var helpFile = {
 	readDirectoryEntries: function (root, successCallback, errorCallback) {
         "use strict";
         
-		var dirReader = root.createReader(), entries = [];
+		var dirReader = root.createReader(),
+            entries = [],
+            read = function () {
 
-		var read = function () {
+                dirReader.readEntries(
 
-            dirReader.readEntries(
-
-				function (results) {
-					if (!results.length) {
-                        successCallback(entries.sort());
-                    } else {
-                        entries = entries.concat(Array.prototype.slice.call(results || [], 0));
-                        read();
+                    function (results) {
+                        if (!results.length) {
+                            successCallback(entries.sort());
+                        } else {
+                            entries = entries.concat(Array.prototype.slice.call(results || [], 0));
+                            read();
+                        }
+                    },
+                    function () {
+                        helpFile.errorHandler(); // TODO: show message in mobile screen
+                        errorCallback();
                     }
-                },
-                function () {
-					helpFile.errorHandler(); // TODO: show message in mobile screen
-					errorCallback();
-				}
-			);
-		};
+                );
+            };
 
 		read();
 	},

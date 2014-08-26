@@ -30,8 +30,23 @@ var visual = {
             $("#button-open-floor-panel").animate({
                 bottom: height
             }, "fast");
+    
+        });
+        
+        $("#add-floor").click(function () {
+            console.log("pulsando +");
             
-            console.log("pasando");
+            var fileDialogParams = {
+                initialFolder: 'undefined',
+                title: 'Selecciona planta'
+            };
+            
+            $.mobile.changePage('libs/FileDialog/main.html', {
+                transition: "flip",
+                data : fileDialogParams,
+                reloadPage : false,
+                changeHash : true
+            });
         });
     }
     
