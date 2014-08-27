@@ -48,6 +48,40 @@ var visual = {
                 changeHash : true
             });
         });
+        
+        $("#floor-panel #add-floor").data("entro", { "level": 999 });
+    },
+    
+    addFloor: function (floor) {
+        "use strict";
+        
+        var insertDiv = "#add-floor",
+            floorCanvas;
+        
+      //   console.log("floor: " + JSON.stringify(floor) );
+        
+        $("#floor-panel .floor-canvas").each(function (index) {
+            var data = $(this).data("entro");
+            console.log("nivel0: " + "   " +  JSON.stringify(data));
+        //    console.log("nivel1: " + data);
+            console.log("nivel: " + index);
+            if (data) {
+                console.log("nivel: " + index + "  " + data.level + "  " + floor.level);
+                
+                if (data.level > floor.level) {
+                    console.log("entro");
+                    insertDiv = this;
+                    return false;       // break
+                }
+            }
+        });
+        
+        floorCanvas = $("<div class='floor-canvas'><img src='" + floor.URL + "'/><p>" + floor.name + " (" + floor.level + ")</p></div>").insertBefore(insertDiv);
+      
+         console.log("floor: " + JSON.stringify(floor) );
+   
+        $(floorCanvas).data("entro", floor );
+      console.log("data return : " + $(floorCanvas).data("entro"));
     }
     
 };

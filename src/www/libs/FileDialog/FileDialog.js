@@ -10,7 +10,7 @@
  */
 
 /* JSLint options */
-/*global $, console, helpURL, helpFile, LocalFileSystem, alert */
+/*global $, console, helpURL, helpFile, LocalFileSystem, alert, visual */
 /*jslint plusplus: true*/
 
 var fileDialog = {
@@ -25,15 +25,13 @@ var fileDialog = {
         
         var json_config,
             screen = $.mobile.getScreenHeight(),
-            header = $(".ui-header").hasClass("ui-header-fixed") ? $(".ui-header").outerHeight()  - 1 : $(".ui-header").outerHeight();
-
-        var footer = $(".ui-footer").hasClass("ui-footer-fixed") ? $(".ui-footer").outerHeight() - 1 : $(".ui-footer").outerHeight();
+            header = $(".ui-header").hasClass("ui-header-fixed") ? $(".ui-header").outerHeight()  - 1 : $(".ui-header").outerHeight(),
+            footer = $(".ui-footer").hasClass("ui-footer-fixed") ? $(".ui-footer").outerHeight() - 1 : $(".ui-footer").outerHeight();
 
 /* content div has padding of 1em = 16px (32px top+bottom). This step
    can be skipped by subtracting 32px from content var directly. */
-        var contentCurrent = $(".ui-content").outerHeight() - $(".ui-content").height();
-
-        var content = screen - header - footer - contentCurrent - 32;
+        var contentCurrent = $(".ui-content").outerHeight() - $(".ui-content").height(),
+            content = screen - header - footer - contentCurrent - 32;
 
         $(".ui-content").height(content - 10);
         console.log("connn :" + content);
@@ -67,27 +65,30 @@ var fileDialog = {
         
         $("#popup-conf-floor :submit").click(function (event) {
                  
-            var datos = {};
+            var floor = {};
             
             $('#popup-conf-floor').popup('close');
             
-            $.each($('#popup-conf-floor form').serializeArray(), function() {
+            $.each($('#popup-conf-floor form').serializeArray(), function () {
             
-                if (datos[this.name]) {
-                    if (!datos[this.name].push) {
-                        datos[this.name] = [datos[this.name]];
+                if (floor[this.name]) {
+                    if (!floor[this.name].push) {
+                        floor[this.name] = [floor[this.name]];
                     }
-                    datos[this.name].push(this.value || '');
+                    floor[this.name].push(this.value || '');
                 } else {
-                    datos[this.name] = this.value || '';
+                    floor[this.name] = this.value || '';
                 }
             });
             
-            datos["URL"] = fileDialog.currFolder.fullPath + "/" + fileDialog.currFile;
-            console.log(JSON.stringify(datos));
+            floor.URL = fileDialog.currFolder.fullPath + "/" + fileDialog.currFile;
+            console.log(JSON.stringify(floor));
+            
+            visual.addFloor(floor);
 
         });
         
+        // cancel button
         $("#popup-conf-floor :button").click(function (event) {
             $('#popup-conf-floor').popup('close');
             $('#popup-conf-floor form')[0].reset();
@@ -124,7 +125,7 @@ var fileDialog = {
                         row = $("<div class='table-row-fd'><div class='table-cell'><span class='icon-fd'>s</span>" + value.name + "</span></div></div>").appendTo(".table-fd#folder");
                         
                         $(row).data("entry", value);
-                        $(row).click(function (event) {    
+                        $(row).click(function (event) {
                             var newFolder = $(this).data("entry");
                             fileDialog.displayEntries(newFolder);
                         });
