@@ -38,6 +38,32 @@
                         </div>
                     </div>
                 </div>
+                
+                
+                <!-- floor configuration -->
+                <div data-role="popup" id="popup-conf-floor" class="ui-content" data-theme="b" data-position-to="window" data-dismissible="false">
+                    <div data-role="header" data-theme="b" class="ui-corner-top">
+                        <h1>Datos planta</h1>
+                    </div>
+                    <div data-role="content" data-theme="b" class="ui-corner-bottom ui-content">
+                        <h4>Introduzca los datos de la planta</h4>
+                    
+                        <form name="floor-conf" action="" method="post">
+                            <label for="level" class="ui-hidden-accessible">Nivel</label>
+                            <input type="number" min="0" max="99" name="level" id="level" placeholder="Nivel">
+                            <label for="name" class="ui-hidden-accessible">Nombre</label>
+                            <input type="text" name="name" id="name" placeholder="Nombre">
+                            <label for="descrip" class="ui-hidden-accessible">Descripción</label>
+                            <input type="text" name="descrip" id="descrip" placeholder="Descripción">
+                            <div class="ui-grid-a">
+                                <div class="ui-block-a"><input type="submit" name="ok" id="floor-conf-ok" value="Aceptar" data-theme="b" data-icon="check" data-iconpos="right"></div>
+                                <div class="ui-block-b"><input type="button" name="cancel" id="floor-conf-cancel" value="Cancelar" data-theme="b" data-icon="back" data-iconpos="right"></div>
+                            </div>
+                        </form>
+                    </div>
+                    <div data-theme="b" data-role="footer" data-position="fixed">
+                </div>
+                
             </div>
         </div>
     </body>

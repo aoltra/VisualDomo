@@ -71,4 +71,18 @@
     vertical-align:  middle; 
 }
 
+#popup-conf-floor-popup {
+    width: 60%;
+    left: 20%;
+    right: 20%;
+    //height: 50%;
+    top: 28%;
+    bottom: 28%;
+    overflow: hidden;
+}
+
+#popup-conf-floor-popup h4 {
+    text-align: left;
+    padding: 10px;
+}
 

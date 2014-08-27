@@ -17,6 +17,7 @@ var fileDialog = {
 
     rootFolder: null,
     currFolder: null,
+    currFile: null,
     
     // Initilize dialog
     initialize: function (config) {
@@ -63,6 +64,33 @@ var fileDialog = {
         $("#button-back").click(function () {
             fileDialog.backFolder(fileDialog.currFolder);
         });
+        
+        $("#popup-conf-floor :submit").click(function (event) {
+                 
+            var datos = {};
+            
+            $('#popup-conf-floor').popup('close');
+            
+            $.each($('#popup-conf-floor form').serializeArray(), function() {
+            
+                if (datos[this.name]) {
+                    if (!datos[this.name].push) {
+                        datos[this.name] = [datos[this.name]];
+                    }
+                    datos[this.name].push(this.value || '');
+                } else {
+                    datos[this.name] = this.value || '';
+                }
+            });
+            
+            datos["URL"] = fileDialog.currFolder.fullPath + "/" + fileDialog.currFile;
+            console.log(JSON.stringify(datos));
+
+        });
+        
+        $("#popup-conf-floor :button").click(function (event) {
+            $('#popup-conf-floor').popup('destroy');
+        });
     },
     
     displayEntries: function (directory) {
@@ -84,6 +112,8 @@ var fileDialog = {
                 
                 $(".table-fd#folder").empty();
                 $(".table-fd#files").empty();
+                
+                fileDialog.currFile = null;
                                                
                 results.forEach(function (value, index) {
                     
@@ -93,7 +123,7 @@ var fileDialog = {
                         row = $("<div class='table-row-fd'><div class='table-cell'><span class='icon-fd'>s</span>" + value.name + "</span></div></div>").appendTo(".table-fd#folder");
                         
                         $(row).data("entry", value);
-                        $(row).click(function (event) {
+                        $(row).click(function (event) {    
                             var newFolder = $(this).data("entry");
                             fileDialog.displayEntries(newFolder);
                         });
@@ -117,6 +147,14 @@ var fileDialog = {
                         
                             row = $("<div class='table-row-fd'><div class='table-cell'><span class='icon-fd'>p</span>" + value.name + "</span></div></div>").appendTo(".table-fd#files");
                             
+                            fileDialog.currFile = value.name;
+                            $(row).click(function (event) {
+                               
+                                $('#popup-conf-floor').popup('open');
+                              //  var datos = $('#popup-conf-floor form').serializeArray();
+                            //    console.log(JSON.stringify(datos));
+                              //  $('#popup-conf-floor').css('height: 70%');
+                            });
                         }
                     }
                     
@@ -126,7 +164,6 @@ var fileDialog = {
                 
                 if (numberFiles === 0) {
                     row = "<div class='no-floors'>No hay plantas en este directorio</div>";
-                    
                     $(row).appendTo(".table-fd#files");
                 }
             },
