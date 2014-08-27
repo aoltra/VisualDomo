@@ -49,7 +49,7 @@ var visual = {
             });
         });
         
-        $("#floor-panel #add-floor").data("entro", { "level": 999 });
+        $("#floor-panel #add-floor").data("entry", { "level": 999 });
     },
     
     addFloor: function (floor) {
@@ -58,10 +58,14 @@ var visual = {
         var insertDiv = "#add-floor",
             floorCanvas;
         
+        if (floor.level === "") {
+            floor.level = 0;
+        }
+        
       //   console.log("floor: " + JSON.stringify(floor) );
         
         $("#floor-panel .floor-canvas").each(function (index) {
-            var data = $(this).data("entro");
+            var data = $(this).data("entry");
             console.log("nivel0: " + "   " +  JSON.stringify(data));
         //    console.log("nivel1: " + data);
             console.log("nivel: " + index);
@@ -69,19 +73,17 @@ var visual = {
                 console.log("nivel: " + index + "  " + data.level + "  " + floor.level);
                 
                 if (data.level > floor.level) {
-                    console.log("entro");
                     insertDiv = this;
                     return false;       // break
+                } else if (data.level === floor.level) { // if level already exits
+                    floor.level++;
                 }
             }
         });
         
         floorCanvas = $("<div class='floor-canvas'><img src='" + floor.URL + "'/><p>" + floor.name + " (" + floor.level + ")</p></div>").insertBefore(insertDiv);
-      
-         console.log("floor: " + JSON.stringify(floor) );
    
-        $(floorCanvas).data("entro", floor );
-      console.log("data return : " + $(floorCanvas).data("entro"));
+        $(floorCanvas).data("entry", floor );
     }
     
 };
