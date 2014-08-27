@@ -89,7 +89,8 @@ var fileDialog = {
         });
         
         $("#popup-conf-floor :button").click(function (event) {
-            $('#popup-conf-floor').popup('destroy');
+            $('#popup-conf-floor').popup('close');
+            $('#popup-conf-floor form')[0].reset();
         });
     },
     
