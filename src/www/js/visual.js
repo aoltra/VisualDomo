@@ -41,13 +41,14 @@ var visual = {
                 title: 'Selecciona planta'
             };
             
-            $.mobile.changePage('libs/FileDialog/main.html', {
-                transition: "flip",
-                data : fileDialogParams,
-                reloadPage : false,
-                changeHash : true
-            });
+            $(":mobile-pagecontainer").pagecontainer("change",
+                                                     'libs/FileDialog/main.html',
+                                                     { transition: "flip",
+                                                       data : fileDialogParams
+                                                     });
         });
+            
+      
         
         $("#floor-panel #add-floor").data("entry", { "level": 999 });
     },
@@ -61,13 +62,11 @@ var visual = {
         if (floor.level === "") {
             floor.level = 0;
         }
-        
-      //   console.log("floor: " + JSON.stringify(floor) );
-        
+   
         $("#floor-panel .floor-canvas").each(function (index) {
             var data = $(this).data("entry");
-            console.log("nivel0: " + "   " +  JSON.stringify(data));
-        //    console.log("nivel1: " + data);
+           // console.log("nivel0: " + "   " +  JSON.stringify(data));
+       
             console.log("nivel: " + index);
             if (data) {
                 console.log("nivel: " + index + "  " + data.level + "  " + floor.level);
@@ -75,7 +74,7 @@ var visual = {
                 if (data.level > floor.level) {
                     insertDiv = this;
                     return false;       // break
-                } else if (data.level === floor.level) { // if level already exits
+                } else if (data.level == floor.level) { // if level already exits
                     floor.level++;
                 }
             }
@@ -83,7 +82,8 @@ var visual = {
         
         floorCanvas = $("<div class='floor-canvas'><img src='" + floor.URL + "'/><p>" + floor.name + " (" + floor.level + ")</p></div>").insertBefore(insertDiv);
    
-        $(floorCanvas).data("entry", floor );
+        $(floorCanvas).data("entry", floor);
+         
     }
     
 };

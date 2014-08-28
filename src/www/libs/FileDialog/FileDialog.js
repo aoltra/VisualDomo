@@ -24,20 +24,17 @@ var fileDialog = {
         "use strict";
         
         var json_config,
-            screen = $.mobile.getScreenHeight(),
-            header = $(".ui-header").hasClass("ui-header-fixed") ? $(".ui-header").outerHeight()  - 1 : $(".ui-header").outerHeight(),
-            footer = $(".ui-footer").hasClass("ui-footer-fixed") ? $(".ui-footer").outerHeight() - 1 : $(".ui-footer").outerHeight();
+            screen = $.mobile.getScreenHeight() * 0.9,
+            header = $("#file-dialog .ui-header").hasClass("#file-dialog ui-header-fixed") ? $("#file-dialog .ui-header").outerHeight()  - 1 : $(".ui-header").outerHeight(),
+            footer = $("#file-dialog .ui-footer").hasClass("#file-dialog ui-footer-fixed") ? $("#file-dialog .ui-footer").outerHeight() - 1 : $("#file-dialog .ui-footer").outerHeight(),
+            contentCurrent = $("#file-dialog .ui-content").outerHeight() - $("#file-dialog .ui-content").height(),
+            content = screen - header - footer - contentCurrent;
 
-/* content div has padding of 1em = 16px (32px top+bottom). This step
-   can be skipped by subtracting 32px from content var directly. */
-        var contentCurrent = $(".ui-content").outerHeight() - $(".ui-content").height(),
-            content = screen - header - footer - contentCurrent - 32;
-
-        $(".ui-content").height(content - 10);
-        console.log("connn :" + content);
+        $("#file-dialog .ui-content").height(content - 42);
+        console.log("connn :" + config);
         
         json_config = helpURL.getParameterByName(config);
-        $("#header-title").text(json_config.title);
+        $("#file-dialog #header-title").text(json_config.title);
         
         if (json_config.initialFolder === 'undefined') {
        
@@ -63,11 +60,16 @@ var fileDialog = {
             fileDialog.backFolder(fileDialog.currFolder);
         });
         
+        $("#button-close").click(function () {
+            $.mobile.pageContainer.pagecontainer("back");
+        });
+        
         $("#popup-conf-floor :submit").click(function (event) {
                  
             var floor = {};
             
             $('#popup-conf-floor').popup('close');
+           
             
             $.each($('#popup-conf-floor form').serializeArray(), function () {
             
@@ -85,7 +87,6 @@ var fileDialog = {
             console.log(JSON.stringify(floor));
             
             visual.addFloor(floor);
-
         });
         
         // cancel button
@@ -129,16 +130,6 @@ var fileDialog = {
                             var newFolder = $(this).data("entry");
                             fileDialog.displayEntries(newFolder);
                         });
-                                     
-                                    /* else if (file_Browser_params.on_file_select != null)
-                        {
-						var ret = file_Browser_params.on_file_select(entryData);
-						if (ret == false) {
-							$('.ui-dialog').dialog('close');
-							return;
-						}*/
-					
-				
                         
                     } else {
                     
@@ -153,9 +144,6 @@ var fileDialog = {
                             $(row).click(function (event) {
                                
                                 $('#popup-conf-floor').popup('open');
-                              //  var datos = $('#popup-conf-floor form').serializeArray();
-                            //    console.log(JSON.stringify(datos));
-                              //  $('#popup-conf-floor').css('height: 70%');
                             });
                         }
                     }

@@ -7,7 +7,7 @@
     </head>
 
     <body>
-        <div data-role="page" id="file-dialog"  data-theme="b">
+        <div data-role="page" id="file-dialog" data-theme="b" data-dialog="true">
             <div data-role="header" data-position="fixed">
                 <h1 id="header-title">File Dialog</h1>
             </div>
@@ -38,10 +38,13 @@
                         </div>
                     </div>
                 </div>
+                <div>
+                    <a id="button-close" data-role="button" style="width: 80%, padding-left: 20%, padding-right: 20%, padding-top: 5px, padding-bottom: 5px">Cerrar</a>
+                </div>
                 
                 
                 <!-- floor configuration -->
-                <div data-role="popup" id="popup-conf-floor" class="ui-content" data-theme="b" data-position-to="window" data-dismissible="false">
+                <div data-role="popup" id="popup-conf-floor" class="ui-content" data-theme="b" data-position-to="window" data-dismissible="false" data-overlay-theme="e">
                     <div data-role="header" data-theme="b" class="ui-corner-top">
                         <h1>Datos planta</h1>
                     </div>
@@ -52,7 +55,7 @@
                             <label for="level" class="ui-hidden-accessible">Nivel</label>
                             <input type="number" min="0" max="99" name="level" id="level" placeholder="Nivel">
                             <label for="name" class="ui-hidden-accessible">Nombre</label>
-                            <input type="text" name="name" id="name" placeholder="Nombre">
+                            <input type="text" name="name" id="name" placeholder="Nombre" maxlength="15">
                             <label for="descrip" class="ui-hidden-accessible">Descripción</label>
                             <input type="text" name="descrip" id="descrip" placeholder="Descripción">
                             <div class="ui-grid-a">
@@ -62,9 +65,10 @@
                         </form>
                     </div>
                     <div data-theme="b" data-role="footer" data-position="fixed">
+                    </div>
                 </div>
-                
             </div>
+       
         </div>
     </body>
 </html>
