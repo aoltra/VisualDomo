@@ -91,7 +91,7 @@
         <div data-role="page" id="page-visual" data-theme="b">
             <div data-role="header">VisualDomo</div>
             <div data-role="content">
-                 <div class="contenedor">
+                <div class="contenedor">
                      <div id="draw-area"></div>
                      <!-- floor panel -->
                      <div id="bottom-panel">
@@ -143,16 +143,28 @@
                                 
                                 <div class='thumb-img'><img style="padding:3%;visibility:hidden;display:none;" id="camera_image" src="" /></div>
 
-                                    <div class="ui-grid-a">
-                                        <div class="ui-block-a"><input type="button" name="ok" id="floor-conf-ok" value="Aceptar" data-theme="b" data-icon="check" data-iconpos="right"></div>
-                                        <div class="ui-block-b"><input type="button" name="cancel" id="floor-conf-cancel" value="Cancelar" data-theme="b" data-icon="back" data-iconpos="right"></div>
-                                    </div>
-                                </form>
-                            </div>
-                </div>
-            </div>          
+                                <div class="ui-grid-a">
+                                    <div class="ui-block-a"><input type="button" name="ok" id="floor-conf-ok" value="Aceptar" data-theme="b" data-icon="check" data-iconpos="right"></div>
+                                    <div class="ui-block-b"><input type="button" name="cancel" id="floor-conf-cancel" value="Cancelar" data-theme="b" data-icon="back" data-iconpos="right"></div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                     <!-- confirm dialog -->
+                    <div data-role="popup" id="popup-confirm" data-overlay-theme="b" data-theme="b" style="max-width:400px;" class="ui-corner-all">
+                        <div data-role="header" data-theme="b" class="ui-corner-top">
+                            <h1>Borrar planta</h1>
+                        </div>
+                        <div data-role="content" data-theme="b" class="ui-corner-bottom ui-content">
+                            <h3 class="ui-title">¿Estás seguro de que quieres borrar esta planta?<h3>
+                            <p>Esta acción no se puede deshacer.</p>
+                            <a data-role="button" data-inline="true" data-rel="back" data-theme="b">Cancelar</a>    
+                            <a id="delete" data-role="button" data-inline="true" data-rel="back" data-transition="flow" data-theme="b">Borrar</a>  
+                        </div>
+		              </div>
+                </div>          
+            </div>
         </div>
-
         <script type="text/javascript" src="cordova.js"></script> 
         <script type="text/javascript" src="js/lib/jquery-2.1.1.min.js"></script>  
         <script type="text/javascript" src="js/initjqm.js"></script>  

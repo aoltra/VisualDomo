@@ -87,12 +87,13 @@
 }
 
 .floor-canvas p {
-    font-size: 1.3rem;
+  //  font-size: 1.3rem;
     text-align: center;
    // border:solid #fd1 1px;
     margin: 0;
  //   padding: 5px 5px 5px 5px;
     height: 20%;
+    padding-top: 2px;
 }
 
 
@@ -107,7 +108,7 @@
 
 
 .floor-edit-frame {
-    border:solid white 2px;
+    border:solid white 3px;
 }
 
 .floor-edit-toolbar {
@@ -121,22 +122,16 @@
     white-space: nowrap;
     position: absolute;
     
-     border: solid #ddd 2px;
+    // border: solid #ddd 2px;
 }
 
 .floor-edit-toolbar .button p {
     font-family: 'Entypo', bold;
     color: #DDD;
     font-size: 45px;
-   // padding-left: 10px;
-    //padding-right: 20px;
-    
-   // background-color: #041;
     text-align: center;
     vertical-align:  middle; 
 }
-
-
 
 #add-floor {
     background: rgba(240,240,250,0.5);

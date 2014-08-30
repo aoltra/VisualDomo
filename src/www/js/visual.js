@@ -118,7 +118,8 @@ var visual = {
         console.log("ADD FLOOR");
         
         var insertDiv = "#add-floor",
-            floorCanvas;
+            floorCanvas,
+            h;
         
         if (floor.level === "") {
             floor.level = 0;
@@ -145,32 +146,27 @@ var visual = {
         
         $(floorCanvas).data("entry", floor);
         
-        var h = $(floorCanvas).height()*.25;
+        h = $(floorCanvas).height() * .18;
         
         console.log("altura iv " + h);
         
-        
-       /*  $(floorCanvas).css({
-'font-size': (h/2) + 'px',
-'line-height': h + 'px'
-})*/
-        
-        
-        
-        
+        $(".floor-canvas p").css({
+            'font-size': (h / 2) + 'px',
+            'line-height': h + 'px'
+        });
+
         $(floorCanvas).on("taphold",  function (event) {
             console.log("pulsacion larga");
             
-            if (visual.floorEdit != $(this).data("entry").level)
-            {
+            if (visual.floorEdit != $(this).data("entry").level) {
                 $(".floor-edit-toolbar").slideToggle("fast");
                 $(".floor-edit-toolbar").remove();
             }
             
             visual.floorEdit = $(this).data("entry").level;
             
-            var divToolBar = "<div class='floor-edit-toolbar'><div class='ui-grid-c'><div class='ui-block-a button'><p>&laquo;</p></div><div class='ui-block-b button'><p>i</p></div><div class='ui-block-c button'><p>X</p></div><div class='ui-block-d button'><p>&raquo;</p></div></div></div>",
-                div = ".floor-canvas#L" + visual.floorEdit; 
+            var divToolBar = "<div class='floor-edit-toolbar'><div class='ui-grid-c'><div class='ui-block-a button'><p>&laquo;</p></div><div class='ui-block-b button'><p>i</p></div><div class='ui-block-c button'><p id='delete-floor'>X</p></div><div class='ui-block-d button'><p>&raquo;</p></div></div></div>",
+                div = ".floor-canvas#L" + visual.floorEdit;
             
             $(divToolBar).appendTo(div);
             
@@ -178,19 +174,37 @@ var visual = {
             console.log("EF " + visual.floorEdit);
             
             $(".floor-edit-toolbar").slideToggle("fast");
+            
+            var parent = $(this);
             /*
             $(floorCanvas).animate({
                 bottom: height
             }, "fast");*/
             
+            $(".floor-edit-toolbar #delete-floor").click(function () {
+                console.log("DELETE FLOOR");
+                $('#popup-confirm').popup('open');
+                
+                $("#popup-confirm #delete").click(function () {
+                    parent.remove();
+                });
+            });
+            
+            
+            
         });
         
-         $(floorCanvas).click(function (event) {
+       
+        
+       /* $(floorCanvas).click(function (event) {
             console.log("pulsacion corta");
              
             $(".floor-edit-toolbar").slideToggle("fast");
             $(".floor-edit-toolbar").remove();
-        });
+            
+            visual.floorEdit = -1;
+    
+        });*/
          
     }
         
