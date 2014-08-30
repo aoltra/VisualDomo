@@ -159,8 +159,14 @@ var visual = {
         
         
         $(floorCanvas).on("taphold",  function (event) {
-           // $(event.target).addClass("floor-edit-frame");
             console.log("pulsacion larga");
+            
+            if (visual.floorEdit != $(this).data("entry").level)
+            {
+                $(".floor-edit-toolbar").slideToggle("fast");
+                $(".floor-edit-toolbar").remove();
+            }
+            
             visual.floorEdit = $(this).data("entry").level;
             
             var divToolBar = "<div class='floor-edit-toolbar'><div class='ui-grid-c'><div class='ui-block-a button'><p>&laquo;</p></div><div class='ui-block-b button'><p>i</p></div><div class='ui-block-c button'><p>X</p></div><div class='ui-block-d button'><p>&raquo;</p></div></div></div>",
@@ -168,15 +174,6 @@ var visual = {
             
             $(divToolBar).appendTo(div);
             
-         /*   var height;
-            
-            if ($('#floor-edit-toolbar').css('display') === 'block') {
-                height = '-=' + $('#floor-edit-toolbar').height();
-            } else {
-                height = '+=' + $('#floor-edit-toolbar').height();
-            }*/
-        //    var div = ".floor-canvas #" + visual.floorEdit + " .floor-edit-toolbar"; 
-              //  var div = " .floor-edit-toolbar"; 
             console.log("DIV " + div);
             console.log("EF " + visual.floorEdit);
             
@@ -190,7 +187,9 @@ var visual = {
         
          $(floorCanvas).click(function (event) {
             console.log("pulsacion corta");
-            $("#floor-edit-toolbar").slideToggle("fast");
+             
+            $(".floor-edit-toolbar").slideToggle("fast");
+            $(".floor-edit-toolbar").remove();
         });
          
     }
