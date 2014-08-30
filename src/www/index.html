@@ -97,10 +97,20 @@
                      <div id="bottom-panel">
                         <div id="button-open-floor-panel">OP</div>
                         <div id="floor-panel">
-                          <!--  <div class="floor-canvas">  
+                            <div class="floor-canvas">  
+                                <div class="floor-edit-toolbar">
+                                    <div class="ui-grid-c">
+                                        <div class="ui-block-a button"><p>&laquo;</p></div>
+                                        <div class="ui-block-b button"><p>i</p></div>
+                                        <div class="ui-block-c button"><p>X</p></div>
+                                        <div class="ui-block-d button"><p>&raquo;</p></div>
+                                    </div>
+                                </div>
+                                  
                                 <img src="img/plano1.jpg"/>
                                 <p>Sótano</p>
-                            </div> -->
+                               
+                            </div>
                             <div class="floor-canvas" id="add-floor">
                                 <div class="table-layout">
                                     <div class="cell-layout">
@@ -110,6 +120,7 @@
                             </div>
                          </div>
                      </div>
+                     
                      <!-- floor configuration -->
                      <div data-role="popup" id="popup-conf-floor" class="ui-content" data-theme="b" data-position-to="window" data-dismissible="false" data-overlay-theme="e">
                         <div data-role="header" data-theme="b" class="ui-corner-top">
@@ -125,11 +136,8 @@
                                 <input type="text" name="name" id="name" placeholder="Nombre" maxlength="15">
                                 <label for="descrip" class="ui-hidden-accessible">Descripción</label>
                                 <input type="text" name="descrip" id="descrip" placeholder="Descripción">
-
                                 <input type="text" name="url" id="url" style="display:none;">
-                          <!--      <label for="image" class="ui-hidden-accessible">Imagen</label>
-                                <input type="file" name="image" mimetype="image" id="image" placeholder="Imagen">-->
-                                
+                
                                 <a id="button-image" data-role="button" data-inline="true">Selecciona imagen</a>
                                 <b><span id="curr-img"></span></b>
                                 

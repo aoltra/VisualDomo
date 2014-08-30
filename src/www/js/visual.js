@@ -14,6 +14,9 @@
 /*jslint plusplus: true*/
 
 var visual = {
+    
+    floorEdit: -1,
+    
     // Visual Constructor
     initialize: function () {
         "use strict";
@@ -71,8 +74,6 @@ var visual = {
 
             var floor = {};
 
-           
-          
             $.each($('#popup-conf-floor form').serializeArray(), function () {
 
                 if (floor[this.name]) {
@@ -95,7 +96,6 @@ var visual = {
 
             visual.addFloor(floor);
             
-             
         });
         
         // cancel button
@@ -103,7 +103,12 @@ var visual = {
             $('#popup-conf-floor').popup('close');
             $('#popup-conf-floor form')[0].reset();
         });
-            
+        
+        $(".floor-canvas").on("taphold",  function (event) {
+          //  $( event.target ).addClass( "taphold" );
+            console.log("pulsacion larga");
+        });
+     
         $("#floor-panel #add-floor").data("entry", { "level": 999 });
     },
     
@@ -136,14 +141,57 @@ var visual = {
             }
         });
         
-       // floorCanvas = $("<div class='floor-canvas'><img src='" + floor.image + "'/><p>" + floor.name + " (" + floor.level + ")</p></div>").insertBefore(insertDiv);
-        
-       // visual.getPhoto();
-        
-        floorCanvas = $("<div class='floor-canvas'><img src='" + floor.url + "'/><p>" + floor.name + " (" + floor.level + ")</p></div>").insertBefore(insertDiv);
-        
+        floorCanvas = $("<div class='floor-canvas' id='L" + floor.level + "'><img src='" + floor.url + "'/><p>" + floor.name + " (" + floor.level + ")</p></div>").insertBefore(insertDiv);
         
         $(floorCanvas).data("entry", floor);
+        
+        var h = $(floorCanvas).height()*.25;
+        
+        console.log("altura iv " + h);
+        
+        
+       /*  $(floorCanvas).css({
+'font-size': (h/2) + 'px',
+'line-height': h + 'px'
+})*/
+        
+        
+        
+        
+        $(floorCanvas).on("taphold",  function (event) {
+           // $(event.target).addClass("floor-edit-frame");
+            console.log("pulsacion larga");
+            visual.floorEdit = $(this).data("entry").level;
+            
+            var divToolBar = "<div class='floor-edit-toolbar'><div class='ui-grid-c'><div class='ui-block-a button'><p>&laquo;</p></div><div class='ui-block-b button'><p>i</p></div><div class='ui-block-c button'><p>X</p></div><div class='ui-block-d button'><p>&raquo;</p></div></div></div>",
+                div = ".floor-canvas#L" + visual.floorEdit; 
+            
+            $(divToolBar).appendTo(div);
+            
+         /*   var height;
+            
+            if ($('#floor-edit-toolbar').css('display') === 'block') {
+                height = '-=' + $('#floor-edit-toolbar').height();
+            } else {
+                height = '+=' + $('#floor-edit-toolbar').height();
+            }*/
+        //    var div = ".floor-canvas #" + visual.floorEdit + " .floor-edit-toolbar"; 
+              //  var div = " .floor-edit-toolbar"; 
+            console.log("DIV " + div);
+            console.log("EF " + visual.floorEdit);
+            
+            $(".floor-edit-toolbar").slideToggle("fast");
+            /*
+            $(floorCanvas).animate({
+                bottom: height
+            }, "fast");*/
+            
+        });
+        
+         $(floorCanvas).click(function (event) {
+            console.log("pulsacion corta");
+            $("#floor-edit-toolbar").slideToggle("fast");
+        });
          
     }
         

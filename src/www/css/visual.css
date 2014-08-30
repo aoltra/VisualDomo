@@ -57,7 +57,7 @@
     bottom: 0px;
     background-color: rgba(200,30,100,0.5);
     display: none;
-    height: 200px; /* cambiar con media query */
+    height: 250px; /* cambiar con media query */
     
     overflow-x: auto;
     white-space: nowrap;
@@ -74,24 +74,69 @@
 
 .floor-canvas {
     width: 300px; 
-    height: 75%;
+    height: 82%;
     margin-left: 3%;
     margin-right: 3%;
     background: transparent;//#2AA;  
     border:solid black 1px;
     display: inline-block;
     vertical-align: middle;
+    position: relative;
+    overflow: hidden;
+    border-radius: 10px;
 }
 
 .floor-canvas p {
     font-size: 1.3rem;
     text-align: center;
+   // border:solid #fd1 1px;
+    margin: 0;
+ //   padding: 5px 5px 5px 5px;
+    height: 20%;
 }
+
+
 
 .floor-canvas img {
     width: 300px;
     height: 80%;
+    border: solid #fd1 1px;
+    margin: 0;
+    border-radius: 10px;
 }
+
+
+.floor-edit-frame {
+    border:solid white 2px;
+}
+
+.floor-edit-toolbar {
+    left: 0px;
+    width: 100%;
+    top: 0px;
+    background-color: rgba(10,10,10,0.5);
+    display: none;
+    
+    overflow-x: auto;
+    white-space: nowrap;
+    position: absolute;
+    
+     border: solid #ddd 2px;
+}
+
+.floor-edit-toolbar .button p {
+    font-family: 'Entypo', bold;
+    color: #DDD;
+    font-size: 45px;
+   // padding-left: 10px;
+    //padding-right: 20px;
+    
+   // background-color: #041;
+    text-align: center;
+    vertical-align:  middle; 
+}
+
+
 
 #add-floor {
     background: rgba(240,240,250,0.5);
@@ -131,4 +176,4 @@
     //-webkit-background-clip: text;
    // -webkit-text-fill-color: transparent;
 }
-}
+
