@@ -15,7 +15,9 @@
 
 var visual = {
     
+    /* members */
     floorEdit: -1,
+    divEdit: null,
     
     // Visual Constructor
     initialize: function () {
@@ -40,6 +42,9 @@ var visual = {
         $("#add-floor").click(function () {
             console.log("pulsando +");
             
+            visual.floorEdit = -1;
+            visual.divEdit = null;
+            
             $('#popup-conf-floor').popup('open');
         });
         
@@ -53,7 +58,7 @@ var visual = {
 
                     img.css('display: block; visibility: visible');
                     img.src = uri;
-                    imgName.text(uri);
+                    imgName.text(uri.split('/').pop());
                     imgHideName.val(uri);
 
                     console.log("IMG " + uri);
@@ -93,9 +98,14 @@ var visual = {
 
          
             console.log(JSON.stringify(floor));
-
-            visual.addFloor(floor);
             
+            if (visual.floorEdit === -1) {
+                visual.addFloor(floor);
+            } else {
+                console.log("pop");
+                visual.divEdit.data("entry", floor);
+                visual.divEdit.find("img").first().attr('src',floor.url);
+            }
         });
         
         // cancel button
@@ -148,8 +158,6 @@ var visual = {
         
         h = $(floorCanvas).height() * .18;
         
-        console.log("altura iv " + h);
-        
         $(".floor-canvas p").css({
             'font-size': (h / 2) + 'px',
             'line-height': h + 'px'
@@ -161,11 +169,14 @@ var visual = {
             if (visual.floorEdit != $(this).data("entry").level) {
                 $(".floor-edit-toolbar").slideToggle("fast");
                 $(".floor-edit-toolbar").remove();
+                // visual.divEdit = null;
+                // visual.floorEdit = -1;
             }
             
             visual.floorEdit = $(this).data("entry").level;
+            visual.divEdit = $(this);
             
-            var divToolBar = "<div class='floor-edit-toolbar'><div class='ui-grid-c'><div class='ui-block-a button'><p>&laquo;</p></div><div class='ui-block-b button'><p>i</p></div><div class='ui-block-c button'><p id='delete-floor'>X</p></div><div class='ui-block-d button'><p>&raquo;</p></div></div></div>",
+            var divToolBar = "<div class='floor-edit-toolbar'><div class='ui-grid-c'><div class='ui-block-a button'><p>&laquo;</p></div><div class='ui-block-b button'><p id='edit-floor'>i</p></div><div class='ui-block-c button'><p id='delete-floor'>X</p></div><div class='ui-block-d button'><p>&raquo;</p></div></div></div>",
                 div = ".floor-canvas#L" + visual.floorEdit;
             
             $(divToolBar).appendTo(div);
@@ -175,7 +186,7 @@ var visual = {
             
             $(".floor-edit-toolbar").slideToggle("fast");
             
-            var parent = $(this);
+           
             /*
             $(floorCanvas).animate({
                 bottom: height
@@ -186,10 +197,25 @@ var visual = {
                 $('#popup-confirm').popup('open');
                 
                 $("#popup-confirm #delete").click(function () {
-                    parent.remove();
+                    visual.divEdit.remove();
                 });
             });
             
+            $(".floor-edit-toolbar #edit-floor").click(function () {
+                console.log("EDIT FLOOR");
+                
+                $('#popup-conf-floor #level').val(visual.divEdit.data("entry").level);
+                $('#popup-conf-floor #name').val(visual.divEdit.data("entry").name);
+                $('#popup-conf-floor #descrip').val(visual.divEdit.data("entry").descrip);
+                $('#popup-conf-floor #curr-img').text(visual.divEdit.data("entry").url.split('/').pop());
+                $('#popup-conf-floor #url').val(visual.divEdit.data("entry").url);
+                
+                $('#popup-conf-floor').popup('open');
+                
+                $("#popup-conf-floor #floor-conf-ok").click(function () {
+                    console.log("EDIT FLOOR234321341");
+                });
+            });
             
             
         });
@@ -203,6 +229,7 @@ var visual = {
             $(".floor-edit-toolbar").remove();
             
             visual.floorEdit = -1;
+            visual.divEdit = null;
     
         });*/
          
