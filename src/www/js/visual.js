@@ -42,6 +42,10 @@ var visual = {
         $("#add-floor").click(function () {
             console.log("pulsando +");
             
+            $(".floor-edit-toolbar").slideToggle("fast");
+            $(".floor-edit-toolbar").remove();
+            $(".floor-canvas#L" + visual.floorEdit).removeClass("floor-edit-frame");
+            
             visual.floorEdit = -1;
             visual.divEdit = null;
             
@@ -162,6 +166,7 @@ var visual = {
             if (visual.floorEdit != $(this).data("entry").level) {
                 $(".floor-edit-toolbar").slideToggle("fast");
                 $(".floor-edit-toolbar").remove();
+                $(".floor-canvas#L" + visual.floorEdit).removeClass("floor-edit-frame");
                 // visual.divEdit = null;
                 // visual.floorEdit = -1;
             }
@@ -173,17 +178,12 @@ var visual = {
                 div = ".floor-canvas#L" + visual.floorEdit;
             
             $(divToolBar).appendTo(div);
+            $(div).addClass("floor-edit-frame");
             
             console.log("DIV " + div);
             console.log("EF " + visual.floorEdit);
             
             $(".floor-edit-toolbar").slideToggle("fast");
-            
-           
-            /*
-            $(floorCanvas).animate({
-                bottom: height
-            }, "fast");*/
             
             $(".floor-edit-toolbar #delete-floor").click(function () {
                 console.log("DELETE FLOOR");
