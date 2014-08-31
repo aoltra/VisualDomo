@@ -100,12 +100,6 @@ var visual = {
             console.log(JSON.stringify(floor));
             
             if (visual.floorEdit !== -1) {
-            /*    visual.addFloor(floor);
-            } else {
-             
-             /*  visual.divEdit.data("entry", floor);
-                visual.divEdit.find("img").first().attr('src', floor.url);
-                visual.divEdit.find("p").first().text(floor.name + " (" + floor.level + ")");*/
                 visual.divEdit.remove();
             }
             
@@ -116,11 +110,6 @@ var visual = {
         $("#popup-conf-floor :button").click(function (event) {
             $('#popup-conf-floor').popup('close');
             $('#popup-conf-floor form')[0].reset();
-        });
-        
-        $(".floor-canvas").on("taphold",  function (event) {
-          //  $( event.target ).addClass( "taphold" );
-            console.log("pulsacion larga");
         });
      
         $("#floor-panel #add-floor").data("entry", { "level": 999 });
@@ -220,13 +209,25 @@ var visual = {
             $(".floor-edit-toolbar #left-shift-floor").click(function () {
                 console.log("LEFT SHIFT FLOOR");
 
-                var floor = visual.divEdit.data("entry");
+                var floor = visual.divEdit.data("entry"),
+                    floortmp,
+                    prevDiv = null;
                  
                 if (floor.level > 0) {
-                    floor.level--;
-                    visual.divEdit.remove();
-                    visual.addFloor(floor);
+                    prevDiv = visual.getFloorCanvasDiv(floor.level - 1);
+                    var nd = ".floor-canvas#L" + (floor.level - 1);
+                    
+                     if (prevDiv !== null) {
+                        floortmp = prevDiv.data("entry");
+                        floortmp.level++;
+                        prevDiv.data("entry",floortmp);
+                        prevDiv.find("p").first().text(floortmp.name + " (" + floortmp.level + ")");
+                        $(nd).attr('id','L' + floortmp.level );
+                     }
                 }
+                visual.divEdit.remove();
+                floor.level--;
+                visual.addFloor(floor);
                  
             });
             
@@ -238,20 +239,14 @@ var visual = {
                     nextDiv = null;
                  
                 if (floor.level < 999) {
-                  //  floor.level++;
                     nextDiv = visual.getFloorCanvasDiv(floor.level + 1);
                     var nd = ".floor-canvas#L" + (floor.level + 1);
                     
                     if (nextDiv !== null) {
                         floortmp = nextDiv.data("entry");
-                        console.log("fllo TMP2" + JSON.stringify(floortmp));
                         floortmp.level--;
-                        console.log("fllo" + floortmp.level);
                         nextDiv.data("entry",floortmp);
-                       // console.log(JSON.stringify(nextDiv)); // first().text(floortmp.name + " (" + floortmp.level + ")");
                         nextDiv.find("p").first().text(floortmp.name + " (" + floortmp.level + ")");
-                       // var floortmp2 = nextDiv.data("entry");
-                      //  console.log("fllo TMP3" + JSON.stringify(floortmp2));
                         $(nd).attr('id','L' + floortmp.level );
                     }
                     visual.divEdit.remove();
