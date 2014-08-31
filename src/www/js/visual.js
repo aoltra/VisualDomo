@@ -99,13 +99,17 @@ var visual = {
          
             console.log(JSON.stringify(floor));
             
-            if (visual.floorEdit === -1) {
-                visual.addFloor(floor);
+            if (visual.floorEdit !== -1) {
+            /*    visual.addFloor(floor);
             } else {
-                console.log("pop");
-                visual.divEdit.data("entry", floor);
-                visual.divEdit.find("img").first().attr('src',floor.url);
+             
+             /*  visual.divEdit.data("entry", floor);
+                visual.divEdit.find("img").first().attr('src', floor.url);
+                visual.divEdit.find("p").first().text(floor.name + " (" + floor.level + ")");*/
+                visual.divEdit.remove();
             }
+            
+            visual.addFloor(floor);
         });
         
         // cancel button
@@ -135,9 +139,9 @@ var visual = {
             floor.level = 0;
         }
    
+        //insertDiv = visual.getNextDiv(floor);
         $("#floor-panel .floor-canvas").each(function (index) {
             var data = $(this).data("entry");
-           // console.log("nivel0: " + "   " +  JSON.stringify(data));
        
             console.log("nivel: " + index);
             if (data) {
@@ -176,7 +180,7 @@ var visual = {
             visual.floorEdit = $(this).data("entry").level;
             visual.divEdit = $(this);
             
-            var divToolBar = "<div class='floor-edit-toolbar'><div class='ui-grid-c'><div class='ui-block-a button'><p>&laquo;</p></div><div class='ui-block-b button'><p id='edit-floor'>i</p></div><div class='ui-block-c button'><p id='delete-floor'>X</p></div><div class='ui-block-d button'><p>&raquo;</p></div></div></div>",
+            var divToolBar = "<div class='floor-edit-toolbar'><div class='ui-grid-c'><div class='ui-block-a button'><p id='left-shift-floor'>&laquo;</p></div><div class='ui-block-b button'><p id='edit-floor'>i</p></div><div class='ui-block-c button'><p id='delete-floor'>X</p></div><div class='ui-block-d button'><p id='right-shift-floor'>&raquo;</p></div></div></div>",
                 div = ".floor-canvas#L" + visual.floorEdit;
             
             $(divToolBar).appendTo(div);
@@ -211,10 +215,50 @@ var visual = {
                 $('#popup-conf-floor #url').val(visual.divEdit.data("entry").url);
                 
                 $('#popup-conf-floor').popup('open');
-                
-                $("#popup-conf-floor #floor-conf-ok").click(function () {
-                    console.log("EDIT FLOOR234321341");
-                });
+            });
+            
+            $(".floor-edit-toolbar #left-shift-floor").click(function () {
+                console.log("LEFT SHIFT FLOOR");
+
+                var floor = visual.divEdit.data("entry");
+                 
+                if (floor.level > 0) {
+                    floor.level--;
+                    visual.divEdit.remove();
+                    visual.addFloor(floor);
+                }
+                 
+            });
+            
+            $(".floor-edit-toolbar #right-shift-floor").click(function () {
+                console.log("RIGHT SHIFT FLOOR");
+
+                var floor = visual.divEdit.data("entry"),
+                    floortmp,
+                    nextDiv = null;
+                 
+                if (floor.level < 999) {
+                  //  floor.level++;
+                    nextDiv = visual.getFloorCanvasDiv(floor.level + 1);
+                    var nd = ".floor-canvas#L" + (floor.level + 1);
+                    
+                    if (nextDiv !== null) {
+                        floortmp = nextDiv.data("entry");
+                        console.log("fllo TMP2" + JSON.stringify(floortmp));
+                        floortmp.level--;
+                        console.log("fllo" + floortmp.level);
+                        nextDiv.data("entry",floortmp);
+                       // console.log(JSON.stringify(nextDiv)); // first().text(floortmp.name + " (" + floortmp.level + ")");
+                        nextDiv.find("p").first().text(floortmp.name + " (" + floortmp.level + ")");
+                       // var floortmp2 = nextDiv.data("entry");
+                      //  console.log("fllo TMP3" + JSON.stringify(floortmp2));
+                        $(nd).attr('id','L' + floortmp.level );
+                    }
+                    visual.divEdit.remove();
+                    floor.level++;
+                    visual.addFloor(floor);
+                }
+                 
             });
             
             
@@ -233,7 +277,33 @@ var visual = {
     
         });*/
          
-    }
+    },
+    
+    getFloorCanvasDiv: function (level) {
+        "use strict";
         
+        var returnDiv = null;
+        
+        $("#floor-panel .floor-canvas").each(function (index) {
+            var data = $(this).data("entry");
+       
+            console.log("GFCnivel: " + index);
+            if (data) {
+                console.log("GFCnivel: " + index + "  " + data.level + "  " + level);
+                
+                if (data.level == level) {
+                    returnDiv = $(this);
+                    
+                    console.log("ENCONTRADO  " + data.name);
+                    return false;
+                }
+            }
+        });
+        
+        return returnDiv;
+    }
+    
+    
+    
     
 };
