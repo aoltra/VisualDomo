@@ -89,10 +89,12 @@
             </div>
         </div>
         <div data-role="page" id="page-visual" data-theme="b">
-            <div data-role="header">VisualDomo</div>
+            <div data-role="header" data-position="fixed">
+                <h1>VisualDomo</h1>
+            </div>
             <div data-role="content">
                 <div class="contenedor">
-                     <div id="draw-area"></div>
+                     <div id="draw-area"><canvas class="main-canvas" width="100px" height="100px"></canvas></div>
                      <!-- floor panel -->
                      <div id="bottom-panel">
                         <div id="button-open-floor-panel">OP</div>

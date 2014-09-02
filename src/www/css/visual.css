@@ -33,6 +33,13 @@
     height:100%;
 }
 
+.main-canvas {
+    position: absolute;
+   // width: 1000px;
+    // height: 400px;
+    background-color: #AA3;
+}
+
 #bottom-panel {
     position: absolute;
     bottom: 0px;
