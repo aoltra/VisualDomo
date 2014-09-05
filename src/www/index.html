@@ -94,8 +94,8 @@
                 <a href="#config-menu" class="ui-btn-right" data-rel="popup" data-icon="grid" data-iconpos="notext">Option</a>
                 <div data-role="popup" id="config-menu">
                     <ul data-role="listview" data-inset="true" data-theme="b">
-                        <li><a href="menu1" data-theme="b">Config</a></li>
-                        <li><a href="menu2" data-theme="b">Save</a></li>
+                        <li id="config" data-theme="b">Config</li>
+                        <li id="save" data-theme="b">Save</li>
                     </ul>
                 </div>
             </div>
@@ -143,6 +143,8 @@
                                 <input type="text" name="name" id="name" placeholder="Nombre" maxlength="15">
                                 <label for="descrip" class="ui-hidden-accessible">Descripción</label>
                                 <input type="text" name="descrip" id="descrip" placeholder="Descripción">
+                                <label for="invColor">Invertir colores</label>
+                                <input type="checkbox" name="invColor" id="invColor">
                                 <input type="text" name="url" id="url" style="display:none;">
                 
                                 <a id="button-image" data-role="button" data-inline="true">Selecciona imagen</a>
@@ -157,7 +159,32 @@
                             </form>
                         </div>
                     </div>
-                     <!-- confirm dialog -->
+                    <!-- location configuration -->
+                    <div data-role="popup" id="popup-conf-location" class="ui-content" data-theme="b" data-position-to="window" data-dismissible="false" data-overlay-theme="b">
+                        <div data-role="header" data-theme="b" class="ui-corner-top">
+                            <h1>Configuración localización</h1>
+                        </div>
+                        <div data-role="content" data-theme="b" class="ui-corner-bottom ui-content">
+                            <h4>Introduzca los datos de configuración de la localización</h4>
+
+                            <form name="local-conf" action="" method="post">
+                                <label for="name" class="ui-hidden-accessible">Nombre</label>
+                                <input type="text" name="name" id="name" placeholder="Nombre" maxlength="15">
+                                <label for="descrip" class="ui-hidden-accessible">Descripción</label>
+                                <input type="text" name="descrip" id="descrip" placeholder="Descripción">
+                                <label for="bssid">BSSID</label>
+                                <input type="text" name="bssid" id="bssid" placeholder="BSSID">
+                            
+                                <div class="ui-grid-a">
+                                    <div class="ui-block-a"><input type="button" name="ok" id="local-conf-ok" value="Aceptar" data-theme="b" data-icon="check" data-iconpos="right"></div>
+                                    <div class="ui-block-b"><input type="button" name="cancel" id="local-conf-cancel" value="Cancelar" data-theme="b" data-icon="back" data-iconpos="right"></div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    
+                    
+                    <!-- confirm dialog -->
                     <div data-role="popup" id="popup-confirm" data-overlay-theme="b" data-theme="b" style="max-width:400px;" class="ui-corner-all">
                         <div data-role="header" data-theme="b" class="ui-corner-top">
                             <h1>Borrar planta</h1>
@@ -176,11 +203,19 @@
         <script type="text/javascript" src="js/lib/jquery-2.1.1.min.js"></script>  
         <script type="text/javascript" src="js/initjqm.js"></script>  
         <script type="text/javascript" src="js/lib/jquery.mobile-1.4.3.js"></script> 
-        <script type="text/javascript" src="js/visual.js"></script>
-        <script type="text/javascript" src="js/main.js"></script>
+        <!-- objects -->
         <script type="text/javascript" src="js/ODControl.js"></script>
+        <script type="text/javascript" src="js/Floor.js"></script>
+        <script type="text/javascript" src="js/Location.js"></script>
+        
+        <!-- helpers -->
         <script type="text/javascript" src="js/helpers/FileHelper.js"></script>
         <script type="text/javascript" src="js/helpers/UrlHelper.js"></script>
+        <script type="text/javascript" src="js/helpers/ImageHelper.js"></script>
+        <!-- main files -->
+        <script type="text/javascript" src="js/visual.js"></script>
+        <script type="text/javascript" src="js/main.js"></script>
+                
         <script type="text/javascript" src="js/nativedroid.script.js"></script>
 
         <script type="text/javascript" src="libs/FileDialog/FileDialog.js"></script>

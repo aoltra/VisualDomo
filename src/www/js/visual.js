@@ -10,7 +10,7 @@
  */
 
 /* JSLint options */
-/*global Connection, $, helpFile, wifiinfo, console, LocalFileSystem */
+/*global Connection, $, helpFile, helpImage, wifiinfo, console, LocalFileSystem, Location, Floor */
 /*jslint plusplus: true*/
 
 var visual = {
@@ -18,6 +18,9 @@ var visual = {
     /* members */
     floorEdit: -1,
     divEdit: null,
+    local: null,
+    save: false,
+    saved: false,
     
     // Visual Constructor
     initialize: function () {
@@ -118,7 +121,59 @@ var visual = {
      
         $("#floor-panel #add-floor").data("entry", { "level": 999 });
         
+        $("#page-visual #config-menu #save").click(function (event) {
         
+            $("#config-menu").popup('close');
+            
+            if (visual.local.name === "") {
+                
+                visual.save = true;
+                // Open a popup from other popup
+                $('#config-menu').on({
+                    popupafterclose: function () {
+                        setTimeout(function () { $('#popup-conf-location').popup('open'); }, 100);
+                    }
+                });
+            } else {
+                visual.saveLocation();
+            }
+            
+        });
+        
+        $("#popup-conf-location #local-conf-ok").click(function (event) {
+
+            var localData = {};
+            
+            $.each($('#popup-conf-location form').serializeArray(), function () {
+                if (localData[this.name]) {
+                    if (!localData[this.name].push) {
+                        localData[this.name] = [localData[this.name]];
+                    }
+                    localData[this.name].push(this.value || '');
+                } else {
+                    localData[this.name] = this.value || '';
+                }
+            });
+            
+            $('#popup-conf-location').popup('close');
+            $('#popup-conf-location form')[0].reset();
+            
+            if (localData.name === "") {
+                return false;
+            } else {
+            
+                visual.local.name = localData.name;
+                visual.local.description = localData.descripcion;
+
+                if (visual.save === true) {
+                    visual.saveLocation();
+                    visual.save = false;
+                }
+            }
+
+        });
+     
+        visual.local = new Location("", "", "");
         
         //BETA
         var json_config,
@@ -144,7 +199,6 @@ var visual = {
             floor.level = 0;
         }
    
-        //insertDiv = visual.getNextDiv(floor);
         $("#floor-panel .floor-canvas").each(function (index) {
             var data = $(this).data("entry");
        
@@ -165,7 +219,11 @@ var visual = {
         
         $(floorCanvas).data("entry", floor);
         
-        h = $(floorCanvas).height() * .18;
+        if (floor.invColor === "on") {
+            $(".floor-canvas#L" + floor.level + " img").addClass("invert-colors");
+        }
+        
+        h = $(floorCanvas).height() * 0.18;
         
         $(".floor-canvas p").css({
             'font-size': (h / 2) + 'px',
@@ -291,15 +349,10 @@ var visual = {
             visual.floorEdit = -1;
             visual.divEdit = null;
             
-            //$('.main-canvas').css("background-image", "url(" + $(this).data("entry").url + ")");
-            //$('#draw-area').resizable();
-            var imageObj = new Image();
-            var ctx = $('.main-canvas')[0].getContext('2d');
-            imageObj.src = $(this).data("entry").url;
-           // ctx.canvas.width = $('.main-canvas').height();
-            var ch = ctx.canvas.height, //$('.main-canvas').height(),
-                cw = ctx.canvas.width, //$('.main-canvas').width(),
-                ri = imageObj.naturalWidth / imageObj.naturalHeight,
+            var imageObj = new Image(),
+                ctx = $('.main-canvas')[0].getContext('2d'),
+                ch = ctx.canvas.height,
+                cw = ctx.canvas.width,
                 dx = 0,
                 dy = 0,
                 w,
@@ -307,10 +360,9 @@ var visual = {
                 maxHeight,
                 maxWidth;
             
+            imageObj.src = $(this).data("entry").url;
             $('.main-canvas').attr('width', $('#floor-panel').width());
             $('.main-canvas').attr('height', $('#page-visual .ui-content').height());
-
-        //  $('.main-canvas')[0].getContext('2d').drawImage(imageObj, (cw - wi) * .5, (ch - hi) * .5, wi, hi);
 
        /* if (cw > imageObj.naturalWidth)
         {
@@ -342,13 +394,17 @@ $('.main-canvas')[0].getContext('2d').moveTo(0,50);
 $('.main-canvas')[0].getContext('2d').lineTo(50,50);
 $('.main-canvas')[0].getContext('2d').stroke();
         ***/
-            dx = Math.abs(w - maxWidth) * .5;
-            dy = Math.abs(h - maxHeight) * .5;
-
+            dx = Math.abs(w - maxWidth) * 0.5;
+            dy = Math.abs(h - maxHeight) * 0.5;
 
             ctx.drawImage(imageObj, parseInt(dx, 10), parseInt(dy, 10), parseInt(w, 10), parseInt(h, 10));
 
             /*console.log("IMAGEN FONDO: " +  $(this).data("entry").url + " x: " + imageObj.naturalWidth + " y: " + imageObj.naturalHeight + "  wi: " + wi + " hi: " + hi + " ch: " + ch + " cw:" + cw + "  dx:" + dx + " dy:" + dy + "ctxw: " + ctx.canvas.width + "  ctxh: " + ctx.canvas.height) ; */
+            
+            console.log("COLOR " + $(this).data("entry").invColor);
+            if ($(this).data("entry").invColor === "on") {
+                helpImage.invertColor(ctx, dx, dy, imageObj);
+            }
         });
          
     },
@@ -375,6 +431,31 @@ $('.main-canvas')[0].getContext('2d').stroke();
         });
         
         return returnDiv;
+    },
+    
+    saveLocation: function () {
+        visual.local.cleanFloors();
+
+        $("#floor-panel .floor-canvas").each(function (index) {
+            var data = $(this).data("entry"),
+                floor;
+
+            if (data) {
+                if (data.level === 999) {
+                    return false;
+                }
+
+                floor = new Floor(data.level, data.name,
+                              data.descrip, data.url,
+                              data.invColor);
+
+                visual.local.addFloor(floor);
+            }
+        });
+        
+        visual.local.save();
+        
+        visual.saved = true;
     }
     
 };

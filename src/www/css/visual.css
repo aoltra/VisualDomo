@@ -62,7 +62,7 @@
     left: 0px;
     width: 100%;
     bottom: 0px;
-    background-color: rgba(200,30,100,0.5);
+    background-color: rgba(200,30,100,0.8);
     display: none;
     height: 250px; /* cambiar con media query */
     
@@ -108,6 +108,10 @@
 //    border: solid #fd1 1px;
     margin: 0;
 //    border-radius: 10px;
+}
+
+.invert-colors {
+    -webkit-filter: invert(100%);
 }
 
 .floor-edit-frame {
