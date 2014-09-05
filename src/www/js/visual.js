@@ -131,10 +131,14 @@ var visual = {
                 // Open a popup from other popup
                 $('#config-menu').on({
                     popupafterclose: function () {
-                        setTimeout(function () { $('#popup-conf-location').popup('open'); }, 100);
+                        if (visual.save === true ) {
+                            setTimeout(function () {
+                                $('#popup-conf-location').popup('open'); }, 100);
+                        }
                     }
                 });
             } else {
+         
                 visual.saveLocation();
             }
             
