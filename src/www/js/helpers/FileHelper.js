@@ -42,14 +42,15 @@ var helpFile = {
                     helpFile.createDirectories(dirEntry, folders.slice(1), null);
                 }
 
-                console.log('Directory ' + dirEntry["fullPath"] + ' created');
+                console.log('Directory ' + dirEntry.fullPath + ' created');
 			},
 			helpFile.errorHandler
             );
 
         
-        if (successCallback != null)
+        if (successCallback !== null) {
             successCallback();
+        }
 	},
 
 	// Read directories entries

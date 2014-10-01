@@ -14,8 +14,9 @@
 
 var app = {
     
-    SSID : null,
-    BSSID : null,
+    SSID: null,
+    BSSID: null,
+    root: null,
     
     // Application Constructor
     initialize: function () {
@@ -51,21 +52,6 @@ var app = {
             fileDialog.initialize(parameters[1]);
             
         });
-
-        // Create VisualDomo directories
-        window.requestFileSystem(LocalFileSystem.PERSISTENT, 0,
-
-            // Successful request of a file system
-            function (fileSystem) {
-                var path = "VisualDomo/locations";
-                helpFile.createDirectories(fileSystem.root, path.split('/'));
-            },
-           
-            helpFile.errorHandler
-            );
-        
-        app.showMainMenu();
-
     },
 
     // Update DOM on a Received Event
@@ -88,17 +74,11 @@ var app = {
             // Successful request of a file system
             function (fileSystem) {
                 var path = "VisualDomo/locations";
-        
+                
+                app.root = fileSystem.root;
                 helpFile.createDirectories(fileSystem.root, path.split('/'),
                     function () {
-        
-                        app.getConnectionFeatures(fileSystem.root,
-                            function (found) {
-                                app.showMainMenu(found);
-                            },
-                            function () {
-                                navigator.app.exitApp();  // TODO: show message in mobile screen
-                            });
+                        app.showMainMenu();
                     },
                     function () {   // Not used
                         navigator.app.exitApp();
@@ -118,50 +98,25 @@ var app = {
         
         root.getDirectory(path, {},
 
-             // Successful request of directory
+            // Successful request of directory
             function (dirEntry) {
                 
                 helpFile.readDirectoryEntries(dirEntry,
                     function (results) {
+                        var found = false, name;
                         
-                        wifiinfo.getSSID(
-                            function (SSID) {
-                                app.SSID = SSID.replace(/\"/g, '');
-                                $('.sp-info #tx-SSID').text(app.SSID);
-                                successCallback(true);
-                            },
-                            function (error) {
-                                console.log("Error wifiinfo.getSSID: " + error);
-                                successCallback(false);
+                        results.forEach(function (value, index) {
+                            if (value.isDirectory) {
+                                console.log(index + "-" + value.name);
+
+                                name = value.name.substring(0, value.name.length - 4);
+                                if (name === app.BSSID) {
+                                    found = true;
+                                }
                             }
-                        );
-                        
-                        wifiinfo.getBSSID(
-                            function (BSSID) {
-                                var found = false, name;
-                                console.log("BSSID: " + BSSID);
-                                app.BSSID = BSSID;
-
-                                results.forEach(function (value, index) {
-                                    if (value.isDirectory) {
-                                        console.log(index + "-" + value.name);
-
-                                        name = value.name.substring(0, value.name.length - 4);
-                                        if (name === BSSID) {
-                                            found = true;
-                                        }
-                                    }
                                     
-                                    successCallback(found);
-                                });
-
-                            },
-                            function (error) {
-                                console.log("Error wifiinfo: " + error);
-                                successCallback(false);
-                            }
-                        );
-                        
+                            successCallback(found);
+                        });
                     });
             },
             function () {
@@ -178,26 +133,50 @@ var app = {
             networkState = navigator.connection.type,
             $el = $('.link_newlocation');
 
+        // 3G network
         if (networkState === Connection.CELL_2G && networkState === Connection.CELL_3G && networkState === Connection.CELL_4G && networkState === Connection.CELL) {
-            $("#mm-configurethis").css("border", "3px solid red");
             $("#mm-assignlocation").css("border", "3px solid red");
+            $("#mm-configurethis").css("border", "3px solid red");
+            $('.sp-info #tx-SSID').text("3G");
         }
 
         if (networkState === Connection.WIFI) {
             wifiinfo.getBSSID(
                 function (BSSID) {
                     console.log("BSSID: " + BSSID);
+                    app.getConnectionFeatures(fileSystem.root,
+                        function (found) {
+                            // run the visual screen mode use
+                        },
+                        function () {
+                            $("#mm-assignlocation").css("border", "3px solid red");
+                            $("#mm-external").css("border", "3px solid red");
+                        });
                 },
                 function (error) {
-                    console.log("Error wifiinfo: " + error);
+                    console.log("Error wifiinfo.getBSSID: " + error);
+                }
+            );
+            
+            wifiinfo.getSSID(
+                function (SSID) {
+                    app.SSID = SSID.replace(/\"/g, '');
+                    if (app.SSID === "") {
+                        app.SSID = "Sin nombre";
+                    }
+                    $('.sp-info #tx-SSID').text(app.SSID);
+                },
+                function (error) {
+                    console.log("Error wifiinfo.getSSID: " + error);
                 }
             );
         }
 
         if (networkState === Connection.NONE || networkState === Connection.UNKNOWN || networkState === Connection.ETHERNET) {
-            $("#mm-configurethis").css("border", "3px solid red");
-            $("#mm-assignlocation").css("border", "3px solid red");
             $("#mm-external").css("border", "3px solid red");
+            $("#mm-assignlocation").css("border", "3px solid red");
+            $('.sp-info #tx-SSID').text("");
+            $('.sp-info #tx-connected').text("Sin conexión");
         }
         
         // set content area page-visual 100% screen
