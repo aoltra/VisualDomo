@@ -131,9 +131,10 @@ var visual = {
                 // Open a popup from other popup
                 $('#config-menu').on({
                     popupafterclose: function () {
-                        if (visual.save === true ) {
+                        if (visual.save === true) {
                             setTimeout(function () {
-                                $('#popup-conf-location').popup('open'); }, 100);
+                                $('#popup-conf-location').popup('open');
+                            }, 100);
                         }
                     }
                 });

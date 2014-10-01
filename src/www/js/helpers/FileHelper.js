@@ -28,7 +28,7 @@ var helpFile = {
     
 	// Allow create recursive directories
 	// Based on the file tutorial from html5rocks.com 
-	createDirectories: function (root, folders) {
+	createDirectories: function (root, folders, successCallback) {
 		"use strict";
         
 		if (folders[0] === '.' || folders[0] === '') {
@@ -39,14 +39,17 @@ var helpFile = {
 			function (dirEntry) {
 		    	
                 if (folders.length - 1) {
-                    helpFile.createDirectories(dirEntry, folders.slice(1));
+                    helpFile.createDirectories(dirEntry, folders.slice(1), null);
                 }
 
-                console.log('Directory ' + dirEntry + ' created');
+                console.log('Directory ' + dirEntry["fullPath"] + ' created');
 			},
 			helpFile.errorHandler
             );
 
+        
+        if (successCallback != null)
+            successCallback();
 	},
 
 	// Read directories entries

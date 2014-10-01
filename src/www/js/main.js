@@ -14,6 +14,9 @@
 
 var app = {
     
+    SSID : null,
+    BSSID : null,
+    
     // Application Constructor
     initialize: function () {
         "use strict";
@@ -85,9 +88,10 @@ var app = {
             // Successful request of a file system
             function (fileSystem) {
                 var path = "VisualDomo/locations";
-                
+        
                 helpFile.createDirectories(fileSystem.root, path.split('/'),
                     function () {
+        
                         app.getConnectionFeatures(fileSystem.root,
                             function (found) {
                                 app.showMainMenu(found);
@@ -96,7 +100,7 @@ var app = {
                                 navigator.app.exitApp();  // TODO: show message in mobile screen
                             });
                     },
-                    function () {
+                    function () {   // Not used
                         navigator.app.exitApp();
                     });
             },
@@ -110,7 +114,7 @@ var app = {
     getConnectionFeatures: function (root, successCallback, errorCallback) {
         "use strict";
         
-        var lBSSID = null, path = 'VisualDomo/locations';
+        var path = 'VisualDomo/locations';
         
         root.getDirectory(path, {},
 
@@ -119,12 +123,24 @@ var app = {
                 
                 helpFile.readDirectoryEntries(dirEntry,
                     function (results) {
-
+                        
+                        wifiinfo.getSSID(
+                            function (SSID) {
+                                app.SSID = SSID.replace(/\"/g, '');
+                                $('.sp-info #tx-SSID').text(app.SSID);
+                                successCallback(true);
+                            },
+                            function (error) {
+                                console.log("Error wifiinfo.getSSID: " + error);
+                                successCallback(false);
+                            }
+                        );
+                        
                         wifiinfo.getBSSID(
                             function (BSSID) {
                                 var found = false, name;
                                 console.log("BSSID: " + BSSID);
-                                lBSSID = BSSID;
+                                app.BSSID = BSSID;
 
                                 results.forEach(function (value, index) {
                                     if (value.isDirectory) {
