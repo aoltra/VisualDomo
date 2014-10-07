@@ -21,8 +21,11 @@ function Location(BSSID, name, description) {
 	this.description = description;				// description (should include location)
 	this.BSSIID = BSSID;						// Identifier wlan
     
-    // floor
+    // floors
     this.floors = [];
+    
+    // odccontrol
+    this.odcontrols = [];
 
 	// save the location configuration 
 	Location.prototype.save = function () {
@@ -37,8 +40,6 @@ function Location(BSSID, name, description) {
         
         console.log("planta " + json);
         
-      
-
         // Create VisualDomo directories
         window.requestFileSystem(LocalFileSystem.PERSISTENT, 0,
      
@@ -82,4 +83,17 @@ function Location(BSSID, name, description) {
     Location.prototype.dissociate = function () {
         this.BSSIID = "";
 	};
+    
+    Location.prototype.addODControl = function (odcontrol) {
+        this.odcontrols.push(odcontrol);
+	};
+    
+    Location.prototype.cleanODControls = function () {
+        this.odcontrols = [];
+	};
+    
+    Location.prototype.numberODC = function () {
+        return this.odcontrols.length;
+    };
+
 }

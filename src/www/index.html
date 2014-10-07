@@ -90,16 +90,20 @@
         </div>
         <div data-role="page" id="page-visual" data-theme="b">
             <div data-role="header" data-position="fixed">
+                <a id="odcontrol-panel" class="ui-btn-left" data-icon="bars" data-iconpos="left">ODControls (0)</a>
                 <h1>VisualDomo</h1>
                 <a href="#config-menu" class="ui-btn-right" data-rel="popup" data-icon="grid" data-iconpos="notext">Option</a>
                 <div data-role="popup" id="config-menu">
                     <ul data-role="listview" data-inset="true" data-theme="b">
                         <li id="config" data-theme="b">Config</li>
+                        <li id="add-odc" data-theme="b">Add ODControl</li>
                         <li id="save" data-theme="b">Save</li>
                     </ul>
                 </div>
             </div>
             <div data-role="content">
+                 
+                
                 <div class="contenedor">
                      <div id="draw-area"><canvas class="main-canvas" width="100px" height="100px"></canvas></div>
                      <!-- floor panel -->
@@ -128,6 +132,9 @@
                          </div>
                      </div>
                      
+                    
+                   
+                    
                      <!-- floor configuration -->
                      <div data-role="popup" id="popup-conf-floor" class="ui-content" data-theme="b" data-position-to="window" data-dismissible="false" data-overlay-theme="e">
                         <div data-role="header" data-theme="b" class="ui-corner-top">
@@ -159,6 +166,33 @@
                             </form>
                         </div>
                     </div>
+                    
+                     <!-- odcontrol configuration -->
+                     <div data-role="popup" id="popup-add-odcontrol" class="ui-content" data-theme="b" data-position-to="window" data-dismissible="false" data-overlay-theme="e">
+                        <div data-role="header" data-theme="b" class="ui-corner-top">
+                            <h1>Datos ODControl</h1>
+                        </div>
+                        <div data-role="content" data-theme="b" class="ui-corner-bottom ui-content">
+                            <h4>Introduzca los datos del ODControl</h4>
+
+                            <form name="odc-conf" action="" method="post">
+                                <label for="IP" class="ui-hidden-accessible">IP</label>
+                                <input type="number" name="ip" id="ip" placeholder="IP">
+                                <label for="user" class="ui-hidden-accessible">Usuario</label>
+                                <input type="text" name="user" id="name" placeholder="Usuario">
+                                <label for="pass" class="ui-hidden-accessible">Password</label>
+                                <input type="text" name="pass" id="pass" placeholder="Password">
+                                <label for="name" class="ui-hidden-accessible">Nombre</label>
+                                <input type="text" name="name" id="name" placeholder="Nombre">
+        
+                                <div class="ui-grid-a">
+                                    <div class="ui-block-a"><input type="button" name="ok" id="odc-add-ok" value="Aceptar" data-theme="b" data-icon="check" data-iconpos="right"></div>
+                                    <div class="ui-block-b"><input type="button" name="cancel" id="odc-add-cancel" value="Cancelar" data-theme="b" data-icon="back" data-iconpos="right"></div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    
                     <!-- location configuration -->
                     <div data-role="popup" id="popup-conf-location" class="ui-content" data-theme="b" data-position-to="window" data-dismissible="false" data-overlay-theme="b">
                         <div data-role="header" data-theme="b" class="ui-corner-top">
@@ -198,6 +232,15 @@
 		              </div>
                 </div>          
             </div>
+                    
+            <!-- ODC panel  -->
+            <div data-role="panel" id="odc-panel" data-position="left" data-display="reveal" data-dismissible="true" data-theme="b">
+                <p><b>ODControl</b></p>
+                <p id="noODC">No hay <em>ODControl</em> configurados.</p>
+                <div data-role="collapsible-set" id="odc-list">
+	
+	           </div>
+             </div>
         </div>
         <script type="text/javascript" src="cordova.js"></script> 
         <script type="text/javascript" src="js/lib/jquery-2.1.1.min.js"></script>  

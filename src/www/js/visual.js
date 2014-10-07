@@ -17,6 +17,7 @@ var visual = {
     
     /* members */
     floorEdit: -1,
+    odcEdit: -1,
     divEdit: null,
     local: null,
     save: false,
@@ -139,10 +140,23 @@ var visual = {
                     }
                 });
             } else {
-         
                 visual.saveLocation();
             }
             
+        });
+        
+        $("#page-visual #config-menu #add-odc").click(function (event) {
+        
+            $("#config-menu").popup('close');
+           
+            // Open a popup from other popup
+            $('#config-menu').on({
+                popupafterclose: function () {
+                    setTimeout(function () {
+                        $('#popup-add-odcontrol').popup('open');
+                    }, 100);
+                }
+            });
         });
         
         $("#popup-conf-location #local-conf-ok").click(function (event) {
@@ -177,8 +191,46 @@ var visual = {
             }
 
         });
+        
+        $("#popup-add-odcontrol #odc-add-ok").click(function (event) {
+            
+            var odc = {}, nODC;
+
+            $.each($('#popup-add-odcontrol form').serializeArray(), function () {
+
+                if (odc[this.name]) {
+                    if (!odc[this.name].push) {
+                        odc[this.name] = [odc[this.name]];
+                    }
+                    odc[this.name].push(this.value || '');
+                } else {
+                    odc[this.name] = this.value || '';
+                }
+            });
+            
+          //  var odc = new ODControl("", "", "", "90.166.105.5", "user", "opendomo");
+            
+            visual.local.addODControl(odc);
+            nODC = visual.local.numberODC();
+            if (nODC > 0) {
+                $("#odc-list").css("display", "inline");
+                $("#noODC").css("display", "none");
+            }
+
+            $('#popup-add-odcontrol').popup('close');
+            $('#popup-add-odcontrol form')[0].reset();
+            
+            visual.addODControl(odc);
+           
+        });
+        
+        $("#odcontrol-panel").click(function (event) {
+            $("#odc-panel").panel("toggle");
+        });
      
         visual.local = new Location("", "", "");
+        
+        $("#odc-list").css("display", "none");
         
         //BETA
         var json_config,
@@ -189,6 +241,41 @@ var visual = {
             content = screen - header - footer;// - contentCurrent;
 
         $("#page-visual .ui-content").height(content);
+        
+    },
+    
+    addODControl: function (odcontrol) {
+        "use strict";
+        
+        var nODC, collapsible, header;
+        console.log("ADD ODCONTROL");
+    
+        nODC = visual.local.numberODC();
+        collapsible = $("<div data-role='collapsible' data-mini='true' class='collapsible-item' id='odc-" + nODC + "'></div>");
+        $("[data-role=collapsible-set]").append(collapsible);
+        
+        header = $("<h1>" + odcontrol.name + "</h1>");
+        $(collapsible).append(header);
+        
+        $(collapsible).data("entry", nODC);
+        $(collapsible).collapsible();
+        
+        $(collapsible).on("taphold",  function (event) {
+            console.log("pulsacion larga");
+            
+            $(".odc-edit-toolbar").slideToggle("fast");
+            $(".odc-edit-toolbar").remove();
+            $(".collapsible-item#odc-" + visual.odcEdit).removeClass("odc-edit-toolbar");
+                    
+            visual.odcEdit = $(this).data("entry");
+            
+            var divToolBarODC = "<div class='odc-edit-toolbar'><div class='ui-grid-c'><div class='ui-block-a button'><p id='up-odc'>&laquo;</p></div><div class='ui-block-b button'><p id='edit-odc'>i</p></div><div class='ui-block-c button'><p id='delete-odc'>X</p></div><div class='ui-block-d button'><p id='down-odc'>&raquo;</p></div></div></div>",
+                div = ".collapsible-item#odc-" + visual.odcEdit;
+            
+            $(divToolBarODC).appendTo(header);
+        });
+        
+        
     },
     
     addFloor: function (floor) {
@@ -439,6 +526,8 @@ $('.main-canvas')[0].getContext('2d').stroke();
     },
     
     saveLocation: function () {
+        "use strict";
+        
         visual.local.cleanFloors();
 
         $("#floor-panel .floor-canvas").each(function (index) {
