@@ -247,7 +247,7 @@ var visual = {
     addODControl: function (odcontrol) {
         "use strict";
         
-        var nODC, collapsible, header;
+        var nODC, collapsible, header, text;
         console.log("ADD ODCONTROL");
     
         nODC = visual.local.numberODC();
@@ -259,6 +259,9 @@ var visual = {
         
         $(collapsible).data("entry", nODC);
         $(collapsible).collapsible();
+        
+        text = "ODControl (" + nODC + ")";
+        $("#page-visual #odcontrol-panel").text(text);
         
         $(collapsible).on("taphold",  function (event) {
             console.log("pulsacion larga");
