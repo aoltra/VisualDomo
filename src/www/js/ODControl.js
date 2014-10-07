@@ -26,6 +26,8 @@ function ODControl(ID, name, description, IP, user, pass) {
 	this.description = description;				// description (should include location)
 	this.ID = ID;								// Identifier
 
+    // ports
+    this.ports = [];
 
 	// features
 	this.version = this.version || (function () {
@@ -38,4 +40,13 @@ function ODControl(ID, name, description, IP, user, pass) {
 		
 
 	};
+    
+    ODControl.prototype.readPorts = function () {
+        return app.httpGetRequestToODControl(IP + "/lsc", false, "user", "opendomo", null);
+    };
+    
+    ODControl.prototype.addPort = function (port) {
+        this.ports.push(port);
+	};
+    
 }

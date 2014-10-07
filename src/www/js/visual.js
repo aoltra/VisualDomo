@@ -10,7 +10,7 @@
  */
 
 /* JSLint options */
-/*global Connection, $, helpFile, helpImage, wifiinfo, console, LocalFileSystem, Location, Floor */
+/*global Connection, $, helpFile, helpImage, wifiinfo, console, LocalFileSystem, Location, Floor, Port */
 /*jslint plusplus: true*/
 
 var visual = {
@@ -194,21 +194,27 @@ var visual = {
         
         $("#popup-add-odcontrol #odc-add-ok").click(function (event) {
             
-            var odc = {}, nODC;
+            var newodc, nODC, odc;
 
-            $.each($('#popup-add-odcontrol form').serializeArray(), function () {
+        /*    $.each($('#popup-add-odcontrol form').serializeArray(), function () {
 
-                if (odc[this.name]) {
-                    if (!odc[this.name].push) {
-                        odc[this.name] = [odc[this.name]];
+                if (newodc[this.name]) {
+                    if (!newodc[this.name].push) {
+                        newodc[this.name] = [newodc[this.name]];
                     }
-                    odc[this.name].push(this.value || '');
+                    newodc[this.name].push(this.value || '');
                 } else {
-                    odc[this.name] = this.value || '';
+                    newodc[this.name] = this.value || '';
                 }
             });
+          */ 
             
-          //  var odc = new ODControl("", "", "", "90.166.105.5", "user", "opendomo");
+            //odc.IP = "90.166.105.5";
+            //odc.user = "user";
+            //odc.password = newodc.passowrd;
+            
+            odc = new ODControl("", "control1", "", "90.166.105.5", "user", "opendomo");
+            
             
             visual.local.addODControl(odc);
             nODC = visual.local.numberODC();
@@ -247,11 +253,11 @@ var visual = {
     addODControl: function (odcontrol) {
         "use strict";
         
-        var nODC, collapsible, header, text;
+        var nODC, collapsible, header, text, ports, lsc;
         console.log("ADD ODCONTROL");
     
         nODC = visual.local.numberODC();
-        collapsible = $("<div data-role='collapsible' data-mini='true' class='collapsible-item' id='odc-" + nODC + "'></div>");
+        collapsible = $("<div data-role='collapsible' data-mini='true' data-inset='false' class='collapsible-item' id='odc-" + nODC + "'></div>");
         $("[data-role=collapsible-set]").append(collapsible);
         
         header = $("<h1>" + odcontrol.name + "</h1>");
@@ -263,12 +269,34 @@ var visual = {
         text = "ODControl (" + nODC + ")";
         $("#page-visual #odcontrol-panel").text(text);
         
+        
+        lsc = odcontrol.readPorts();
+        
+        ports = lsc.split('\n');
+        
+        ports.forEach(function (entry) {
+            var parts = entry.split(":");
+                  
+            console.log("Nombre " + parts[0] + " en " + entry);
+            if (undefined !== parts[1]) {
+            
+                console.log("partos " + parts[0] + " " + parts[1] + "  " + parts[2] + "   >>>>" + parts[1].charAt(2) + "<<<");
+            
+                if (parts[1].charAt(2) !== "H") {
+                    odcontrol.addPort(new Port(parts[0], parts[1].charAt(0) + parts[1].charAt(1), ""));
+                }
+            }
+        });
+        
+        console.log("PUERTO " + odcontrol.ports.length);
+        
+        
         $(collapsible).on("taphold",  function (event) {
             console.log("pulsacion larga");
             
             $(".odc-edit-toolbar").slideToggle("fast");
             $(".odc-edit-toolbar").remove();
-            $(".collapsible-item#odc-" + visual.odcEdit).removeClass("odc-edit-toolbar");
+            $(".collapsible-item #odc-" + visual.odcEdit).removeClass("odc-edit-toolbar");
                     
             visual.odcEdit = $(this).data("entry");
             
