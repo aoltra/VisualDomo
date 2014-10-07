@@ -253,7 +253,7 @@ var visual = {
     addODControl: function (odcontrol) {
         "use strict";
         
-        var nODC, collapsible, header, text, ports, lsc;
+        var nODC, collapsible, header, text, ports, lsc, collapsiblePort, divPort;
         console.log("ADD ODCONTROL");
     
         nODC = visual.local.numberODC();
@@ -264,7 +264,7 @@ var visual = {
         $(collapsible).append(header);
         
         $(collapsible).data("entry", nODC);
-        $(collapsible).collapsible();
+      
         
         text = "ODControl (" + nODC + ")";
         $("#page-visual #odcontrol-panel").text(text);
@@ -273,23 +273,33 @@ var visual = {
         lsc = odcontrol.readPorts();
         
         ports = lsc.split('\n');
+        if (ports.length > 1) {  // last row is always DONE
+            collapsiblePort = $("<p></p>");
+            //$(collapsible).append(collapsiblePort);
+            collapsiblePort.insertAfter(header);
         
-        ports.forEach(function (entry) {
-            var parts = entry.split(":");
-                  
-            console.log("Nombre " + parts[0] + " en " + entry);
-            if (undefined !== parts[1]) {
-            
-                console.log("partos " + parts[0] + " " + parts[1] + "  " + parts[2] + "   >>>>" + parts[1].charAt(2) + "<<<");
-            
-                if (parts[1].charAt(2) !== "H") {
-                    odcontrol.addPort(new Port(parts[0], parts[1].charAt(0) + parts[1].charAt(1), ""));
+            ports.forEach(function (entry) {
+                var parts = entry.split(":");
+
+                console.log("Nombre " + parts[0] + " en " + entry);
+                if (undefined !== parts[1]) {
+
+                    console.log("partos " + parts[0] + " " + parts[1] + "  " + parts[2] + " >" + parts[1].charAt(2) + "<");
+
+                    if (parts[1].charAt(2) !== "H") {
+                        odcontrol.addPort(new Port(parts[0], parts[1].charAt(0) + parts[1].charAt(1), ""));
+                        divPort = $("<div>" + parts[0] + "</div>");
+                        $(collapsiblePort).append(divPort);
+                    }
                 }
-            }
-        });
+            });
+            
+            $(collapsible).collapsible();
+        };
         
         console.log("PUERTO " + odcontrol.ports.length);
         
+       
         
         $(collapsible).on("taphold",  function (event) {
             console.log("pulsacion larga");
