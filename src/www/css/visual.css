@@ -196,3 +196,16 @@
     padding: 10px;
 }
 
+.scrollable {
+            overflow-y: scroll;
+         //   -webkit-overflow-scrolling: touch;
+        }
+
+.ports-panel {
+    position: absolute;
+    height: 100%;
+    width: 90%;
+    margin-top: -15px;
+    padding-left: 10px;
+    margin-left: -8px;
+}
