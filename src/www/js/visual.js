@@ -17,7 +17,7 @@ var visual = {
     
     /* members */
     floorEdit: -1,
-    floorCurrent: -1,
+    floorCurrent: null,
     odcEdit: -1,
     divEdit: null,
     local: null,
@@ -28,7 +28,7 @@ var visual = {
     initialize: function () {
         "use strict";
         
-        
+        var canvas;
        /* $('.port').bind('click', function(e) {       
             console.log("cilclclclclcl");       
             e.stopPropagation();
@@ -222,8 +222,7 @@ var visual = {
             //odc.password = newodc.passowrd;
             
             odc = new ODControl("", "control1", "", "90.166.105.5", "user", "opendomo");
-            
-            
+             
             visual.local.addODControl(odc);
             nODC = visual.local.numberODC();
             if (nODC > 0) {
@@ -256,12 +255,32 @@ var visual = {
 
         $("#page-visual .ui-content").height(content);
         
+    /************    
+        // Drag and drop canvas
+        canvas = $('.main-canvas')[0];
+        canvas.addEventListener('touchmove', function () {
+            //Assume only one touch/only process one touch even if there's more
+            var touch = event.targetTouches[0];
+ 
+            // Is touch close enough to our object?
+            if(detectHit(obj.x, obj.y, touch.pageX, touch.pageY, obj.w, obj.h)) {
+        
+                obj.x = touch.pageX;
+                obj.y = touch.pageY;
+ 
+                // Redraw the canvas
+                draw();
+            }
+            event.preventDefault();
+        }, false);
+        draw();
+        ************/
     },
     
     addODControl: function (odcontrol) {
         "use strict";
         
-        var nODC, collapsible, header, text, ports, lsc, collapsiblePort, divPort;
+        var nODC, collapsible, header, text, ports, lsc, collapsiblePort, divPort, port;
         console.log("ADD ODCONTROL");
     
         nODC = visual.local.numberODC();
@@ -294,11 +313,11 @@ var visual = {
                     console.log("partes " + parts[0] + " " + parts[1] + "  " + parts[2] + " >" + parts[1].charAt(2) + "<");
 
                     if (parts[1].charAt(2) !== "H") {
-                        odcontrol.addPort(new Port(parts[0], parts[1].charAt(0) + parts[1].charAt(1), ""));
+                        port = new Port(parts[0], parts[1].charAt(0) + parts[1].charAt(1), "");
+                        odcontrol.addPort(port);
                         divPort = $("<div class='collapsible-port'>" + parts[0] + "</div>");
+                        $(divPort).data("entry", port);
                         $(collapsiblePort).append(divPort);
-                        
-                      
                     }
                 }
             });
@@ -307,8 +326,16 @@ var visual = {
             $(".collapsible-port").click(function (event) {
                 console.log("Colocando puerto en canvas");
                 
-                if (visual.floorCurrent == -1) {
+                if (visual.floorCurrent === null) {
                     app.showAlert("No es posible ubicar el puerto","No hay ninguna planta en el area principal.");
+                } else
+                {
+                    $(this).data("entry").level = visual.floorCurrent.level;
+                    $(this).data("entry").placed = true;
+                    $(this).data("entry").posX = 100;
+                    $(this).data("entry").posY = 100;
+
+                    visual.drawCanvas();
                 }
             });
             
@@ -373,6 +400,7 @@ var visual = {
                 }
             }
         });
+        
         
         floorCanvas = $("<div class='floor-canvas' id='L" + floor.level + "'><img src='" + floor.url + "'/><p>" + floor.name + " (" + floor.level + ")</p></div>").insertBefore(insertDiv);
         
@@ -447,6 +475,8 @@ var visual = {
                     floortmp,
                     prevDiv = null,
                     nd;
+                
+                console.log("kasfkajfñkasjdfñajñafk  " + JSON.stringify(floor));
                  
                 if (floor.level > 0) {
                     prevDiv = visual.getFloorCanvasDiv(floor.level - 1);
@@ -565,7 +595,7 @@ $('.main-canvas')[0].getContext('2d').stroke();
                 helpImage.invertColor(ctx, dx, dy, imageObj);
             }
             
-            visual.floorCurrent = $(this).data("entry").level;
+            visual.floorCurrent = $(this).data("entry");
         });
          
     },
@@ -619,6 +649,61 @@ $('.main-canvas')[0].getContext('2d').stroke();
         visual.local.save();
         
         visual.saved = true;
+    },
+    
+    drawCanvas: function () {
+        
+        var imageObj = new Image(),
+            ctx = $('.main-canvas')[0].getContext('2d'),
+            ch = ctx.canvas.height,
+            cw = ctx.canvas.width,
+            dx = 0,
+            dy = 0,
+            w,
+            h,
+            maxHeight,
+            maxWidth;
+        
+        if (visual.floorCurrent === null) return;
+            
+        imageObj.src = visual.floorCurrent.url;
+        $('.main-canvas').attr('width', $('#floor-panel').width());
+        $('.main-canvas').attr('height', $('#page-visual .ui-content').height());
+
+        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+
+        h = imageObj.naturalHeight;
+        w = imageObj.naturalWidth;
+        maxWidth = ctx.canvas.width;
+        maxHeight = ctx.canvas.height;
+
+        if (w < h) {
+            h = (h * maxWidth) / w;
+            w = maxWidth;
+        } else {
+            w = (w * maxHeight) / h;
+            h = maxHeight;
+        }
+
+        dx = Math.abs(w - maxWidth) * 0.5;
+        dy = Math.abs(h - maxHeight) * 0.5;
+
+        ctx.drawImage(imageObj, parseInt(dx, 10), parseInt(dy, 10), parseInt(w, 10), parseInt(h, 10));
+
+            /*console.log("IMAGEN FONDO: " +  $(this).data("entry").url + " x: " + imageObj.naturalWidth + " y: " + imageObj.naturalHeight + "  wi: " + wi + " hi: " + hi + " ch: " + ch + " cw:" + cw + "  dx:" + dx + " dy:" + dy + "ctxw: " + ctx.canvas.width + "  ctxh: " + ctx.canvas.height) ; */
+            
+      //  console.log("COLOR " + $(this).data("entry").invColor);
+        if (visual.floorCurrent.invColor === "on") {
+            helpImage.invertColor(ctx, dx, dy, imageObj);
+        }
+       
+        visual.local.odcontrols.forEach(function (odc) {
+            odc.ports.forEach(function (port) {
+                if (port.placed === true) {
+                            console.log("lo dibujamos "  + port.name);
+                 }
+            });
+        });
     }
     
 };
