@@ -27,6 +27,9 @@
         <link rel="stylesheet" type="text/css" href="css/main.css" />
         <link rel="stylesheet" type="text/css" href="css/visual.css" /> 
         <link rel="stylesheet" type="text/css" href="css/jquery.mobile-1.4.3.min.css" />
+        <link rel="stylesheet" type="text/css" href="css/jquery.mobile.structure-1.4.3.min.css" />
+       <!-- <link rel="stylesheet" type="text/css" href="css/jquery-ui.min.css" />
+        <link rel="stylesheet" type="text/css" href="css/jquery-ui.structure.css" /> -->
         <link rel="stylesheet" type="text/css" href="css/global.css" /> 
       <!--  <link rel="stylesheet" type="text/css" href="css/jquerymobile.nativedroid.css" /> -->
      <!--   <link rel="stylesheet" type="text/css" href="libs/FileDialog/FileDialog.css" /> -->
@@ -230,22 +233,28 @@
                             <a id="delete" data-role="button" data-inline="true" data-rel="back" data-transition="flow" data-theme="b">Borrar</a>  
                         </div>
 		              </div>
+                            
                 </div>          
             </div>
                     
             <!-- ODC panel  -->
-            <div data-role="panel" id="odc-panel" data-position="left" data-display="reveal" data-dismissible="true" data-theme="b" >
+            <div data-role="panel" id="odc-panel" data-position="left" data-display="overlay" data-dismissible="true" data-theme="b" >
                 <div class="scrollable ports-panel">
-                <p><b>ODControl</b></p>
-                <p id="noODC">No hay <em>ODControl</em> configurados.</p>
-                <div data-role="collapsible-set" id="odc-list">
-	
-	           </div>
+                    <p><b>ODControl</b></p>
+                    <p id="noODC">No hay <em>ODControl</em> configurados.</p>
+                    <div data-role="collapsible-set" id="odc-list">
+	               </div>
                 </div>
              </div>
+                    <!-- Alert Message -->                      
+                    <div id="dialog" title="">
+                        <p></p>
+                    </div>
         </div>
         <script type="text/javascript" src="cordova.js"></script> 
-        <script type="text/javascript" src="js/lib/jquery-2.1.1.min.js"></script>  
+        <script type="text/javascript" src="js/lib/jquery-2.1.1.min.js"></script>
+        <script type="text/javascript" src="js/lib/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="js/lib/jquery.ui.touch-punch.min.js"></script>
         <script type="text/javascript" src="js/initjqm.js"></script>  
         <script type="text/javascript" src="js/lib/jquery.mobile-1.4.3.js"></script> 
         <!-- objects -->

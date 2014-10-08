@@ -17,6 +17,7 @@ var visual = {
     
     /* members */
     floorEdit: -1,
+    floorCurrent: -1,
     odcEdit: -1,
     divEdit: null,
     local: null,
@@ -27,6 +28,13 @@ var visual = {
     initialize: function () {
         "use strict";
         
+        
+       /* $('.port').bind('click', function(e) {       
+            console.log("cilclclclclcl");       
+            e.stopPropagation();
+            e.stopImmediatePropagation();          
+        });    
+        */
         $("#button-open-floor-panel").click(function () {
             var height;
             
@@ -275,7 +283,6 @@ var visual = {
         ports = lsc.split('\n');
         if (ports.length > 1) {  // last row is always DONE
             collapsiblePort = $("<p></p>");
-            //$(collapsible).append(collapsiblePort);
             collapsiblePort.insertAfter(header);
         
             ports.forEach(function (entry) {
@@ -284,24 +291,43 @@ var visual = {
                 console.log("Nombre " + parts[0] + " en " + entry);
                 if (undefined !== parts[1]) {
 
-                    console.log("partos " + parts[0] + " " + parts[1] + "  " + parts[2] + " >" + parts[1].charAt(2) + "<");
+                    console.log("partes " + parts[0] + " " + parts[1] + "  " + parts[2] + " >" + parts[1].charAt(2) + "<");
 
                     if (parts[1].charAt(2) !== "H") {
                         odcontrol.addPort(new Port(parts[0], parts[1].charAt(0) + parts[1].charAt(1), ""));
-                        divPort = $("<div>" + parts[0] + "</div>");
+                        divPort = $("<div class='collapsible-port'>" + parts[0] + "</div>");
                         $(collapsiblePort).append(divPort);
+                        
+                      
                     }
                 }
             });
             
+            // put it in center of canvas
+            $(".collapsible-port").click(function (event) {
+                console.log("Colocando puerto en canvas");
+                
+                if (visual.floorCurrent == -1) {
+                    app.showAlert("No es posible ubicar el puerto","No hay ninguna planta en el area principal.");
+                }
+            });
+            
+        
+            $(".collapsible-port").on("taphold", function (event) {
+                      
+                      console.log("pulwe    asfasdfdads ");
+            });
+            
             $(collapsible).collapsible();
+            
+             
         };
         
         console.log("PUERTO " + odcontrol.ports.length);
         
-       
-        
-        $(collapsible).on("taphold",  function (event) {
+    
+        // if you taphold in header of ODC
+        $(header).on("taphold",  function (event) {
             console.log("pulsacion larga");
             
             $(".odc-edit-toolbar").slideToggle("fast");
@@ -538,6 +564,8 @@ $('.main-canvas')[0].getContext('2d').stroke();
             if ($(this).data("entry").invColor === "on") {
                 helpImage.invertColor(ctx, dx, dy, imageObj);
             }
+            
+            visual.floorCurrent = $(this).data("entry").level;
         });
          
     },

@@ -144,7 +144,7 @@ var app = {
             wifiinfo.getBSSID(
                 function (BSSID) {
                     console.log("BSSID: " + BSSID);
-                    app.getConnectionFeatures(fileSystem.root,
+                    app.getConnectionFeatures(app.root,
                         function (found) {
                             // run the visual screen mode use
                         },
@@ -232,5 +232,15 @@ var app = {
         }
 
         return response;
+    },
+    
+    // show a good looking alert dialog
+    showAlert: function (title, txt) {
+        "use strict";
+        
+        $("#dialog").attr("title", title);
+        $("#dialog").text(txt);
+        $("#dialog").dialog();
     }
+    
 };
