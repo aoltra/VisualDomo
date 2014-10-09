@@ -255,32 +255,45 @@ var visual = {
 
         $("#page-visual .ui-content").height(content);
         
-    /************    
+  
         // Drag and drop canvas
         canvas = $('.main-canvas')[0];
-        canvas.addEventListener('touchmove', function () {
+        canvas.addEventListener('touchmove', function (event) {
             //Assume only one touch/only process one touch even if there's more
-            var touch = event.targetTouches[0];
+            var touch = event.targetTouches[0], i, j, odc, exit = false;
  
             // Is touch close enough to our object?
-            if(detectHit(obj.x, obj.y, touch.pageX, touch.pageY, obj.w, obj.h)) {
-        
-                obj.x = touch.pageX;
-                obj.y = touch.pageY;
- 
-                // Redraw the canvas
-                draw();
+            for (i = 0; i < visual.local.odcontrols.length; i++) {
+                
+                odc = visual.local.odcontrols[i];
+                
+                for (j = 0; j < odc.ports.length; j++) {
+                    
+                    if(odc.ports[j].detectHit(touch.pageX, touch.pageY)) {
+
+                        // Redraw the canvas
+                        visual.drawCanvas();
+                        exit = true;
+                        break;
+                    }
+                }
+                
+                if (exit) {
+                    break;
+                }
             }
             event.preventDefault();
-        }, false);
-        draw();
-        ************/
+            }, false);
+            
+            
+      //  draw();
+     
     },
     
     addODControl: function (odcontrol) {
         "use strict";
         
-        var nODC, collapsible, header, text, ports, lsc, collapsiblePort, divPort, port;
+        var nODC, collapsible, header, text, ports, lsc, collapsiblePort, divPort;
         console.log("ADD ODCONTROL");
     
         nODC = visual.local.numberODC();
@@ -305,7 +318,7 @@ var visual = {
             collapsiblePort.insertAfter(header);
         
             ports.forEach(function (entry) {
-                var parts = entry.split(":");
+                var parts = entry.split(":"), port;
 
                 console.log("Nombre " + parts[0] + " en " + entry);
                 if (undefined !== parts[1]) {
@@ -313,7 +326,7 @@ var visual = {
                     console.log("partes " + parts[0] + " " + parts[1] + "  " + parts[2] + " >" + parts[1].charAt(2) + "<");
 
                     if (parts[1].charAt(2) !== "H") {
-                        port = new Port(parts[0], parts[1].charAt(0) + parts[1].charAt(1), "");
+                        port = new Port(parts[0], parts[1].charAt(0), parts[1].charAt(0), "");
                         odcontrol.addPort(port);
                         divPort = $("<div class='collapsible-port'>" + parts[0] + "</div>");
                         $(divPort).data("entry", port);
@@ -327,13 +340,13 @@ var visual = {
                 console.log("Colocando puerto en canvas");
                 
                 if (visual.floorCurrent === null) {
-                    app.showAlert("No es posible ubicar el puerto","No hay ninguna planta en el area principal.");
-                } else
-                {
+                    app.showAlert("No es posible ubicar el puerto", "No hay ninguna planta en el area principal.");
+                } else {
                     $(this).data("entry").level = visual.floorCurrent.level;
                     $(this).data("entry").placed = true;
-                    $(this).data("entry").posX = 100;
-                    $(this).data("entry").posY = 100;
+                    
+                    $(this).data("entry").posY = $('.main-canvas')[0].getContext('2d').canvas.height * 0.5;
+                    $(this).data("entry").posX = $('.main-canvas')[0].getContext('2d').canvas.width * 0.5;
 
                     visual.drawCanvas();
                 }
@@ -342,13 +355,12 @@ var visual = {
         
             $(".collapsible-port").on("taphold", function (event) {
                       
-                      console.log("pulwe    asfasdfdads ");
+                console.log("pulwe    asfasdfdads ");
             });
             
             $(collapsible).collapsible();
             
-             
-        };
+        }
         
         console.log("PUERTO " + odcontrol.ports.length);
         
@@ -476,8 +488,6 @@ var visual = {
                     prevDiv = null,
                     nd;
                 
-                console.log("kasfkajfñkasjdfñajñafk  " + JSON.stringify(floor));
-                 
                 if (floor.level > 0) {
                     prevDiv = visual.getFloorCanvasDiv(floor.level - 1);
                     nd = ".floor-canvas#L" + (floor.level - 1);
@@ -664,7 +674,9 @@ $('.main-canvas')[0].getContext('2d').stroke();
             maxHeight,
             maxWidth;
         
-        if (visual.floorCurrent === null) return;
+        if (visual.floorCurrent === null) {
+            return;
+        }
             
         imageObj.src = visual.floorCurrent.url;
         $('.main-canvas').attr('width', $('#floor-panel').width());
@@ -699,9 +711,10 @@ $('.main-canvas')[0].getContext('2d').stroke();
        
         visual.local.odcontrols.forEach(function (odc) {
             odc.ports.forEach(function (port) {
-                if (port.placed === true) {
-                            console.log("lo dibujamos "  + port.name);
-                 }
+                if (port.placed === true && port.level === visual.floorCurrent.level) {
+                    console.log("lo dibujamos "  + port.name + " " + port.posX + "," + port.posY);
+                    port.draw(ctx);
+                }
             });
         });
     }

@@ -13,16 +13,19 @@
 /*global helpFile,  LocalFileSystem */
 
 // Constructor
-function Port(name, type, funct) {
+function Port(name, type, input, funct) {
     "use strict";
     
     this.name = name;
     this.type = type;
+    this.input = input;
     this.funct = funct;
     
     this.level = -1;
     this.posX = -1;
     this.posY = -1;
+    
+    this.ancho = 10;
     
     this.placed = false;
     
@@ -33,19 +36,45 @@ function Port(name, type, funct) {
     this.stateOff = ""; // only digital ports
     this.stateOn = "";  // only digital ports
     
-    Port.prototype.save = function () {
+    if (this.type === 'A') {
+        this.alto = this.ancho;
+    }
+    
+    Port.prototype.draw = function (ctx) {
   
+        ctx.beginPath();
+
         switch (this.type) {
-        
-                case 0:
+        case 'D':
                 
                     
-                    break;
+            break;
         
-        
-        
-        
+        case 'A':
+            ctx.lineWidth = 8;
+            ctx.strokeStyle = '#00cc00';
+            this.alto = this.ancho;
+            ctx.arc(this.posX, this.posY, 2 * this.ancho, 0.66 * Math.PI, 0.33 * Math.PI, false);
+            break;
         }
         
+        ctx.stroke();
+        
+    };
+    
+    Port.prototype.detectHit = function (clickX, clickY) {
+    
+        if (clickX - (this.posX - this.ancho)  > this.ancho) {
+            return false;
+        }
+        if (clickY - (this.posX - this.alto) > this.alto) {
+            return false;
+        }
+        
+        console.log("lo tengoª!!");
+        
+        this.posX = clickX;
+        this.posY = clickY;
+        return true;
     };
 }
