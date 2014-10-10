@@ -17,6 +17,11 @@
  * under the License.
  */
 
+#page-visual {
+    position: fixed;
+
+}
+
 .contenedor {
     position: relative;
     background-color: #0FF;
@@ -199,7 +204,7 @@
 .scrollable {
             overflow-y: scroll;
          //   -webkit-overflow-scrolling: touch;
-        }
+}
 
 .ports-panel {
     position: absolute;
