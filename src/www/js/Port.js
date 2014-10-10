@@ -10,7 +10,7 @@
  */
 
 /* JSLint options */
-/*global helpFile,  LocalFileSystem */
+/*global helpDraw */
 
 // Constructor
 function Port(name, type, input, funct) {
@@ -25,8 +25,8 @@ function Port(name, type, input, funct) {
     this.posX = -1000;
     this.posY = -1000;
     
-    this.ancho = 10;
-    this.alto = 10;
+    this.width = 10;
+    this.height = 10;
     
     this.placed = false;
     
@@ -34,14 +34,19 @@ function Port(name, type, input, funct) {
     this.max = 0;       // only analog ports
     this.min = 100;     // only analog ports
     
-    this.lineWidth = 8;
+    this.lineWidth = 4;
+    this.radius = 4;
+    this.fontSize = 16;
     
     this.stateOff = ""; // only digital ports
     this.stateOn = "";  // only digital ports
     
     if (this.type === 'A') {
-        this.alto = this.ancho;
+        this.height = this.width;
         this.lineWidth = 8;
+    } else {
+    
+        this.width = 18;
     }
     
     Port.prototype.draw = function (ctx) {
@@ -50,15 +55,15 @@ function Port(name, type, input, funct) {
 
         switch (this.type) {
         case 'D':
-                
-                    
+            ctx.strokeStyle = '#00a354';   
+            helpDraw.roundRect(ctx, this.posX - this.width, this.posY - this.height, 2 * this.width, 2 * this.height, this.radius, false, false);
             break;
         
         case 'A':
             ctx.lineWidth = this.lineWidth;
             ctx.strokeStyle = '#00a354';
-            this.alto = this.ancho;
-            ctx.arc(this.posX, this.posY, 2 * this.ancho, 0.66 * Math.PI, 0.33 * Math.PI, false);
+            this.height = this.width;
+            ctx.arc(this.posX, this.posY, 2 * this.width, 0.66 * Math.PI, 0.33 * Math.PI, false);
             break;
         }
         
@@ -67,29 +72,29 @@ function Port(name, type, input, funct) {
         
         ctx.beginPath();
         ctx.lineWidth = 4;
-        ctx.moveTo(this.posX-this.ancho,this.posY-this.alto);
-        ctx.lineTo(this.posX+this.ancho,this.posY+this.alto);
-         ctx.moveTo(this.posX-this.ancho,this.posY+this.alto);
-        ctx.lineTo(this.posX+this.ancho,this.posY-this.alto);
+        ctx.moveTo(this.posX -this.width, this.posY - this.height);
+        ctx.lineTo(this.posX + this.width, this.posY + this.height);
+        ctx.moveTo(this.posX - this.width, this.posY + this.height);
+        ctx.lineTo(this.posX + this.width, this.posY - this.height);
         ctx.stroke();
         
         // ctx.fillStyle = "blue";
         ctx.font = "bold 16px Arial";
-        ctx.fillText(this.name, this.posX - this.ancho, this.posY + this.alto + this.fuente + 3);
+        ctx.fillText(this.name, this.posX - this.width, this.posY + this.height + this.fontSize + 3);
     };
     
     Port.prototype.detectHit = function (clickX, clickY) {
     
-        if (Math.abs(clickX - (this.posX - this.ancho - this.lineWidth))  > 2 * (this.ancho + this.lineWidth)) {
-            console.log("SALFO X!! " + this.name + " " + clickX + " " + this.posX + " "  + this.ancho);
+        if (Math.abs(clickX - (this.posX - this.width - this.lineWidth))  > 2 * (this.width + this.lineWidth)) {
+            console.log("SALFO X!! " + this.name + " " + clickX + " " + this.posX + " "  + this.width);
             return false;
         }
-        if ( Math.abs(clickY - (this.posY - this.alto))> 2 * (this.alto + this.lineWidth)) {
-                console.log("SALFO Y!!" + this.name + " " + clickY + " " + this.posY + " "  + this.alto + " "  + (this.posY - this.alto));
+        if ( Math.abs(clickY - (this.posY - this.height)) > 2 * (this.height + this.lineWidth)) {
+                console.log("SALFO Y!!" + this.name + " " + clickY + " " + this.posY + " "  + this.height + " "  + (this.posY - this.height));
             return false;
         }
         
-        console.log("lo tengoª!!  " + clickX + " " + clickY + " " + this.posX + " "  + this.posY + " " + this.alto + " "  +(this.posY - this.alto) +  "  " + (clickY - (this.posY - this.alto)));
+        console.log("lo tengoª!!  " + clickX + " " + clickY + " " + this.posX + " "  + this.posY + " " + this.height + " "  +(this.posY - this.height) +  "  " + (clickY - (this.posY - this.height)));
         
         this.posX = clickX; //- this.ancho;
         this.posY = clickY;// - this.alto;
