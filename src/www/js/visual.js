@@ -23,6 +23,7 @@ var visual = {
     local: null,
     save: false,
     saved: false,
+    headerHeight: 0,
     
     // Visual Constructor
     initialize: function () {
@@ -245,16 +246,23 @@ var visual = {
         
         $("#odc-list").css("display", "none");
         
-        //BETA
-        var json_config,
-            screen = $.mobile.getScreenHeight(),
-            header = $("#page-visual .ui-header").hasClass("#page-visual ui-header-fixed") ? $("#page-visual .ui-header").outerHeight()  - 1 : $(".ui-header").outerHeight(),
-            footer = $("#page-visual .ui-footer").hasClass("#page-visual ui-footer-fixed") ? $("#page-visual .ui-footer").outerHeight() - 1 : $("#page-visual .ui-footer").outerHeight(),
-            contentCurrent = $("#page-visual .ui-content").outerHeight() - $("#page-visual .ui-content").height(),
-            content = screen - header - footer;// - contentCurrent;
-
-        $("#page-visual .ui-content").height(content);
         
+        $("#page-visual").on( "pageshow", function( event ) { 
+            //BETA
+            var json_config,
+                screen = $.mobile.getScreenHeight(),
+                header = $("#page-visual .ui-header").hasClass("#page-visual ui-header-fixed") ? $("#page-visual .ui-header").outerHeight()  - 1 : $(".ui-header").outerHeight(),
+                footer = $("#page-visual .ui-footer").hasClass("#page-visual ui-footer-fixed") ? $("#page-visual .ui-footer").outerHeight() - 1 : $("#page-visual .ui-footer").outerHeight(),
+                contentCurrent = $("#page-visual .ui-content").outerHeight() - $("#page-visual .ui-content").height(),
+                content = screen - header - footer;// - contentCurrent;
+
+            visual.headerHeight = header
+
+            console.log("HEADER: " + visual.headerHeight + "  " + content + " " + header + " " + screen + " " + footer);
+
+            $("#page-visual .ui-content").height(content -20);
+        });
+       
   
         // Drag and drop canvas
         canvas = $('.main-canvas')[0];
@@ -266,15 +274,18 @@ var visual = {
             for (i = 0; i < visual.local.odcontrols.length; i++) {
                 
                 odc = visual.local.odcontrols[i];
-                
+         
                 for (j = 0; j < odc.ports.length; j++) {
                     
-                    if(odc.ports[j].detectHit(touch.pageX, touch.pageY)) {
+                    console.log("headero: " + visual.headerHeight);
+                    if (odc.ports[j].placed === true && odc.ports[j].level === visual.floorCurrent.level) {
+                        if(odc.ports[j].detectHit(touch.pageX, touch.pageY - visual.headerHeight)) {
 
-                        // Redraw the canvas
-                        visual.drawCanvas();
-                        exit = true;
-                        break;
+                            // Redraw the canvas
+                            visual.drawCanvas();
+                            exit = true;
+                            break;
+                        }
                     }
                 }
                 
@@ -345,8 +356,8 @@ var visual = {
                     $(this).data("entry").level = visual.floorCurrent.level;
                     $(this).data("entry").placed = true;
                     
-                    $(this).data("entry").posY = $('.main-canvas')[0].getContext('2d').canvas.height * 0.5;
-                    $(this).data("entry").posX = $('.main-canvas')[0].getContext('2d').canvas.width * 0.5;
+                    $(this).data("entry").posY = Math.round($('.main-canvas')[0].getContext('2d').canvas.height * 0.5);
+                    $(this).data("entry").posX = Math.round($('.main-canvas')[0].getContext('2d').canvas.width * 0.5);
 
                     visual.drawCanvas();
                 }
