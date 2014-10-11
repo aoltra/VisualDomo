@@ -310,7 +310,7 @@ var visual = {
     
         nODC = visual.local.numberODC();
         collapsible = $("<div data-role='collapsible' data-mini='true' data-inset='false' class='collapsible-item' id='odc-" + nODC + "'></div>");
-        $("[data-role=collapsible-set]").append(collapsible);
+        $("#odc-panel #odc-list").append(collapsible);
         
         header = $("<h1>" + odcontrol.name + "</h1>");
         $(collapsible).append(header);

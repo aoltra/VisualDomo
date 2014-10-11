@@ -26,6 +26,7 @@
        
         <link rel="stylesheet" type="text/css" href="css/main.css" />
         <link rel="stylesheet" type="text/css" href="css/visual.css" /> 
+        <link rel="stylesheet" type="text/css" href="css/selectLocal.css" /> 
         <link rel="stylesheet" type="text/css" href="css/jquery.mobile-1.4.3.min.css" />
        <!-- <link rel="stylesheet" type="text/css" href="css/jquery.mobile.structure-1.4.3.min.css" />
         <link rel="stylesheet" type="text/css" href="css/jquery.mobile.theme-1.4.3.min.css" />
@@ -66,7 +67,7 @@
                             </a>
                         </li>
                         <li id="mm-newlocation">
-                            <a href="#page-visual" id="link_newlocation">
+                            <a href="#page-visual" id="link-newlocation">
                                 <span class="mm-icon">5</span>
                                 <div class="mm-content">
                                     <p class="mm-main">New</p>
@@ -83,8 +84,8 @@
                                 </div>
                             </a>
                         </li>
-                         <li id="mm-configurethis">
-                            <a href="#">
+                         <li id="mm-configure" id="link-conf-location">
+                            <a href="#page-select-local">
                                 <span class="mm-icon">r</span>
                                 <div class="mm-content">
                                     <p class="mm-main">Configure</p>
@@ -238,8 +239,6 @@
                             <a id="delete" data-role="button" data-inline="true" data-rel="back" data-transition="flow" data-theme="b">Borrar</a>  
                         </div>
 		              </div>
-                            
-                    
                 </div>          
             </div>
                     
@@ -253,6 +252,16 @@
 	               </div>
                 </div>
              </div>
+        </div>
+        <div data-role="page" id="page-select-local" data-theme="b">
+             <div data-role="header" data-position="fixed">
+                <h1>VisualDomo</h1>
+            </div>
+            <div data-role="content" id="content-select">
+                <div class="header-select-local">a</div>
+                <div data-role="collapsible-set" id="local-list">
+                </div>
+            </div>
         </div>
         <script type="text/javascript" src="cordova.js"></script> 
         <script type="text/javascript" src="js/lib/jquery-2.1.1.min.js"></script>
@@ -276,6 +285,7 @@
         <!-- main files -->
         <script type="text/javascript" src="js/visual.js"></script>
         <script type="text/javascript" src="js/main.js"></script>
+        <script type="text/javascript" src="js/selectLocal.js"></script>
                 
         <script type="text/javascript" src="js/nativedroid.script.js"></script>
 

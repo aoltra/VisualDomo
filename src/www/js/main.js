@@ -10,7 +10,7 @@
  */
 
 /* JSLint options */
-/*global Connection, $, helpFile, wifiinfo, console, LocalFileSystem, visual, fileDialog */
+/*global Connection, $, helpFile, wifiinfo, console, LocalFileSystem, visual, fileDialog, selectLocal */
 
 var app = {
     
@@ -131,12 +131,14 @@ var app = {
         
         var $divSplash = $('.sp-logo'),
             networkState = navigator.connection.type,
-            $el = $('.link_newlocation');
+            $el1 = $('.link-newlocation'),
+            $el2 = $('.link-conf-location');
+
 
         // 3G network
         if (networkState === Connection.CELL_2G && networkState === Connection.CELL_3G && networkState === Connection.CELL_4G && networkState === Connection.CELL) {
             $("#mm-assignlocation").css("border", "3px solid red");
-            $("#mm-configurethis").css("border", "3px solid red");
+            $("#mm-configure").css("border", "3px solid red");
             $('.sp-info #tx-SSID').text("3G");
         }
 
@@ -186,7 +188,8 @@ var app = {
         });
         
         
-        $el.onclick = visual.initialize();
+        $el1.onclick = visual.initialize();
+        $el1.onclick = selectLocal.initialize();
         
         $('.sp-image').parent().bind('transitionend webkitTransitionEnd', function () {
             $('.sp-info').css('visibility', 'visible');
