@@ -39,7 +39,7 @@
         url('websymbols/websymbols-regular-webfont.ttf') format('truetype'),
         url('websymbols/websymbols-regular-webfont.svg#WebSymbolsRegular') format('svg');
     */
-    src: url('entypo/Entypo.otf') format('opentype');
+    src: url('entypo/Typeface.ttf') format('opentype');
     font-weight: normal;
     font-style: normal;
 }
