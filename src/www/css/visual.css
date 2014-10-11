@@ -215,7 +215,26 @@
     margin-left: -8px;
 }
 
-.port {
-    height: 60px;
+.collapsible-port {
+    height: 45px;
+    width: 90%;
+    margin-bottom: 4px;
+    display: block;
+    position: relative;
+}
 
+.port-icon {
+    font-family: 'Entypo', cursive;
+    font-size: 45px;
+    line-height: 45px;
+    position: absolute;
+    left: 6px;
+}
+
+.port-content {
+    position: absolute;
+    left: 80px;
+    padding: 0;
+    height: 45px;
+    padding-top: 15px;
 }

@@ -10,7 +10,7 @@
  */
 
 /* JSLint options */
-/*global Connection, $, helpFile, helpImage, wifiinfo, console, LocalFileSystem, Location, Floor, Port */
+/*global Connection, $, helpFile, helpImage, wifiinfo, console, LocalFileSystem, Location, Floor, Port, ODControl */
 /*jslint plusplus: true*/
 
 var visual = {
@@ -24,6 +24,7 @@ var visual = {
     save: false,
     saved: false,
     headerHeight: 0,
+    dragPort: null,
     
     // Visual Constructor
     initialize: function () {
@@ -135,6 +136,8 @@ var visual = {
         
             $("#config-menu").popup('close');
             
+             console.log("CONF LOCAL " + visual.local.name);            
+            
             if (visual.local.name === "") {
                 
                 visual.save = true;
@@ -152,20 +155,12 @@ var visual = {
                 visual.saveLocation();
             }
             
+            console.log("GRABANDO");            
         });
         
-        $("#page-visual #config-menu #add-odc").click(function (event) {
+        $("#page-visual #odc-add").click(function (event) {
         
-            $("#config-menu").popup('close');
-           
-            // Open a popup from other popup
-            $('#config-menu').on({
-                popupafterclose: function () {
-                    setTimeout(function () {
-                        $('#popup-add-odcontrol').popup('open');
-                    }, 100);
-                }
-            });
+            $('#popup-add-odcontrol').popup('open');           
         });
         
         $("#popup-conf-location #local-conf-ok").click(function (event) {
@@ -247,7 +242,7 @@ var visual = {
         $("#odc-list").css("display", "none");
         
         
-        $("#page-visual").on( "pageshow", function( event ) { 
+        $("#page-visual").on("pageshow", function(event) {
             //BETA
             var json_config,
                 screen = $.mobile.getScreenHeight(),
@@ -260,7 +255,7 @@ var visual = {
 
             console.log("HEADER: " + visual.headerHeight + "  " + content + " " + header + " " + screen + " " + footer);
 
-            $("#page-visual .ui-content").height(content -20);
+            $("#page-visual .ui-content").height(content);
         });
        
   
@@ -270,27 +265,31 @@ var visual = {
             //Assume only one touch/only process one touch even if there's more
             var touch = event.targetTouches[0], i, j, odc, exit = false;
  
-            // Is touch close enough to our object?
-            for (i = 0; i < visual.local.odcontrols.length; i++) {
-                
-                odc = visual.local.odcontrols[i];
-         
-                for (j = 0; j < odc.ports.length; j++) {
-                    
-                    console.log("headero: " + visual.headerHeight);
-                    if (odc.ports[j].placed === true && odc.ports[j].level === visual.floorCurrent.level) {
-                        if(odc.ports[j].detectHit(touch.pageX, touch.pageY - visual.headerHeight)) {
+            if(visual.dragPort !== null && visual.dragPort.detectHit(touch.pageX, touch.pageY - visual.headerHeight)){
+                visual.drawCanvas();
+            } else {
+                // Is touch close enough to our object?
+                for (i = 0; i < visual.local.odcontrols.length; i++) {
 
-                            // Redraw the canvas
-                            visual.drawCanvas();
-                            exit = true;
-                            break;
+                    odc = visual.local.odcontrols[i];
+
+                    for (j = 0; j < odc.ports.length; j++) {
+
+                        if (odc.ports[j].placed === true && odc.ports[j].level === visual.floorCurrent.level) {
+                            if(odc.ports[j].detectHit(touch.pageX, touch.pageY - visual.headerHeight)) {
+
+                                visual.dragPort = odc.ports[j];
+                                // Redraw the canvas
+                                visual.drawCanvas();
+                                exit = true;
+                                break;
+                            }
                         }
                     }
-                }
-                
-                if (exit) {
-                    break;
+
+                    if (exit) {
+                        break;
+                    }
                 }
             }
             event.preventDefault();
@@ -304,7 +303,9 @@ var visual = {
     addODControl: function (odcontrol) {
         "use strict";
         
-        var nODC, collapsible, header, text, ports, lsc, collapsiblePort, divPort;
+        var nODC, collapsible, header, text, ports, lsc, collapsiblePort, divPort,
+            type, input;
+        
         console.log("ADD ODCONTROL");
     
         nODC = visual.local.numberODC();
@@ -337,9 +338,22 @@ var visual = {
                     console.log("partes " + parts[0] + " " + parts[1] + "  " + parts[2] + " >" + parts[1].charAt(2) + "<");
 
                     if (parts[1].charAt(2) !== "H") {
-                        port = new Port(parts[0], parts[1].charAt(0), parts[1].charAt(0), "");
+                        port = new Port(parts[0], parts[1].charAt(0), parts[1].charAt(1), "");
                         odcontrol.addPort(port);
-                        divPort = $("<div class='collapsible-port'>" + parts[0] + "</div>");
+                       
+                        if (parts[1].charAt(0) === 'A') { 
+                            type = 'a'; 
+                        } else {
+                            type = 'b';
+                        }
+                        
+                        if (parts[1].charAt(1) === 'I') { 
+                            input = 'c'; 
+                        } else {
+                            input = 'd';
+                        }
+                        
+                        divPort = $("<div class='collapsible-port'><span class='port-icon' >" + type + " " + input + "</span><span class='port-content'>" + parts[0] + "</span></div>");
                         $(divPort).data("entry", port);
                         $(collapsiblePort).append(divPort);
                     }
