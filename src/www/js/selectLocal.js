@@ -45,7 +45,8 @@ var selectLocal = {
 
                                 var ext = value.name.substring(value.name.lastIndexOf('.') + 1, value.name.length),
                                     name = value.name.substring(0, value.name.lastIndexOf('.')),
-                                    collapsibleLocal, header,
+                                    collapsibleLocal,
+                                    header,
                                     tableInfo;
 
                                 if (ext === 'vdlt' || ext === 'vdl') {
@@ -56,34 +57,45 @@ var selectLocal = {
         
                                     header = $("<h1>" + name + "</h1>");
                                     $(collapsible).append(header);
+                                    
+                                    $(collapsible).on("taphold", function (event) {
+                      
+                                            $( ":mobile-pagecontainer" ).pagecontainer( "change", "#page-visual" );
+                                    });
                                      
-                                    dirEntry.getFile(value.name, null, function(fileEntry) {
+                                    dirEntry.getFile(value.name, null, function (fileEntry) {
                                         
-                                        fileEntry.file(function(file) {   
+                                        fileEntry.file(function (file) {
                                           //  console.log("FILE " + JSON.stringify(file));
                                             var reader = new FileReader(), data;
                                             reader.readAsText(file);
-                                            reader.onloadend = function(evt) {
+                                            reader.onloadend = function (evt) {
                         
                                                 data = JSON.parse(evt.target.result);
                                            //     console.log("data " + data0);
-                                                tableInfo = "<p><table class='info-table'><tr><td>Nombre:</td><td colspan='3'>" + data.name +"</td></tr><tr><td>Descripción:</td><td colspan='3'>" + data.description + "</td></tr><tr><td>Estado:</td><td>Sin asignar</td><td colspan='2' rowspan='3'></td></tr><tr><td>Plantas:</td><td>" + data.floors.length + "</td></tr><tr><td>ODC:</td><td>" + data.odcontrols.length + "</td></tr></table></p>";
+                                                tableInfo = "<p><table class='info-table'><tr><td>Nombre:</td><td colspan='3'>" +
+                                                    data.name +
+                                                    "</td></tr><tr><td>Descripción:</td><td colspan='3'>" +
+                                                    data.description +
+                                                    "</td></tr><tr><td>Estado:</td><td>Sin asignar</td><td colspan='2' rowspan='3'></td></tr><tr><td>Plantas:</td><td>" +
+                                                    data.floors.length +
+                                                    "</td></tr><tr><td>ODC:</td><td>" +
+                                                    data.odcontrols.length +
+                                                    "</td></tr></table></p>";
+                                                
                                                 collapsibleLocal = $(tableInfo);
-                                                collapsibleLocal.insertAfter(header); 
+                                                collapsibleLocal.insertAfter(header);
                                             };
                                         },
-                                        function() { 
-                                            console.log("Error!!"); 
+                                        function () {
+                                            console.log("Error!!");
                                         })
-                                    }, 
-                                    function() {
+                                    },
+                                    function () {
                                         console.log("Error getFile");
                                     });
                                     
-                                    $(collapsible).click(function (event) {
-
-                                      //  $('#popup-conf-floor').popup('open');
-                                    });
+                                   
                                 }
                             }
                     
