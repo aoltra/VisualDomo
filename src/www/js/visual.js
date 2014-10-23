@@ -72,7 +72,7 @@ var visual = {
                 function (uri) {
                     var img = $('.thumb-img img'),
                         imgName = $('#popup-conf-floor #curr-img'),
-                        imgHideName = $('#popup-conf-floor #url');
+                        imgHideName = $('#popup-conf-floor #URL');
 
                     img.css('display: block; visibility: visible');
                     img.src = uri;
@@ -136,7 +136,7 @@ var visual = {
         
             $("#config-menu").popup('close');
             
-             console.log("CONF LOCAL " + visual.local.name);            
+            console.log("CONF LOCAL " + visual.local.name);
             
             if (visual.local.name === "") {
                 
@@ -153,14 +153,15 @@ var visual = {
                 });
             } else {
                 visual.saveLocation();
+                visual.updateName(visual.local.name);
             }
             
-            console.log("GRABANDO");            
+            console.log("GRABANDO");
         });
         
         $("#page-visual #odc-add").click(function (event) {
         
-            $('#popup-add-odcontrol').popup('open');           
+            $('#popup-add-odcontrol').popup('open');
         });
         
         $("#popup-conf-location #local-conf-ok").click(function (event) {
@@ -190,6 +191,7 @@ var visual = {
 
                 if (visual.save === true) {
                     visual.saveLocation();
+                    visual.updateName(visual.local.name);
                     visual.save = false;
                 }
             }
@@ -198,7 +200,7 @@ var visual = {
         
         $("#popup-add-odcontrol #odc-add-ok").click(function (event) {
             
-            var newodc, nODC, odc;
+            var nODC, odc;
 
         /*    $.each($('#popup-add-odcontrol form').serializeArray(), function () {
 
@@ -229,7 +231,7 @@ var visual = {
             $('#popup-add-odcontrol').popup('close');
             $('#popup-add-odcontrol form')[0].reset();
             
-            visual.addODControl(odc);
+            visual.addODControl(odc, null);
            
         });
         
@@ -242,7 +244,7 @@ var visual = {
         $("#odc-list").css("display", "none");
         
         
-        $("#page-visual").on("pageshow", function(event) {
+        $("#page-visual").on("pageshow", function (event) {
             //BETA
             var json_config,
                 screen = $.mobile.getScreenHeight(),
@@ -251,7 +253,7 @@ var visual = {
                 contentCurrent = $("#page-visual .ui-content").outerHeight() - $("#page-visual .ui-content").height(),
                 content = screen - header - footer;// - contentCurrent;
 
-            visual.headerHeight = header
+            visual.headerHeight = header;
 
             console.log("HEADER: " + visual.headerHeight + "  " + content + " " + header + " " + screen + " " + footer);
 
@@ -265,7 +267,7 @@ var visual = {
             //Assume only one touch/only process one touch even if there's more
             var touch = event.targetTouches[0], i, j, odc, exit = false;
  
-            if(visual.dragPort !== null && visual.dragPort.detectHit(touch.pageX, touch.pageY - visual.headerHeight)){
+            if (visual.dragPort !== null && visual.dragPort.detectHit(touch.pageX, touch.pageY - visual.headerHeight)) {
                 visual.drawCanvas();
             } else {
                 // Is touch close enough to our object?
@@ -300,13 +302,45 @@ var visual = {
      
     },
     
-    addODControl: function (odcontrol) {
+    updateName: function (name) {
+       $("#page-visual #header-visual-location").text("VisualDomo - " + name);
+    },
+    
+    loadLocation: function (location) {
+        "use strict";
+        
+        var odc;
+        
+        visual.updateName(location.name);
+        
+        visual.local = null;
+        visual.local = new Location(location.BSSIID, location.name, location.description);
+        
+        if (location.odcontrols.length > 0) {
+                $("#odc-list").css("display", "inline");
+                $("#noODC").css("display", "none");
+            }
+
+        location.odcontrols.forEach(function (entry) {
+            odc = new ODControl("", entry.name, "", entry.IP, entry.user, entry.password);
+            visual.local.addODControl(odc);
+            visual.addODControl(odc, entry.ports);
+        });
+        
+        location.floors.forEach(function (entry) {
+            visual.addFloor(entry);
+        });
+    },
+    
+    addODControl: function (odcontrol, readPorts) {
         "use strict";
         
         var nODC, collapsible, header, text, ports, lsc, collapsiblePort, divPort,
             type, input;
         
         console.log("ADD ODCONTROL");
+        
+      //  visual.createODControlItem(odcontrol, header);
     
         nODC = visual.local.numberODC();
         collapsible = $("<div data-role='collapsible' data-mini='true' data-inset='false' class='collapsible-item' id='odc-" + nODC + "'></div>");
@@ -320,24 +354,38 @@ var visual = {
         
         text = "ODControl (" + nODC + ")";
         $("#page-visual #odcontrol-panel").text(text);
+
+        if (readPorts === null) {
+            lsc = odcontrol.readPorts();
+            ports = lsc.split('\n');
+        } else {
+            ports = readPorts;
+            console.log("kkL2   p" + ports.length + "  " + ports);
+        }
         
-        
-        lsc = odcontrol.readPorts();
-        
-        ports = lsc.split('\n');
-        if (ports.length > 1) {  // last row is always DONE
+        if (ports.length > 1 || (ports.length > 0 && readPorts !== null)) {  // last row is always DONE
+           
             collapsiblePort = $("<p></p>");
             collapsiblePort.insertAfter(header);
         
             ports.forEach(function (entry) {
-                var parts = entry.split(":"), port;
-
+                var parts = new Array(), port;
+                
+                if (readPorts == true) {
+                    parts = entry.split(":");
+                } else {
+                    parts[0] = entry.name;
+                    parts[1] = entry.type + entry.input + "M";
+                }
+                
                 console.log("Nombre " + parts[0] + " en " + entry);
+                
                 if (undefined !== parts[1]) {
 
                     console.log("partes " + parts[0] + " " + parts[1] + "  " + parts[2] + " >" + parts[1].charAt(2) + "<");
 
                     if (parts[1].charAt(2) !== "H") {
+        
                         port = new Port(parts[0], parts[1].charAt(0), parts[1].charAt(1), "");
                         odcontrol.addPort(port);
                        
@@ -348,7 +396,7 @@ var visual = {
                         }
                         
                         if (parts[1].charAt(1) === 'I') { 
-                            input = 'c'; 
+                            input = 'c';
                         } else {
                             input = 'd';
                         }
@@ -380,7 +428,6 @@ var visual = {
         
             $(".collapsible-port").on("taphold", function (event) {
                       
-                console.log("pulwe    asfasdfdads ");
             });
             
             $(collapsible).collapsible();
@@ -388,8 +435,9 @@ var visual = {
         }
         
         console.log("PUERTO " + odcontrol.ports.length);
+  
+        $(collapsible).collapsible();
         
-    
         // if you taphold in header of ODC
         $(header).on("taphold",  function (event) {
             console.log("pulsacion larga");
@@ -412,7 +460,7 @@ var visual = {
     addFloor: function (floor) {
         "use strict";
         
-        console.log("ADD FLOOR");
+        console.log("ADD FLOOR " + JSON.stringify(floor));
         
         var insertDiv = "#add-floor",
             floorCanvas,
@@ -439,7 +487,9 @@ var visual = {
         });
         
         
-        floorCanvas = $("<div class='floor-canvas' id='L" + floor.level + "'><img src='" + floor.url + "'/><p>" + floor.name + " (" + floor.level + ")</p></div>").insertBefore(insertDiv);
+        floorCanvas = $("<div class='floor-canvas' id='L" + floor.level + "'><img src='" + floor.URL + "'/><p>" + floor.name + " (" + floor.level + ")</p></div>").insertBefore(insertDiv);
+        
+      //  console.log("ADD FLOOR2 " + JSON.stringify(floorCanvas));
         
         $(floorCanvas).data("entry", floor);
         
@@ -492,13 +542,13 @@ var visual = {
             });
             
             $(".floor-edit-toolbar #edit-floor").click(function (e) {
-                console.log("EDIT FLOOR");
+                console.log("EDIT FLOOR " + visual.divEdit.data("entry").URL);
                 
                 $('#popup-conf-floor #level').val(visual.divEdit.data("entry").level);
                 $('#popup-conf-floor #name').val(visual.divEdit.data("entry").name);
                 $('#popup-conf-floor #descrip').val(visual.divEdit.data("entry").descrip);
-                $('#popup-conf-floor #curr-img').text(visual.divEdit.data("entry").url.split('/').pop());
-                $('#popup-conf-floor #url').val(visual.divEdit.data("entry").url);
+                $('#popup-conf-floor #curr-img').text(visual.divEdit.data("entry").URL.split('/').pop());
+                $('#popup-conf-floor #URL').val(visual.divEdit.data("entry").URL);
                 
                 $('#popup-conf-floor').popup('open');
                 
@@ -584,7 +634,7 @@ var visual = {
                 maxHeight,
                 maxWidth;
             
-            imageObj.src = $(this).data("entry").url;
+            imageObj.src = $(this).data("entry").URL;
             $('.main-canvas').attr('width', $('#floor-panel').width());
             $('.main-canvas').attr('height', $('#page-visual .ui-content').height());
 
@@ -664,6 +714,7 @@ $('.main-canvas')[0].getContext('2d').stroke();
         
         visual.local.cleanFloors();
 
+        // add floors to Location
         $("#floor-panel .floor-canvas").each(function (index) {
             var data = $(this).data("entry"),
                 floor;
@@ -674,7 +725,7 @@ $('.main-canvas')[0].getContext('2d').stroke();
                 }
 
                 floor = new Floor(data.level, data.name,
-                              data.descrip, data.url,
+                              data.descrip, data.URL,
                               data.invColor);
 
                 visual.local.addFloor(floor);
@@ -687,6 +738,7 @@ $('.main-canvas')[0].getContext('2d').stroke();
     },
     
     drawCanvas: function () {
+        "use strict";
         
         var imageObj = new Image(),
             ctx = $('.main-canvas')[0].getContext('2d'),
@@ -703,7 +755,7 @@ $('.main-canvas')[0].getContext('2d').stroke();
             return;
         }
             
-        imageObj.src = visual.floorCurrent.url;
+        imageObj.src = visual.floorCurrent.URL;
         $('.main-canvas').attr('width', $('#floor-panel').width());
         $('.main-canvas').attr('height', $('#page-visual .ui-content').height());
 

@@ -188,9 +188,12 @@ var app = {
         });
         
         
-        $el1.onclick = visual.initialize();
-        $el1.onclick = selectLocal.initialize();
+//        $el1.onclick = visual.initialize();
+//        $el1.onclick = selectLocal.initialize();
         
+        visual.initialize();
+        selectLocal.initialize();
+               
         $('.sp-image').parent().bind('transitionend webkitTransitionEnd', function () {
             $('.sp-info').css('visibility', 'visible');
             $('.mm-menu').css('visibility', 'visible');

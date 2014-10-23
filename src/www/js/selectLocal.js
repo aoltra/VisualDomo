@@ -36,9 +36,6 @@ var selectLocal = {
                         var numberLocal = 0,
                             collapsible;
                 
-                        //$(".table-fd#folder").empty();
-                        //$(".table-fd#files").empty();
-
                         results.forEach(function (value, index) {
 
                             if (!value.isDirectory) {
@@ -47,12 +44,15 @@ var selectLocal = {
                                     name = value.name.substring(0, value.name.lastIndexOf('.')),
                                     collapsibleLocal,
                                     header,
-                                    tableInfo;
+                                    tableInfo,
+                                    data;
 
                                 if (ext === 'vdlt' || ext === 'vdl') {
+                                    
                                     numberLocal++;
                                     
-                                    collapsible = $("<div data-role='collapsible' data-inset='false' class='collapsible-local' id='local-" + name + "'></div>");
+                                    collapsible = $("<div data-role='collapsible' data-inset='false' class='collapsible-local' id='local-" +
+                                                    name + "'></div>");
                                     $("#page-select-local #local-list").append(collapsible);
         
                                     header = $("<h1>" + name + "</h1>");
@@ -60,14 +60,16 @@ var selectLocal = {
                                     
                                     $(collapsible).on("taphold", function (event) {
                       
-                                            $( ":mobile-pagecontainer" ).pagecontainer( "change", "#page-visual" );
+                                        $(":mobile-pagecontainer").pagecontainer("change", "#page-visual");
+                                      
+                                        visual.loadLocation(data);
                                     });
                                      
                                     dirEntry.getFile(value.name, null, function (fileEntry) {
                                         
                                         fileEntry.file(function (file) {
                                           //  console.log("FILE " + JSON.stringify(file));
-                                            var reader = new FileReader(), data;
+                                            var reader = new FileReader();
                                             reader.readAsText(file);
                                             reader.onloadend = function (evt) {
                         

@@ -100,7 +100,7 @@
         <div data-role="page" id="page-visual" data-theme="b">
             <div data-role="header" data-position="fixed">
                 <a id="odcontrol-panel" class="ui-btn-left" data-icon="bars" data-iconpos="left">ODControls (0)</a>
-                <h1>VisualDomo</h1>
+                <h1 id="header-visual-location">VisualDomo</h1>
                 <a href="#config-menu" class="ui-btn-right" data-rel="popup" data-icon="grid" data-iconpos="notext">Option</a>
                 <div data-role="popup" id="config-menu">
                     <ul data-role="listview" data-inset="true" data-theme="b">
@@ -142,8 +142,6 @@
                      </div>
                      
                     
-                   
-                    
                      <!-- floor configuration -->
                      <div data-role="popup" id="popup-conf-floor" class="ui-content" data-theme="b" data-position-to="window" data-dismissible="false" data-overlay-theme="e">
                         <div data-role="header" data-theme="b" class="ui-corner-top">
@@ -161,7 +159,7 @@
                                 <input type="text" name="descrip" id="descrip" placeholder="Descripción">
                                 <label for="invColor">Invertir colores</label>
                                 <input type="checkbox" name="invColor" id="invColor">
-                                <input type="text" name="url" id="url" style="display:none;">
+                                <input type="text" name="URL" id="URL" style="display:none;">
                 
                                 <a id="button-image" data-role="button" data-inline="true">Selecciona imagen</a>
                                 <b><span id="curr-img"></span></b>
