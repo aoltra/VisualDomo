@@ -176,3 +176,29 @@ ul {
         color-stop(0.70, #d1259a)
     );
 }
+
+.alert {
+    display: none;
+	z-index: 9999999;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	border:0;
+    width: 12.5em;
+	filter: Alpha(Opacity=70);
+	opacity: .70;
+	box-shadow: 0 1px 1px -1px #fff;
+	height: auto;
+	margin-left: -6.875em;
+	margin-top: -2.6875em;
+	padding: .625em;
+    background-color: black;
+    -webkit-border-radius: 2.25em;
+	border-radius: 2.25em;
+}
+
+.alert h1 {
+	font-size: 1em;
+	margin: 0;
+	text-align: center;
+}

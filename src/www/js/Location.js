@@ -29,11 +29,13 @@ function Location(BSSID, name, description) {
 
 	// save the location configuration 
 	Location.prototype.save = function () {
-		var json = JSON.stringify(this),
+		var json, // = JSON.stringify(this),
             filename,
             dirname,
             floors,
             location = this;
+        
+        app.alert("Grabando...",true);
         
         dirname = this.name;
         floors = this.floors;
@@ -44,14 +46,14 @@ function Location(BSSID, name, description) {
             filename = this.name + ".vdl";
         }
         
-        console.log("planta " + json);
+  //      console.log("planta " + json);
         
         // Create VisualDomo directories
         window.requestFileSystem(LocalFileSystem.PERSISTENT, 0,
      
             // Successful request of a file system
             function (fileSystem) {
-                var path1 = "VisualDomo/locations", path2 = "VisualDomo/locations/" + dirname;
+                var path1 = "VisualDomo/locations"; //, path2 = "VisualDomo/locations/" + dirname;
                 
                 fileSystem.root.getDirectory(path1, {create: false, exclusive: false},
                     function (dirEntry) {
@@ -61,25 +63,6 @@ function Location(BSSID, name, description) {
                             function (dirEntry2) {
                                 console.log("FLO000  " + JSON.stringify(dirEntry2));
                                 console.log("PRUEBAAAAA0000 "+JSON.stringify(floors));
-                                
-                                
-//                                floors.forEach(function (entry) {
-//                                    console.log("FLO1  " + JSON.stringify(entry));
-//                                    window.resolveLocalFileSystemURL(entry.URL,
-//                                        function (fileEntry) {
-//                                            console.log("FLO2  " + JSON.stringify(fileEntry));
-//                                            console.log("FLO3  " + JSON.stringify(dirEntry));
-//                                            fileEntry.copyTo(dirEntry2, fileEntry.name, 
-//                                                function(newFileEntry){
-//                                                    entry.URL =  newFileEntry.nativeURL;
-//                                                    console.log("PRUEBAAAAA "+JSON.stringify(location.floors));
-//                                                },
-//                                                function(){});
-//                                        },
-//                                        function () {  
-//
-//                                        });
-//                                });
                                 
                                 $.when(location.copyFloors(floors, dirEntry2)).done(function() {
                                     
@@ -97,83 +80,29 @@ function Location(BSSID, name, description) {
                                         helpFile.errorHandler
                                         );
 
-                                      console.log("planta fin " + json);
+                                    console.log("planta fin " + json);
+                                    
+                                    app.alert("Grabación finalizada",true);
+                                    
+                                    window.setTimeout(function () {
+                                        app.alert("",false);
+                                    }, 1250);
+                                    
                                 });
                                     
                             },
                             helpFile.errorHandler);
-                        
-//                        json = JSON.stringify(location);
-//                
-//                        dirEntry.getFile(filename, {create: true, exclusive: false},
-//                            function (fileEntry) {
-//                                fileEntry.createWriter(
-//                                    function (writer) {
-//                                        writer.write(json);
-//                                    },
-//                                    helpFile.errorHandler
-//                                );
-//                            },
-//                            helpFile.errorHandler
-//                            );
-//                        
-//                          console.log("planta fin " + json);
                     },
                     helpFile.errorHandler);
                 
     
-//                var parentEntry = new DirectoryEntry(path1);
-//                 console.log("FLO0  " + JSON.stringify(parentEntry));
-//                parentEntry.getDirectory(dirname, {create: true, exclusive: false},
-//                    function (dirEntry) {
-//                         console.log("FLO000  " + JSON.stringify(dirEntry));
-//                        floors.forEach(function (entry) {
-//                            console.log("FLO1  " + JSON.stringify(entry));
-//                            window.resolveLocalFileSystemURL(entry.URL,
-//                                function (fileEntry) {
-//                                    console.log("FLO2  " + JSON.stringify(fileEntry));
-//                                 //   var parentEntry2 = new DirectoryEntry(path2);
-//                                    console.log("FLO3  " + JSON.stringify(dirEntry));
-//                                    fileEntry.copyTo(dirEntry, "pisa.lo", function(){},function(){});
-//                                },
-//                                function () {
-//
-//                                });
-//                        });
-//                    },
-//                    helpFile.errorHandler);
-//                
-                
-                
-//                helpFile.createDirectories(fileSystem.root, path2.split('/'),
-//                    function () {
-//                        // copio las imagenes
-//                        
-//                        floors.forEach(function (entry) {
-//                            console.log("FLO1  " + JSON.stringify(entry));
-//                            window.resolveLocalFileSystemURL(entry.URL,
-//                                function (fileEntry) {
-//                                     console.log("FLO2  " + JSON.stringify(fileEntry));
-//                                    var parentEntry = new DirectoryEntry(path2);
-//                                     console.log("FLO3  " + JSON.stringify(parentEntry));
-//                                    fileEntry.copyTo(parentEntry, "pisa.lo", function(){},function(){});
-//                                },
-//                                function () {
-//                                
-//                                });
-//                        
-                   //     });
+
                       
                         
                     },
                     function () {   // Not used
                         navigator.app.exitApp();
                     });
-                
-      //      },
-    //        helpFile.errorHandler
-    //        );
-
 	};
     
     Location.prototype.copyFloors = function (floors, dirEntry) {
@@ -207,47 +136,6 @@ function Location(BSSID, name, description) {
         });
         
         return $.when.apply(undefined, promises).promise();
-    };
-    
-    Location.prototype.save2 = function () {
-        var json = JSON.stringify(this),
-            filename,
-            dirname,
-            floors,
-            location = this;
-        
-        dirname = this.name;
-        floors = this.floors;
-        
-        if (this.BSSIID === "") {
-            filename = this.name + ".vdlt";
-        } else {
-            filename = this.name + ".vdl";
-        }
-        
-        console.log("planta " + json);
-        
-        this.copyFloors(function (dirEntry) {
-        
-            json = JSON.stringify(this);
-                
-            dirEntry.getFile(filename, {create: true, exclusive: false},
-                function (fileEntry) {
-                    fileEntry.createWriter(
-                        function (writer) {
-                            writer.write(json);
-                        },
-                        helpFile.errorHandler
-                    );
-                },
-                helpFile.errorHandler
-                );
-
-              console.log("planta fin " + json);
-        
-        });
-        
-        
     };
     
     Location.prototype.addFloor = function (floor) {

@@ -240,13 +240,26 @@ var app = {
         return response;
     },
     
-    // show a good looking alert dialog
-    showAlert: function (title, txt) {
+    // show a alert dialog
+    alert: function (txt, show, params) {
         "use strict";
         
-        $("#dialog").attr("title", title);
-        $("#dialog").text(txt);
-        $("#dialog").dialog();
+        
+        /* console.log("ALERTTTTTT");
+        setTimeout(function(){
+            $.mobile.loading(showOrHide); //, params);
+        }, 1); 
+       */
+        if (show === true ) {
+            $(".alert").css("display", "block");
+            $(".alert h1").text(txt);
+        }
+        else {
+            $(".alert").css("display", "none");
+        }
     }
+    
+    
+    
     
 };
