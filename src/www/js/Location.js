@@ -191,10 +191,13 @@ function Location(BSSID, name, description) {
                     fileEntry.copyTo(dirEntry, fileEntry.name, 
                         function(newFileEntry){
                             entry.URL =  newFileEntry.nativeURL;
-                       //     console.log("PRUEBAAAAA "+JSON.stringify(location.floors));
+                      
                             def.resolve();
                         },
-                        function(){});
+                        // Probably file is in locations folder already
+                        function(){
+                            def.resolve();
+                        });
                 },
                 function () {  
                 
