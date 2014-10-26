@@ -190,7 +190,7 @@ var visual = {
             } else {
             
                 visual.local.name = localData.name;
-                visual.local.description = localData.descripcion;
+                visual.local.description = localData.description;
 
                 if (visual.save === true) {
                     visual.saveLocation();
@@ -317,7 +317,7 @@ var visual = {
         visual.updateName(location.name);
         
         visual.local = null;
-        visual.local = new Location(location.BSSIID, location.name, location.description);
+        visual.local = new Location(location.BSSID, location.name, location.description);
         
         if (location.odcontrols.length > 0) {
                 $("#odc-list").css("display", "inline");

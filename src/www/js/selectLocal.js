@@ -54,7 +54,7 @@ var selectLocal = {
     loadLocations: function () {
         "use strict";
            
-        var path = 'VisualDomo/locations';
+        var path = 'VisualDomo/locations/';
             
         app.root.getDirectory(path, {},
             // Successful request of directory
@@ -81,11 +81,6 @@ var selectLocal = {
                                     
                                     numberLocal++;
             
-                                    
-                                    $(collapsible).on("taphold", function (event) {
-                      
-                                    });
-                                     
                                     dirEntry.getFile(value.name, null, function (fileEntry) {
                                         
                                         fileEntry.file(function (file) {
@@ -104,20 +99,22 @@ var selectLocal = {
                                                     URL = "";
                                                 }
                                                 
-                                                if (data.BSSIID === "") {
-                                                    BSSID = "<b>" + data.BSSIID + "</b>";
+                                                console.log("BSSID  s  " + app.BSSID);
+                                                
+                                                if (data.BSSID !== "") {
+                                                    BSSID = "<b>" + data.BSSID  + " / " + data.SSID + "</b>";
                                                 } else {
                                                     BSSID = "Sin asignar";
                                                 }
                                                 
-                                                tableInfo = "<li id='local-" + name + "'><table class='info-table'><tr><td>Nombre:</td><td width='20%'>" +
+                                                tableInfo = "<li id='local-" + name + "'><table class='info-table'><tr><td>Nombre:</td><td width='37%'>" +
                                                     data.name +
-                                                    "</td><td colspan='2' width='40%'>" +
+                                                    "</td><td colspan='2' width='35%'>" +
                                                     "<button class='assign-button' type='button'></button>" +
                                                     "</td></tr><tr><td>Descripción:</td><td colspan='3'>" +
                                                     data.description +
                                                     "</td></tr><tr><td>Estado:</td><td>" +
-                                                    "Sin a" +
+                                                    BSSID +
                                                     "</td><td colspan='2' rowspan='3'>" +
                                                     URL +
                                                     "</td></tr><tr><td>Plantas:</td><td>" +
@@ -136,9 +133,25 @@ var selectLocal = {
                                                     
                                                     console.log("paso por " + $(this).data("entry").name);
                                                     if (selectLocal.use === 0) {
+                                                        
                                                         $(":mobile-pagecontainer").pagecontainer("change", "#page-visual");
                                                         visual.loadLocation(data);
+                                                
                                                     } else {
+                                                        
+                                                        // TODO comprobar si ya esta seleccionada
+                                                        // TODO comprobar si ya hay otra localización con ese BSSID
+                                                        var local;
+                                                        
+                                                   //     data.BSSID = app.BSSID;
+                                                     //   data.SSID = app.SSID;
+                                                        
+                                                        local = new Location("", "", "");
+                                                        
+                                                        local.create(data);
+                                                        local.assign(app.BSSID, app.SSID);
+                                                        local.save();
+                                                        helpFile.deleteFile(app.root, path + name + ".vdlt", function () {}, helpFile.errorHandler);
                                                         $(":mobile-pagecontainer").pagecontainer("change", "#page-visual");
                                                     }
                                                 });

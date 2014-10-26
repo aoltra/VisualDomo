@@ -147,6 +147,7 @@ var app = {
             wifiinfo.getBSSID(
                 function (BSSID) {
                     console.log("BSSID: " + BSSID);
+                    app.BSSID = BSSID.replace(/\"/g, '');
                     app.getConnectionFeatures(app.root,
                         function (found) {
                             // run the visual screen mode use

@@ -81,6 +81,26 @@ var helpFile = {
 
 		read();
 	},
+    
+    deleteFile: function (root, fullPath, success, fail) {
+    
+        var path, file;
+        
+        path = fullPath.substr(0,fullPath.lastIndexOf('/') + 1);
+        console.log("PATHHH   " + path);
+        
+        file = fullPath.substr(fullPath.lastIndexOf('/') + 1);
+        
+            console.log("PATHHH  2 " + file);
+        
+        root.getDirectory(path, {},  function (dirEntry) {
+                              
+            dirEntry.getFile(file, null, function (fileEntry) {          
+  console.log("PATHHH  2 " + JSON.stringify(fileEntry));
+                fileEntry.remove(success, fail);
+            })          
+        });
+    },
 
 	// handles a File system error
 	errorHandler: function (e) {
