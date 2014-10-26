@@ -28,9 +28,9 @@
         <link rel="stylesheet" type="text/css" href="css/visual.css" /> 
         <link rel="stylesheet" type="text/css" href="css/selectLocal.css" /> 
         <link rel="stylesheet" type="text/css" href="css/jquery.mobile-1.4.3.min.css" />
-        <link rel="stylesheet" type="text/css" href="css/jquery.mobile.structure-1.4.3.min.css" />
+     <!--      <link rel="stylesheet" type="text/css" href="css/jquery.mobile.structure-1.4.3.min.css" />
         <link rel="stylesheet" type="text/css" href="css/jquery.mobile.theme-1.4.3.min.css" />
-      <!--  <link rel="stylesheet" type="text/css" href="css/jquery-ui.min.css" />
+        <link rel="stylesheet" type="text/css" href="css/jquery-ui.min.css" />
         <link rel="stylesheet" type="text/css" href="css/jquery-ui.structure.css" /> -->
         <link rel="stylesheet" type="text/css" href="css/global.css" /> 
       <!--  <link rel="stylesheet" type="text/css" href="css/jquerymobile.nativedroid.css" /> -->
@@ -58,40 +58,48 @@
                 <div class="mm-menu">
                     <ul>
                         <li id="mm-external">
-                            <a href="#">
+<!--                            <a href="#">-->
+                             <div>
                                 <span class="mm-icon">y</span>
                                 <div class="mm-content" >
                                     <p class="mm-main">External</p>
                                     <p class="mm-sub">Connect to external location</p>
                                 </div>
-                            </a>
+                             </div>
+<!--                            </a>-->
                         </li>
                         <li id="mm-newlocation">
-                            <a href="#page-visual" id="link-newlocation">
+                             <div>
+<!--                            <a href="#page-visual" id="link-newlocation">-->
                                 <span class="mm-icon">5</span>
                                 <div class="mm-content">
                                     <p class="mm-main">New</p>
                                     <p class="mm-sub">Configure a new location</p>
                                 </div>
-                            </a>
+                             </div>
+<!--                            </a>-->
                         </li>
                         <li id="mm-assignlocation">
-                            <a href="#">
-                                <span class="mm-icon">g</span>
+<!--                            <a href="" id="link-assign-location">-->
+                            <div>     
+                            <span class="mm-icon">g</span>
                                 <div class="mm-content">
                                     <p class="mm-main">Link</p>
                                     <p class="mm-sub">Link to a previous location</p>
                                 </div>
-                            </a>
+                            </div> 
+                                <!--                            </a>-->
                         </li>
-                         <li id="mm-configure" id="link-conf-location">
-                            <a href="#page-select-local">
+                         <li id="mm-configure">
+<!--                            <a href="" id="link-conf-location">-->
+                            <div>       
                                 <span class="mm-icon">r</span>
                                 <div class="mm-content">
                                     <p class="mm-main">Configure</p>
                                     <p class="mm-sub">Configure location</p>
                                 </div>
-                            </a>
+                            </div>
+<!--                            </a>-->
                         </li> 
                     </ul>
                 </div>
@@ -246,8 +254,10 @@
                     <p><b>ODControl</b></p>
                     <a href="#" data-role="button" data-mini="true" id="odc-add">Añadir ODC</a>
                     <p id="noODC">No hay <em>ODControl</em> configurados.</p>
-                    <div data-role="collapsible-set" id="odc-list">
-	               </div>
+<!--                    <div data-role="collapsible-set" id="odc-list">-->
+                    <ul data-role="listview" data-inset="true" id="odc-list"></ul>
+					
+<!--	               </div>-->
                 </div>
              </div>
         </div>
@@ -259,8 +269,7 @@
             </div>
             <div data-role="content" id="content-select">
                 <div class="header-select-local">a</div>
-                <div data-role="collapsible-set" id="local-list">
-                </div>
+                <div data-role="collapsible-set" id="local-list"></div>
             </div>
         </div>
         <script type="text/javascript" src="cordova.js"></script> 
@@ -284,9 +293,9 @@
                 
         <!-- main files -->
         <script type="text/javascript" src="js/visual.js"></script>
-        <script type="text/javascript" src="js/main.js"></script>
         <script type="text/javascript" src="js/selectLocal.js"></script>
-                
+        <script type="text/javascript" src="js/main.js"></script>
+              
         <script type="text/javascript" src="js/nativedroid.script.js"></script>
 
         <script type="text/javascript" src="libs/FileDialog/FileDialog.js"></script>

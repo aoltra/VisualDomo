@@ -15,6 +15,12 @@
 }
 
 .info-table {
-    margin-left: 10px;
+    margin-left: 3%;
+    margin-right: 3%;
+    width: 90%;
+}
 
+.assign-button {
+    padding-left: 5%;
+    padding-right: 5%;
 }

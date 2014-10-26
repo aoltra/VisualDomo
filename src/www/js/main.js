@@ -131,8 +131,9 @@ var app = {
         
         var $divSplash = $('.sp-logo'),
             networkState = navigator.connection.type,
-            $el1 = $('.link-newlocation'),
-            $el2 = $('.link-conf-location');
+            el1 = $('#mm-newlocation'),
+            el2 = $('#mm-configure'),
+            el3 = $('#mm-assignlocation');
 
 
         // 3G network
@@ -193,7 +194,21 @@ var app = {
         
         visual.initialize();
         selectLocal.initialize();
-               
+        
+        $("#mm-newlocation").click(function () {
+            $(":mobile-pagecontainer").pagecontainer("change", "#page-visual");
+        });
+        
+        $("#mm-configure").click(function () {
+            selectLocal.setUse(0); 
+            $(":mobile-pagecontainer").pagecontainer("change", "#page-select-local", { reload: "true" });
+        });
+         
+        $("#mm-assignlocation").click(function () {
+            selectLocal.setUse(1); 
+            $(":mobile-pagecontainer").pagecontainer("change", "#page-select-local", { reload: "true" });
+        });
+       
         $('.sp-image').parent().bind('transitionend webkitTransitionEnd', function () {
             $('.sp-info').css('visibility', 'visible');
             $('.mm-menu').css('visibility', 'visible');
@@ -243,13 +258,7 @@ var app = {
     // show a alert dialog
     alert: function (txt, show, params) {
         "use strict";
-        
-        
-        /* console.log("ALERTTTTTT");
-        setTimeout(function(){
-            $.mobile.loading(showOrHide); //, params);
-        }, 1); 
-       */
+     
         if (show === true ) {
             $(".alert").css("display", "block");
             $(".alert h1").text(txt);

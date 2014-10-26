@@ -15,7 +15,8 @@
 
 var visual = {
     
-    /* members */
+    // MEMBERS
+    
     floorEdit: -1,
     floorCurrent: null,
     odcEdit: -1,
@@ -25,6 +26,8 @@ var visual = {
     saved: false,
     headerHeight: 0,
     dragPort: null,
+    
+    // FUNCTIONS
     
     // Visual Constructor
     initialize: function () {
