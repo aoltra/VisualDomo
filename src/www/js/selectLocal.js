@@ -10,7 +10,7 @@
  */
 
 /* JSLint options */
-/*global Connection, $, app, helpFile, helpImage, console, LocalFileSystem, Location, Floor, Port, ODControl */
+/*global Connection, $, app, helpFile, helpImage, FileReader, console, LocalFileSystem, Location, Floor, Port, ODControl, visual */
 /*jslint plusplus: true*/
 
 var selectLocal = {
@@ -23,10 +23,7 @@ var selectLocal = {
     initialize: function () {
         "use strict";
         
-      //  $("#page-select-local #content-select").append("<div data-role='collapsible-set' id='local-list'></div>");
-         //$("#local-list").listview().trigger("create");
         selectLocal.loadLocations();
-       //  $('#local-list').collapsibleset().trigger('create');
     },
     
     setUse: function (use) {
@@ -36,49 +33,22 @@ var selectLocal = {
         
         selectLocal.use = use;
         
+        console.log("USO SELECCION: " + selectLocal.use);
+        
         if (selectLocal.use === 0) {
             txtButton = "Seleccionar";
         } else {
             txtButton = "Asignar";
-        }     
+        }
         
         // change button text
-        listItems = $("#local-list li");
-        listItems.each(function(idx, li) {
-            var local = $(li);
-            
-          //  if (selectLocal.use === 0) {
-        //    $("#local-list li .assign-button").css("display", "none", "important");
-       //     local.find(".select-button-button").show();
-          //  } else {
-            //local.find(".assign-button").show();
-            //     $("#local-list li .select-button").css("display", "none", "important");
-           // local.find(".select-button-button").css("display", "none");
-            //} 
+        $("#page-select-local #local-list .assign-button").text(txtButton);
         
-          //  if (selectLocal.use === 0) {
-            local.find(".assign-button").prop("value", txtButton);
-            
-            local.find(".assign-button").text(txtButton);
-  console.log("mirindoa " + txtButton  + " " + local.find(".assign-button").attr('value'));
-        //}
-          //  local.find(".assign-button").
-            /// and the rest of your code
-        });
-        
-  //      $("#local-list").listview().trigger("create");
-        
-         if (selectLocal.use === 0) {
+        if (selectLocal.use === 0) {
             $(".header-select-local").text("Selecciona la localización a configurar:");
         } else {
-            $(".header-select-local").html("Selecciona la localización a asignar a <i>"+ app.SSID +"</i>:");
+            $(".header-select-local").html("Selecciona la localización a asignar a <i>" + app.SSID + "</i>:");
         }
-             
-        
-  //      $("#local-list").listview( "refresh" );
-        
-        
-        console.log("mirindoa " + selectLocal.use);
     },
     
     loadLocations: function () {
@@ -89,7 +59,9 @@ var selectLocal = {
         app.root.getDirectory(path, {},
             // Successful request of directory
             function (dirEntry) {
+                
                 helpFile.readDirectoryEntries(dirEntry,
+                    
                     function (results) {
                 
                         var numberLocal = 0,
@@ -102,29 +74,16 @@ var selectLocal = {
                                 var ext = value.name.substring(value.name.lastIndexOf('.') + 1, value.name.length),
                                     name = value.name.substring(0, value.name.lastIndexOf('.')),
                                     collapsibleLocal,
-                                    header,
                                     tableInfo,
                                     data;
 
                                 if (ext === 'vdlt' || ext === 'vdl') {
                                     
                                     numberLocal++;
-                                    
-//                                    collapsible = $("<div data-role='collapsible' data-inset='false' class='collapsible-local' id='local-" +
-//                                                    name + "'></div>");
-                                    
-                             
-                                 //   $("#page-select-local #local-list").append(collapsible);
-                                  
-        
-                                  //  header = $("<h1>" + name + "</h1>");
-                                //    $(collapsible).append(header);
+            
                                     
                                     $(collapsible).on("taphold", function (event) {
                       
-                                    //    $(":mobile-pagecontainer").pagecontainer("change", "#page-visual");
-                                      
-                                    //    visual.loadLocation(data);
                                     });
                                      
                                     dirEntry.getFile(value.name, null, function (fileEntry) {
@@ -135,7 +94,7 @@ var selectLocal = {
                                             
                                             reader.readAsText(file);
                                             reader.onloadend = function (evt) {
-                                                var URL;
+                                                var URL, idButton;
                                              
                                                 data = JSON.parse(evt.target.result);
                                                 
@@ -145,11 +104,9 @@ var selectLocal = {
                                                     URL = "";
                                                 }
                                                 
-                                           //     console.log("data " + data0);
                                                 tableInfo = "<li id='local-" + name + "'><table class='info-table'><tr><td>Nombre:</td><td width='20%'>" +
                                                     data.name +
                                                     "</td><td colspan='2' width='40%'>" +
-                                            //      "<input class='assign-button' type='button' data-corners=\"true\" value='a'></input>" +
                                                     "<button class='assign-button' type='button'></button>" +
                                                     "</td></tr><tr><td>Descripción:</td><td colspan='3'>" +
                                                     data.description +
@@ -167,13 +124,11 @@ var selectLocal = {
                                                 
                                                 $('#local-list').append(collapsibleLocal);
                                           
-                                                var idButton = "li#local-" + name;
-                                                
-                                                 console.log("lcava  " + idButton);
+                                                idButton = "li#local-" + name;
                                                 $(idButton + " .assign-button").data("entry", data);
                                                 $(idButton + " .assign-button").click(function () {
                                                     
-                                                    console.log("paso por " +$(this).data("entry").name);
+                                                    console.log("paso por " + $(this).data("entry").name);
                                                     if (selectLocal.use === 0) {
                                                         $(":mobile-pagecontainer").pagecontainer("change", "#page-visual");
                                                         visual.loadLocation(data);
@@ -182,12 +137,10 @@ var selectLocal = {
                                                     }
                                                 });
                                             };
-                                        },
-                                        function () {
+                                        }, function () {
                                             console.log("Error!!");
                                         });
-                                    },
-                                    function () {
+                                    }, function () {
                                         console.log("Error getFile");
                                     });
                                 
@@ -200,7 +153,7 @@ var selectLocal = {
                 
                         if (numberLocal === 0) {
                             $(".header-select-local").text("No se han encontrado Localizaciones.");
-                        } 
+                        }
                             
                     },
                     function (error) {
