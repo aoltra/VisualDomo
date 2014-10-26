@@ -94,7 +94,7 @@ var selectLocal = {
                                             
                                             reader.readAsText(file);
                                             reader.onloadend = function (evt) {
-                                                var URL, idButton;
+                                                var URL, idButton, BSSID;
                                              
                                                 data = JSON.parse(evt.target.result);
                                                 
@@ -102,6 +102,12 @@ var selectLocal = {
                                                     URL =  "<img width='40%' src='" + data.floors[0].URL + "'/>";
                                                 } else {
                                                     URL = "";
+                                                }
+                                                
+                                                if (data.BSSIID === "") {
+                                                    BSSID = "<b>" + data.BSSIID + "</b>";
+                                                } else {
+                                                    BSSID = "Sin asignar";
                                                 }
                                                 
                                                 tableInfo = "<li id='local-" + name + "'><table class='info-table'><tr><td>Nombre:</td><td width='20%'>" +

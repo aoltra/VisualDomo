@@ -10,7 +10,7 @@
  */
 
 /* JSLint options */
-/*global helpFile,  LocalFileSystem */
+/*global helpFile, $, LocalFileSystem, app, console */
 
 // Constructor
 function Location(BSSID, name, description) {
@@ -35,7 +35,7 @@ function Location(BSSID, name, description) {
             floors,
             location = this;
         
-        app.alert("Grabando...",true);
+        app.alert("Grabando...", true);
         
         dirname = this.name;
         floors = this.floors;
@@ -62,7 +62,7 @@ function Location(BSSID, name, description) {
                         dirEntry.getDirectory(dirname, {create: true, exclusive: false},
                             function (dirEntry2) {
                                 console.log("FLO000  " + JSON.stringify(dirEntry2));
-                                console.log("PRUEBAAAAA0000 "+JSON.stringify(floors));
+                                console.log("PRUEBAAAAA0000 "+ JSON.stringify(floors));
                                 
                                 $.when(location.copyFloors(floors, dirEntry2)).done(function() {
                                     
@@ -82,10 +82,10 @@ function Location(BSSID, name, description) {
 
                                     console.log("planta fin " + json);
                                     
-                                    app.alert("Grabación finalizada",true);
+                                    app.alert("Grabación finalizada", true);
                                     
                                     window.setTimeout(function () {
-                                        app.alert("",false);
+                                        app.alert("", false);
                                     }, 1250);
                                     
                                 });
@@ -94,15 +94,10 @@ function Location(BSSID, name, description) {
                             helpFile.errorHandler);
                     },
                     helpFile.errorHandler);
-                
-    
-
-                      
-                        
-                    },
-                    function () {   // Not used
-                        navigator.app.exitApp();
-                    });
+             
+            }, function () {   // Not used
+                navigator.app.exitApp();
+            });
 	};
     
     Location.prototype.copyFloors = function (floors, dirEntry) {
@@ -117,18 +112,17 @@ function Location(BSSID, name, description) {
                 function (fileEntry) {
                     console.log("FLO2  " + JSON.stringify(fileEntry));
                     console.log("FLO3  " + JSON.stringify(dirEntry));
-                    fileEntry.copyTo(dirEntry, fileEntry.name, 
-                        function(newFileEntry){
+                    fileEntry.copyTo(dirEntry, fileEntry.name,
+                        function (newFileEntry) {
                             entry.URL =  newFileEntry.nativeURL;
                       
                             def.resolve();
-                        },
-                        // Probably file is in locations folder already
-                        function(){
+                            
+                        }, function () { // Probably file is in locations folder already
                             def.resolve();
                         });
                 },
-                function () {  
+                function () {
                 
             });
             
