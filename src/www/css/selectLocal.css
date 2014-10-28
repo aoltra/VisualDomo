@@ -24,3 +24,11 @@
     padding-left: 5%;
     padding-right: 5%;
 }
+
+.select-local-item {
+
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px #cca7bc solid;
+        
+}

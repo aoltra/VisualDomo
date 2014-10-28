@@ -22,9 +22,11 @@ a {
 	text-decoration: none;
 }
 
-ul {
+ul,li  {
     position: relative;
     padding: 0;
+    list-style-type: none;
+    list-style: none;
 }
 
 .sp-logo {
@@ -159,7 +161,7 @@ ul {
         color-stop(0.70, #acdc29)
     );*/
     
-    background-color: #995470;
+    background-color: #e06b75;
 }
 
 #mm-newlocation {
@@ -185,7 +187,7 @@ ul {
     );
 */
     
-    background-color: #e06b75;
+    background-color: #995470;
 }
 
 #mm-configure {

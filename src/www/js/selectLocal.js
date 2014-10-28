@@ -37,12 +37,19 @@ var selectLocal = {
         
         if (selectLocal.use === 0) {
             txtButton = "Seleccionar";
+           
+            $("#page-select-local #local-list .assign-button").css("background", "#ccdbba");
+            $("#page-select-local #local-list .assign-button").css("color", "#283f00");
         } else {
             txtButton = "Asignar";
+           
+            $("#page-select-local #local-list .assign-button").css("background", "#995470");
+            $("#page-select-local #local-list .assign-button").css("color", "#ffffff");
         }
         
         // change button text
         $("#page-select-local #local-list .assign-button").text(txtButton);
+       
         
         if (selectLocal.use === 0) {
             $(".header-select-local").text("Selecciona la localización a configurar:");
@@ -89,12 +96,17 @@ var selectLocal = {
                                             
                                             reader.readAsText(file);
                                             reader.onloadend = function (evt) {
-                                                var URL, idButton, BSSID;
+                                                var URL, idButton, BSSID, addClass;
                                              
                                                 data = JSON.parse(evt.target.result);
                                                 
                                                 if (data.floors.length > 0) {
-                                                    URL =  "<img width='40%' src='" + data.floors[0].URL + "'/>";
+                                                    if (data.floors[0].inv === "on") {
+                                                        addClass = " class='invert-colors' ";
+                                                    } else {
+                                                        addClass = "";
+                                                    }
+                                                    URL =  "<img width='40%' " + addClass + " src='" + data.floors[0].URL + "'/>";
                                                 } else {
                                                     URL = "";
                                                 }
@@ -107,7 +119,7 @@ var selectLocal = {
                                                     BSSID = "Sin asignar";
                                                 }
                                                 
-                                                tableInfo = "<li id='local-" + name + "'><table class='info-table'><tr><td>Nombre:</td><td width='37%'>" +
+                                                tableInfo = "<li class='select-local-item' id='local-" + name + "'><table class='info-table'><tr><td>Nombre:</td><td width='37%'>" +
                                                     data.name +
                                                     "</td><td colspan='2' width='35%'>" +
                                                     "<button class='assign-button' type='button'></button>" +
