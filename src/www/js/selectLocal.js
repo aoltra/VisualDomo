@@ -139,12 +139,9 @@ var selectLocal = {
                                                 
                                                     } else {
                                                         
-                                                        // TODO comprobar si ya esta seleccionada
+                                                        // TODO comprobar si ya esta asignada
                                                         // TODO comprobar si ya hay otra localización con ese BSSID
                                                         var local;
-                                                        
-                                                   //     data.BSSID = app.BSSID;
-                                                     //   data.SSID = app.SSID;
                                                         
                                                         local = new Location("", "", "");
                                                         
@@ -153,6 +150,7 @@ var selectLocal = {
                                                         local.save();
                                                         helpFile.deleteFile(app.root, path + name + ".vdlt", function () {}, helpFile.errorHandler);
                                                         $(":mobile-pagecontainer").pagecontainer("change", "#page-visual");
+                                                        visual.loadLocation(data);
                                                     }
                                                 });
                                             };

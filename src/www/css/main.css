@@ -29,9 +29,10 @@ ul {
 
 .sp-logo {
     position: absolute;
-    width: 64%;
-    left: 18%;
+    width: 84%;
+    left: 8%;
     top: 45%;
+    text-align: center;
 }
 
 .sp-logo.verticalTranslate {
@@ -40,7 +41,7 @@ ul {
     -ms-transition: 2s;
     -o-transition: 2s;
     transition: 2s;
-    margin-top: -40% !important;
+    margin-top: -41% !important;
 }
 
 .sp-image img {
@@ -83,28 +84,37 @@ ul {
 .mm-menu {
     width: 100%;
     margin-top: 10%;
-    padding:0;
+    padding: 0;
     visibility: hidden;
 }
 
-.mm-menu li {
+.mm-menu table {
     width: 100%;
-    height: 100px;
-    margin-bottom: 15px;
-    box-shadow: 5px 5px 5px rgba(255,255,255,0.2);
-    border-radius: 10px;
-    overflow: hidden;
-    display: block;
+    border-collapse: separate;
+    border-spacing:  20px;
 }
 
-.mm-menu li div {
+.mm-menu td {
+    width: 50%;
+    height: 100px;
+//    box-shadow: 5px 5px 5px rgba(255,255,255,0.2);
+//    border-radius: 10px;
+    overflow: hidden;
+ //   display: block;
+//     background-color: #28ff00;
+     position: relative;
+}
+
+
+.mm-menu td div {
     text-align: left;
     width: 100%;
     height: 100%;
     position: relative;
-    color: #283f4b;
-    display: block;
+    color: #283f00;
+    display: inline-block;
 }
+
 
 .mm-icon{
     font-family: 'Entypo', cursive;
@@ -115,7 +125,9 @@ ul {
     width: 75px;
     height: 100px;
     left: 6px;
+    top: 5px;
     text-align: center;
+    display: inline-block;
 }  
 
 .mm-content {
@@ -124,6 +136,7 @@ ul {
     padding: 0;
     height: 100px;
     top: 10px;
+    display: inline-block;
 }
 
 .mm-main {
@@ -133,31 +146,36 @@ ul {
 
 .mm-sub {
     margin: 4px;
-    font-size: 27px;
+    font-size: 20px;
     color: #454;
 }
 
 #mm-external {
-    background-image:-webkit-gradient(
+  /*  background-image:-webkit-gradient(
         linear,
         left top,
         left bottom,
         color-stop(0.20, #cced62),
         color-stop(0.70, #acdc29)
-    );
+    );*/
+    
+    background-color: #995470;
 }
 
 #mm-newlocation {
-    background-image:-webkit-gradient(
+ /*   background-image:-webkit-gradient(
         linear,
         left top,
         left bottom,
         color-stop(0.2, #32bff3),
         color-stop(0.7, #00aff1)
-    );
+    );*/
+    
+    background-color: #cca7bc;
 }
 
 #mm-assignlocation {
+/*
     background-image:-webkit-gradient(
         linear,
         left top,
@@ -165,9 +183,13 @@ ul {
         color-stop(0.20, #fe9033),
         color-stop(0.70, #ff7400)
     );
+*/
+    
+    background-color: #e06b75;
 }
 
 #mm-configure {
+/*
     background-image:-webkit-gradient(
         linear,
         left top,
@@ -175,6 +197,9 @@ ul {
         color-stop(0.20, #d35bb3),
         color-stop(0.70, #d1259a)
     );
+*/
+    
+    background-color: #ccdbba;
 }
 
 .alert {

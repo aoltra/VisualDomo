@@ -306,7 +306,9 @@ var visual = {
     },
     
     updateName: function (name) {
-       $("#page-visual #header-visual-location").text("VisualDomo - " + name);
+        
+            
+        $("#page-visual #header-visual-location").text("VisualDomo - " + name);
     },
     
     loadLocation: function (location) {

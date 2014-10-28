@@ -55,10 +55,14 @@ html {
     -webkit-text-size-adjust: none;  /* prevent webkit from resizing text to fit */
     -webkit-user-select: none;       /* prevent copy paste, to allow, change 'none' to 'text' */
     
-    
-    background-color: #30383b !important; 
+   /***** 
+    background-color: #30383b !important;   
     background-image: -webkit-linear-gradient(top,#30383b,#1f2024) !important;
     background-image: linear-gradient(top, #30383b, #1f2024) !important;
+    ***/
+    background-color: #372d40 !important;    
+ //   background-image: -webkit-linear-gradient(top,#755371,#1f2024) !important;
+//    background-image: linear-gradient(top, #755371, #1f2024) !important;
     background-attachment: fixed !important;
     
     font-family:'HelveticaNeue-Light', 'HelveticaNeue', Helvetica, Arial, sans-serif;
