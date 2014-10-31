@@ -187,15 +187,11 @@ var app = {
                 
                 $('.sp-info #tx-SSID').text(app.SSID);
                 
-                
-                console.log("SSIIIIIII    " + JSON.stringify(selectLocal.currentLocal));
-                
-                
                 if (selectLocal.currentLocal !== null) {
-                    console.log("SSIIIIIII");
+                   
                     visual.setUse(1);
-                    $(":mobile-pagecontainer").pagecontainer("change", "#page-visual", { reload: "true" });
-                    visual.loadLocation(selectLocal.currentLocal);
+                //    $(":mobile-pagecontainer").pagecontainer("change", "#page-visual", { reload: "true" });
+                  //  visual.loadLocation(selectLocal.currentLocal);
 //
                 }
 //                wifiinfo.getBSSID(

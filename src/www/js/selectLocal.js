@@ -23,11 +23,15 @@ var selectLocal = {
     // selectLocal Constructor
     initialize: function (callback) {
         "use strict";
-        
+    
         selectLocal.loadLocations(function () {
-        
+            $("#page-select-local #local-list .assign-button").css("background", "#cca7bc");;
+            $("#page-select-local #local-list .assign-button").css("font-weight", "normal");;
+            $("#page-select-local #local-list .assign-button").css("color", "#283f00");;
             callback();
         });
+        
+        
     },
     
     setUse: function (use) {
@@ -42,13 +46,18 @@ var selectLocal = {
         if (selectLocal.use === 0) {
             txtButton = "Seleccionar";
            
-            $("#page-select-local #local-list .assign-button").css("background", "#ccdbba");
-            $("#page-select-local #local-list .assign-button").css("color", "#283f00");
+//            $("#page-select-local #local-list .assign-button").css("background", "#ccdbba");
+//            $("#page-select-local #local-list .assign-button").css("color", "#283f00");
+            $(".header-select-local").removeClass("header-select-local-link");
+            $(".header-select-local").addClass("header-select-local-conf");
         } else {
             txtButton = "Asignar";
            
-            $("#page-select-local #local-list .assign-button").css("background", "#995470");
-            $("#page-select-local #local-list .assign-button").css("color", "#ffffff");
+//            $("#page-select-local #local-list .assign-button").css("background", "#995470");
+//            $("#page-select-local #local-list .assign-button").css("color", "#ffffff");
+            
+            $(".header-select-local").removeClass("header-select-local-conf");
+            $(".header-select-local").addClass("header-select-local-link");
         }
         
         // change button text

@@ -2,11 +2,33 @@
 
 .header-select-local {
 	position: fixed;
-    color: #fff;
+   
+    padding-left: 10px;
 	text-decoration: none;
     font-size: 20px;
-    padding-top: 5px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    width: 100%;
+    background-color: #cca7bc;
+    z-index: 100;
 }
+
+.header-select-local-conf {
+    background: #ccdbba;
+    color: #283f00;
+}
+
+.header-select-local-link {
+    background: #995470;
+    color: #ffffff;
+}
+
+.assign-button {
+    background: #cca7bc;
+    color: #ffffff;
+    text-decoration: none;
+}
+
 
 #local-list {
     position: absolute;
