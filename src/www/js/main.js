@@ -117,53 +117,6 @@ var app = {
             });
     },
 
-    findCurrentLocation: function (successCallback, errorCallback) {
-        "use strict";
-        
-//        var path = 'VisualDomo/locations';
-//        
-//        root.getDirectory(path, {},
-//
-//            // Successful request of directory
-//            function (dirEntry) {
-//                
-//                helpFile.readDirectoryEntries(dirEntry,
-//                    function (results) {
-//                        var found = false, name;
-//                        
-//                        results.forEach(function (value, index) {
-//                            if (value.isDirectory) {
-//                                console.log(index + "-" + value.name);
-//
-//                                name = value.name.substring(0, value.name.length - 4);
-//                                if (name === app.BSSID) {
-//                                    found = true;
-//                                }
-//                            }
-//                                    
-//                            successCallback(found);
-//                        });
-//                    });
-//            },
-//            function () {
-//                errorCallback(); // TODO: show message in mobile screen
-//            });
-        
-        var locals = $("#page-select-local #local-list li");
-        
-        console.log("PASOoooooooooo   3333");
-        locals.each(function (idx, li) {
-            var local = $(li);
-            console.log("PASOoooooooooo");
-            if (local.BSSID === app.BSSID) {
-                //successCallback(found);
-                console.log("ENCONTRADOOOOO");
-            }
-        
-        });
-
-    },
-
     // Show main menu
     showMainMenu: function () {
         "use strict";
@@ -188,47 +141,12 @@ var app = {
                 $('.sp-info #tx-SSID').text(app.SSID);
                 
                 if (selectLocal.currentLocal !== null) {
-                   
+                    var floorSelect;
+                    
                     visual.setUse(1);
-                //    $(":mobile-pagecontainer").pagecontainer("change", "#page-visual", { reload: "true" });
-                  //  visual.loadLocation(selectLocal.currentLocal);
-//
+                    visual.loadLocation(selectLocal.currentLocal);
+                    $(":mobile-pagecontainer").pagecontainer("change", "#page-visual");                    
                 }
-//                wifiinfo.getBSSID(
-//                    function (BSSID) {
-//                        console.log("BSSID: " + BSSID);
-//                        app.BSSID = BSSID.replace(/\"/g, '');
-//                        app.findCurrentLocation(
-//                            function (found) {
-//                                // run the visual screen mode use
-//                                visual.setUse(1);
-//                         //       $(":mobile-pagecontainer").pagecontainer("change", "#page-visual", { reload: "true" });
-//
-//
-//                            },
-//                            function () {
-//                                $("#mm-assignlocation").css("border", "3px solid red");
-//                                $("#mm-external").css("border", "3px solid red");
-//                            }
-//                        );
-//                    },
-//                    function (error) {
-//                        console.log("Error wifiinfo.getBSSID: " + error);
-//                    }
-//                );
-//
-//                wifiinfo.getSSID(
-//                    function (SSID) {
-//                        app.SSID = SSID.replace(/\"/g, '');
-//                        if (app.SSID === "") {
-//                            app.SSID = "Sin nombre";
-//                        }
-//                        $('.sp-info #tx-SSID').text(app.SSID);
-//                    },
-//                    function (error) {
-//                        console.log("Error wifiinfo.getSSID: " + error);
-//                    }
-//                );
             }
 
             if (app.networkState === Connection.NONE || app.networkState === Connection.UNKNOWN || app.networkState === Connection.ETHERNET) {
@@ -254,11 +172,16 @@ var app = {
             $(this).height($(window).height()).find('[data-role="content"]').height(height);
         });
         
+        $(":mobile-pagecontainer").pagecontainer({
+            change: function (event, ui) {
+                if (ui.toPage.find("#floor-panel").length > 0) {
+                    if ($("#floor-panel .floor-canvas").length > 0) {
+                        visual.setFloorInCanvas($("#floor-panel .floor-canvas").get(0));
+                    }
+                }
+            }
+        });
         
-//        $el1.onclick = visual.initialize();
-//        $el1.onclick = selectLocal.initialize();
-        
-      
         
         $("#mm-newlocation").click(function () {
             visual.setUse(0);

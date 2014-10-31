@@ -16,6 +16,8 @@
 function Location(BSSID, name, description) {
     "use strict";
     
+    this.version = 1;
+    
 	// description
 	this.name = name;							// name 
 	this.description = description;			    // description (should include location)

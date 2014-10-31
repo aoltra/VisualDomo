@@ -20,5 +20,5 @@ function Floor(level, name, description, URL, inv) {
     this.name = name;
     this.description = description;
     this.URL = URL;
-    this.inv = inv;
+    this.invColor = inv;
 }

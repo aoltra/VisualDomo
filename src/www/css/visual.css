@@ -34,7 +34,7 @@
     position: absolute;
     width: 100%;
     top: 0px;  
-    background-color: #FFA;
+    background-color: #372d40;
     height:100%;
 }
 
@@ -42,7 +42,7 @@
     position: absolute;
    // width: 1000px;
     // height: 400px;
-    background-color: #AA3;
+    background-color: #372d40;
 }
 
 #bottom-panel {

@@ -25,9 +25,9 @@ var selectLocal = {
         "use strict";
     
         selectLocal.loadLocations(function () {
-            $("#page-select-local #local-list .assign-button").css("background", "#cca7bc");;
-            $("#page-select-local #local-list .assign-button").css("font-weight", "normal");;
-            $("#page-select-local #local-list .assign-button").css("color", "#283f00");;
+            $("#page-select-local #local-list .assign-button").css("background", "#cca7bc");
+            $("#page-select-local #local-list .assign-button").css("font-weight", "normal");
+            $("#page-select-local #local-list .assign-button").css("color", "#283f00");
             callback();
         });
         
@@ -46,16 +46,11 @@ var selectLocal = {
         if (selectLocal.use === 0) {
             txtButton = "Seleccionar";
            
-//            $("#page-select-local #local-list .assign-button").css("background", "#ccdbba");
-//            $("#page-select-local #local-list .assign-button").css("color", "#283f00");
             $(".header-select-local").removeClass("header-select-local-link");
             $(".header-select-local").addClass("header-select-local-conf");
         } else {
             txtButton = "Asignar";
            
-//            $("#page-select-local #local-list .assign-button").css("background", "#995470");
-//            $("#page-select-local #local-list .assign-button").css("color", "#ffffff");
-            
             $(".header-select-local").removeClass("header-select-local-conf");
             $(".header-select-local").addClass("header-select-local-link");
         }
@@ -114,7 +109,7 @@ var selectLocal = {
                                                 data = JSON.parse(evt.target.result);
                                                 
                                                 if (data.floors.length > 0) {
-                                                    if (data.floors[0].inv === "on") {
+                                                    if (data.floors[0].invColor === "on") {
                                                         addClass = " class='invert-colors' ";
                                                     } else {
                                                         addClass = "";
@@ -131,7 +126,6 @@ var selectLocal = {
                                                     
                                                     if (app.BSSID === data.BSSID) {
                                                         selectLocal.currentLocal = data;
-                                                         console.log("LO encontréeee");
                                                     }
 
                                                 } else {
@@ -208,6 +202,7 @@ var selectLocal = {
                 
                         if (numberLocal === 0) {
                             $(".header-select-local").text("No se han encontrado Localizaciones.");
+                            callback();
                         }
                             
                        

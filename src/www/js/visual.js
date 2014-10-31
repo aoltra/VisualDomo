@@ -313,11 +313,9 @@ var visual = {
         console.log("USO VISUAL: " + visual.use);
         
         if (visual.use === 0) {
-            $(".odc-panel").css('visibility: visible');
-            $(".odcontrol-panel").css('visibility: visible');
+            $("#odcontrol-panel").css('display','inline');
         } else {
-            $(".odc-panel").css('visibility: hidden');
-            $(".odcontrol-panel").css('visibility: hidden');
+            $("#odcontrol-panel").css('display','none');
         }
         
     },
@@ -338,16 +336,19 @@ var visual = {
         visual.local = null;
         visual.local = new Location(location.BSSID, location.name, location.description);
         
+        visual.local.assign(location.BSSID,location.SSID);
+        
         if (location.odcontrols.length > 0) {
-                $("#odc-list").css("display", "inline");
-                $("#noODC").css("display", "none");
-            }
+            $("#odc-list").css("display", "inline");
+            $("#noODC").css("display", "none");
+        }
 
-        location.odcontrols.forEach(function (entry) {
-            odc = new ODControl("", entry.name, "", entry.IP, entry.user, entry.password);
-            visual.local.addODControl(odc);
-            visual.addODControl(odc, entry.ports);
-        });
+        // TEMPORALLLLL
+//        location.odcontrols.forEach(function (entry) {
+//            odc = new ODControl("", entry.name, "", entry.IP, entry.user, entry.password);
+//            visual.local.addODControl(odc);
+//            visual.addODControl(odc, entry.ports);
+//        });
         
         location.floors.forEach(function (entry) {
             visual.addFloor(entry);
@@ -382,7 +383,6 @@ var visual = {
             ports = lsc.split('\n');
         } else {
             ports = readPorts;
-            console.log("kkL2   p" + ports.length + "  " + ports);
         }
         
         if (ports.length > 1 || (ports.length > 0 && readPorts !== null)) {  // last row is always DONE
@@ -411,13 +411,13 @@ var visual = {
                         port = new Port(parts[0], parts[1].charAt(0), parts[1].charAt(1), "");
                         odcontrol.addPort(port);
                        
-                        if (parts[1].charAt(0) === 'A') { 
-                            type = 'a'; 
+                        if (parts[1].charAt(0) === 'A') {
+                            type = 'a';
                         } else {
                             type = 'b';
                         }
                         
-                        if (parts[1].charAt(1) === 'I') { 
+                        if (parts[1].charAt(1) === 'I') {
                             input = 'c';
                         } else {
                             input = 'd';
@@ -644,67 +644,113 @@ var visual = {
             
             visual.floorEdit = -1;
             visual.divEdit = null;
-            
-            var imageObj = new Image(),
-                ctx = $('.main-canvas')[0].getContext('2d'),
-                ch = ctx.canvas.height,
-                cw = ctx.canvas.width,
-                dx = 0,
-                dy = 0,
-                w,
-                h,
-                maxHeight,
-                maxWidth;
-            
-            imageObj.src = $(this).data("entry").URL;
-            $('.main-canvas').attr('width', $('#floor-panel').width());
-            $('.main-canvas').attr('height', $('#page-visual .ui-content').height());
-
-       /* if (cw > imageObj.naturalWidth)
-        {
-            dx = (cw - imageObj.naturalWidth) * .5;
-            esx = 1;
-        }
-
-        if (ch > imageObj.naturalHeight)
-        {
-            dy = (ch - imageObj.naturalHeight) * .5;
-            esy = 1;
-        } 
-        */
-            h = imageObj.naturalHeight;
-            w = imageObj.naturalWidth;
-            maxWidth = ctx.canvas.width;
-            maxHeight = ctx.canvas.height;
-
-            if (w < h) {
-                h = (h * maxWidth) / w;
-                w = maxWidth;
-            } else {
-                w = (w * maxHeight) / h;
-                h = maxHeight;
-            }
-          /***  
-            ctx.beginPath();
-$('.main-canvas')[0].getContext('2d').moveTo(0,50);
-$('.main-canvas')[0].getContext('2d').lineTo(50,50);
-$('.main-canvas')[0].getContext('2d').stroke();
-        ***/
-            dx = Math.abs(w - maxWidth) * 0.5;
-            dy = Math.abs(h - maxHeight) * 0.5;
-
-            ctx.drawImage(imageObj, parseInt(dx, 10), parseInt(dy, 10), parseInt(w, 10), parseInt(h, 10));
-
-            /*console.log("IMAGEN FONDO: " +  $(this).data("entry").url + " x: " + imageObj.naturalWidth + " y: " + imageObj.naturalHeight + "  wi: " + wi + " hi: " + hi + " ch: " + ch + " cw:" + cw + "  dx:" + dx + " dy:" + dy + "ctxw: " + ctx.canvas.width + "  ctxh: " + ctx.canvas.height) ; */
-            
-            console.log("COLOR " + $(this).data("entry").invColor);
-            if ($(this).data("entry").invColor === "on") {
-                helpImage.invertColor(ctx, dx, dy, imageObj);
-            }
+            //visual.setFloorInCanvas($(this));
             
             visual.floorCurrent = $(this).data("entry");
+            
+            visual.drawCanvas();
+            
         });
          
+    },
+    
+    setFloorInCanvas: function (floorSelect) {
+        
+        
+        visual.floorCurrent = $($("#floor-panel .floor-canvas").get(0)).data("entry");
+        visual.drawCanvas();
+        
+//        
+////        
+//        var imageObj = new Image(),
+//            ctx = $('.main-canvas')[0].getContext('2d'),
+//            ch = ctx.canvas.height,
+//            cw = ctx.canvas.width;
+//        
+//        imageObj.src = $(floorSelect).data("entry").URL;
+//        
+//        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+//        
+//        $("<img/>") // Make in memory copy of image to avoid css issues
+//            .attr("src",imageObj.src)
+//            .load(function() {
+//                
+//           // var imageObj = new Image(),
+//          
+//                var    dx = 0,
+//                    dy = 0,
+//                    w,
+//                    h,
+//                    maxHeight,
+//                    maxWidth;
+//
+//                
+//            h = this.width;   // Note: $(this).width() will not
+//            w = this.height; // work for in memory images.
+//        
+//          
+//
+//
+//
+//           
+//           
+//            //$('.main-canvas').attr('width', $('#floor-panel').width());
+//         //   $('.main-canvas').attr('height', $('#page-visual .ui-content').height());
+//
+//       /* if (cw > imageObj.naturalWidth)
+//        {
+//            dx = (cw - imageObj.naturalWidth) * .5;
+//            esx = 1;
+//        }
+//
+//        if (ch > imageObj.naturalHeight)
+//        {
+//            dy = (ch - imageObj.naturalHeight) * .5;
+//            esy = 1;
+//        } 
+//        */
+//
+//       //     h = imageObj.naturalHeight;
+//    //        w = imageObj.naturalWidth;
+//
+//
+//
+//
+//
+//            maxWidth = ctx.canvas.width;
+//            maxHeight = ctx.canvas.height;
+//                
+//                  console.log("DIM " +h + " " +w + "   " + maxWidth + "   " + maxHeight);
+//
+//
+//            if (w < h) {
+//                h = (h * maxWidth) / w;
+//                w = maxWidth;
+//            } else {
+//                w = (w * maxHeight) / h;
+//                h = maxHeight;
+//            }
+//          /***  
+//            ctx.beginPath();
+//    $('.main-canvas')[0].getContext('2d').moveTo(0,50);
+//    $('.main-canvas')[0].getContext('2d').lineTo(50,50);
+//    $('.main-canvas')[0].getContext('2d').stroke();
+//        ***/
+//            dx = Math.abs(w - maxWidth) * 0.5;
+//            dy = Math.abs(h - maxHeight) * 0.5;
+//
+//            ctx.drawImage(this, parseInt(dx, 10), parseInt(dy, 10), parseInt(w, 10), parseInt(h, 10));
+//
+//            console.log("IMAGEN FONDO: " +  floorSelect.data("entry").URL + " x: " + imageObj.naturalWidth + " y: " + imageObj.naturalHeight +  " w:" + w +  " h:" + h + "  dx:" + dx + " dy:" + dy + "ctxw: " + ctx.canvas.width + "  ctxh: " + ctx.canvas.height) ; 
+//
+//            console.log("COLOR " + floorSelect.data("entry").invColor);
+//            if (floorSelect.data("entry").invColor === "on") {
+//                helpImage.invertColor(ctx, dx, dy, this);
+//            }
+//
+//            visual.floorCurrent = floorSelect.data("entry");
+//        });
+
     },
     
     getFloorCanvasDiv: function (level) {
@@ -723,7 +769,7 @@ $('.main-canvas')[0].getContext('2d').stroke();
                     returnDiv = $(this);
                     
                     console.log("ENCONTRADO  " + data.name);
-                    return false;
+                    return false;           // exit foreach
                 }
             }
         });
@@ -773,10 +819,11 @@ $('.main-canvas')[0].getContext('2d').stroke();
             maxHeight,
             maxWidth;
         
+        console.log("flCR "+ visual.floorCurrent.URL);
         if (visual.floorCurrent === null) {
             return;
         }
-            
+          
         imageObj.src = visual.floorCurrent.URL;
         $('.main-canvas').attr('width', $('#floor-panel').width());
         $('.main-canvas').attr('height', $('#page-visual .ui-content').height());
@@ -800,6 +847,8 @@ $('.main-canvas')[0].getContext('2d').stroke();
         dy = Math.abs(h - maxHeight) * 0.5;
 
         ctx.drawImage(imageObj, parseInt(dx, 10), parseInt(dy, 10), parseInt(w, 10), parseInt(h, 10));
+        
+        console.log("IMAGEN FONDO: " +  visual.floorCurrent.URL + " x: " + imageObj.naturalWidth + " y: " + imageObj.naturalHeight +  " w:" + w +  " h:" + h + "  dx:" + dx + " dy:" + dy + "ctxw: " + ctx.canvas.width + "  ctxh: " + ctx.canvas.height) ; 
 
             /*console.log("IMAGEN FONDO: " +  $(this).data("entry").url + " x: " + imageObj.naturalWidth + " y: " + imageObj.naturalHeight + "  wi: " + wi + " hi: " + hi + " ch: " + ch + " cw:" + cw + "  dx:" + dx + " dy:" + dy + "ctxw: " + ctx.canvas.width + "  ctxh: " + ctx.canvas.height) ; */
             
