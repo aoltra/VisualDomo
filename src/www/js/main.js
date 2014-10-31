@@ -17,6 +17,7 @@ var app = {
     SSID: null,
     BSSID: null,
     root: null,
+    networkState: null,
     
     // Application Constructor
     initialize: function () {
@@ -78,6 +79,31 @@ var app = {
                 app.root = fileSystem.root;
                 helpFile.createDirectories(fileSystem.root, path.split('/'),
                     function () {
+                        
+                        app.networkState = navigator.connection.type;
+                        wifiinfo.getBSSID(
+                            function (BSSID) {
+                                console.log("BSSID: " + BSSID);
+                                app.BSSID = BSSID.replace(/\"/g, '');
+                            },
+                            function (error) {
+                                console.log("Error wifiinfo.getBSSID: " + error);
+                            }
+                        );
+                        
+                        wifiinfo.getSSID(
+                            function (SSID) {
+                                app.SSID = SSID.replace(/\"/g, '');
+                                if (app.SSID === "") {
+                                    app.SSID = "Sin nombre";
+                                }
+                        
+                            },
+                            function (error) {
+                                console.log("Error wifiinfo.getSSID: " + error);
+                            }
+                        );
+                        
                         app.showMainMenu();
                     },
                     function () {   // Not used
@@ -91,37 +117,50 @@ var app = {
             });
     },
 
-    getConnectionFeatures: function (root, successCallback, errorCallback) {
+    findCurrentLocation: function (successCallback, errorCallback) {
         "use strict";
         
-        var path = 'VisualDomo/locations';
+//        var path = 'VisualDomo/locations';
+//        
+//        root.getDirectory(path, {},
+//
+//            // Successful request of directory
+//            function (dirEntry) {
+//                
+//                helpFile.readDirectoryEntries(dirEntry,
+//                    function (results) {
+//                        var found = false, name;
+//                        
+//                        results.forEach(function (value, index) {
+//                            if (value.isDirectory) {
+//                                console.log(index + "-" + value.name);
+//
+//                                name = value.name.substring(0, value.name.length - 4);
+//                                if (name === app.BSSID) {
+//                                    found = true;
+//                                }
+//                            }
+//                                    
+//                            successCallback(found);
+//                        });
+//                    });
+//            },
+//            function () {
+//                errorCallback(); // TODO: show message in mobile screen
+//            });
         
-        root.getDirectory(path, {},
-
-            // Successful request of directory
-            function (dirEntry) {
-                
-                helpFile.readDirectoryEntries(dirEntry,
-                    function (results) {
-                        var found = false, name;
-                        
-                        results.forEach(function (value, index) {
-                            if (value.isDirectory) {
-                                console.log(index + "-" + value.name);
-
-                                name = value.name.substring(0, value.name.length - 4);
-                                if (name === app.BSSID) {
-                                    found = true;
-                                }
-                            }
-                                    
-                            successCallback(found);
-                        });
-                    });
-            },
-            function () {
-                errorCallback(); // TODO: show message in mobile screen
-            });
+        var locals = $("#page-select-local #local-list li");
+        
+        console.log("PASOoooooooooo   3333");
+        locals.each(function (idx, li) {
+            var local = $(li);
+            console.log("PASOoooooooooo");
+            if (local.BSSID === app.BSSID) {
+                //successCallback(found);
+                console.log("ENCONTRADOOOOO");
+            }
+        
+        });
 
     },
 
@@ -130,58 +169,88 @@ var app = {
         "use strict";
         
         var $divSplash = $('.sp-logo'),
-            networkState = navigator.connection.type,
             el1 = $('#mm-newlocation'),
             el2 = $('#mm-configure'),
             el3 = $('#mm-assignlocation');
+        
+        visual.initialize();
+        selectLocal.initialize(function () {
 
+            // 3G network
+            if (app.networkState === Connection.CELL_2G && app.networkState === Connection.CELL_3G && app.networkState === Connection.CELL_4G && app.networkState === Connection.CELL) {
+                $("#mm-assignlocation").css("border", "3px solid red");
+                $("#mm-configure").css("border", "3px solid red");
+                $('.sp-info #tx-SSID').text("3G");
+            }
 
-        // 3G network
-        if (networkState === Connection.CELL_2G && networkState === Connection.CELL_3G && networkState === Connection.CELL_4G && networkState === Connection.CELL) {
-            $("#mm-assignlocation").css("border", "3px solid red");
-            $("#mm-configure").css("border", "3px solid red");
-            $('.sp-info #tx-SSID').text("3G");
-        }
-
-        if (networkState === Connection.WIFI) {
-            wifiinfo.getBSSID(
-                function (BSSID) {
-                    console.log("BSSID: " + BSSID);
-                    app.BSSID = BSSID.replace(/\"/g, '');
-                    app.getConnectionFeatures(app.root,
-                        function (found) {
-                            // run the visual screen mode use
-                        },
-                        function () {
-                            $("#mm-assignlocation").css("border", "3px solid red");
-                            $("#mm-external").css("border", "3px solid red");
-                        });
-                },
-                function (error) {
-                    console.log("Error wifiinfo.getBSSID: " + error);
+            if (app.networkState === Connection.WIFI) {
+                
+                $('.sp-info #tx-SSID').text(app.SSID);
+                
+                
+                console.log("SSIIIIIII    " + JSON.stringify(selectLocal.currentLocal));
+                
+                
+                if (selectLocal.currentLocal !== null) {
+                    console.log("SSIIIIIII");
+                    visual.setUse(1);
+                    $(":mobile-pagecontainer").pagecontainer("change", "#page-visual", { reload: "true" });
+                    visual.loadLocation(selectLocal.currentLocal);
+//
                 }
-            );
+//                wifiinfo.getBSSID(
+//                    function (BSSID) {
+//                        console.log("BSSID: " + BSSID);
+//                        app.BSSID = BSSID.replace(/\"/g, '');
+//                        app.findCurrentLocation(
+//                            function (found) {
+//                                // run the visual screen mode use
+//                                visual.setUse(1);
+//                         //       $(":mobile-pagecontainer").pagecontainer("change", "#page-visual", { reload: "true" });
+//
+//
+//                            },
+//                            function () {
+//                                $("#mm-assignlocation").css("border", "3px solid red");
+//                                $("#mm-external").css("border", "3px solid red");
+//                            }
+//                        );
+//                    },
+//                    function (error) {
+//                        console.log("Error wifiinfo.getBSSID: " + error);
+//                    }
+//                );
+//
+//                wifiinfo.getSSID(
+//                    function (SSID) {
+//                        app.SSID = SSID.replace(/\"/g, '');
+//                        if (app.SSID === "") {
+//                            app.SSID = "Sin nombre";
+//                        }
+//                        $('.sp-info #tx-SSID').text(app.SSID);
+//                    },
+//                    function (error) {
+//                        console.log("Error wifiinfo.getSSID: " + error);
+//                    }
+//                );
+            }
+
+            if (app.networkState === Connection.NONE || app.networkState === Connection.UNKNOWN || app.networkState === Connection.ETHERNET) {
+                $("#mm-external").css("border", "3px solid red");
+                $("#mm-assignlocation").css("border", "3px solid red");
+                $('.sp-info #tx-SSID').text("");
+                $('.sp-info #tx-connected').text("Sin conexión");
+            }
             
-            wifiinfo.getSSID(
-                function (SSID) {
-                    app.SSID = SSID.replace(/\"/g, '');
-                    if (app.SSID === "") {
-                        app.SSID = "Sin nombre";
-                    }
-                    $('.sp-info #tx-SSID').text(app.SSID);
-                },
-                function (error) {
-                    console.log("Error wifiinfo.getSSID: " + error);
-                }
-            );
-        }
-
-        if (networkState === Connection.NONE || networkState === Connection.UNKNOWN || networkState === Connection.ETHERNET) {
-            $("#mm-external").css("border", "3px solid red");
-            $("#mm-assignlocation").css("border", "3px solid red");
-            $('.sp-info #tx-SSID').text("");
-            $('.sp-info #tx-connected').text("Sin conexión");
-        }
+            
+            $('.sp-image').parent().bind('transitionend webkitTransitionEnd', function () {
+                $('.sp-info').css('visibility', 'visible');
+                $('.mm-menu').css('visibility', 'visible');
+            });
+            $('.sp-loading').css('display', 'none');
+        
+            $divSplash.addClass('verticalTranslate');
+        });
         
         // set content area page-visual 100% screen
         $(document).on('pageshow', '#page-visual', function () {
@@ -193,31 +262,24 @@ var app = {
 //        $el1.onclick = visual.initialize();
 //        $el1.onclick = selectLocal.initialize();
         
-        visual.initialize();
-        selectLocal.initialize();
+      
         
         $("#mm-newlocation").click(function () {
+            visual.setUse(0);
             $(":mobile-pagecontainer").pagecontainer("change", "#page-visual");
         });
         
         $("#mm-configure").click(function () {
-            selectLocal.setUse(0); 
+            selectLocal.setUse(0);
             $(":mobile-pagecontainer").pagecontainer("change", "#page-select-local", { reload: "true" });
         });
          
         $("#mm-assignlocation").click(function () {
-            selectLocal.setUse(1); 
+            selectLocal.setUse(1);
             $(":mobile-pagecontainer").pagecontainer("change", "#page-select-local", { reload: "true" });
         });
        
-        $('.sp-image').parent().bind('transitionend webkitTransitionEnd', function () {
-            $('.sp-info').css('visibility', 'visible');
-            $('.mm-menu').css('visibility', 'visible');
-        });
-        $('.sp-loading').css('display', 'none');
-        
-        
-        $divSplash.addClass('verticalTranslate');
+      
     },
     
     // HTTP GET request to access ODControl
@@ -260,11 +322,10 @@ var app = {
     alert: function (txt, show, params) {
         "use strict";
      
-        if (show === true ) {
+        if (show === true) {
             $(".alert").css("display", "block");
             $(".alert h1").text(txt);
-        }
-        else {
+        } else {
             $(".alert").css("display", "none");
         }
     }

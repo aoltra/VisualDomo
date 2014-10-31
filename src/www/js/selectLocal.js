@@ -17,13 +17,17 @@ var selectLocal = {
 
     // MEMBERS
     use: 0,             // current use 0: select local, 1: assign local
+    currentLocal: null, // local to visualize
     
     // FUNCTIONS
     // selectLocal Constructor
-    initialize: function () {
+    initialize: function (callback) {
         "use strict";
         
-        selectLocal.loadLocations();
+        selectLocal.loadLocations(function () {
+        
+            callback();
+        });
     },
     
     setUse: function (use) {
@@ -58,7 +62,7 @@ var selectLocal = {
         }
     },
     
-    loadLocations: function () {
+    loadLocations: function (callback) {
         "use strict";
            
         var path = 'VisualDomo/locations/';
@@ -71,7 +75,7 @@ var selectLocal = {
                     
                     function (results) {
                 
-                        var numberLocal = 0,
+                        var numberLocal = 0, numberLocalRead = 0,
                             collapsible;
                 
                         results.forEach(function (value, index) {
@@ -115,6 +119,12 @@ var selectLocal = {
                                                 
                                                 if (data.BSSID !== "") {
                                                     BSSID = "<b>" + data.BSSID  + " / " + data.SSID + "</b>";
+                                                    
+                                                    if (app.BSSID === data.BSSID) {
+                                                        selectLocal.currentLocal = data;
+                                                         console.log("LO encontréeee");
+                                                    }
+
                                                 } else {
                                                     BSSID = "Sin asignar";
                                                 }
@@ -140,10 +150,10 @@ var selectLocal = {
                                                 $('#local-list').append(collapsibleLocal);
                                           
                                                 idButton = "li#local-" + name;
-                                                $(idButton + " .assign-button").data("entry", data);
+                                               // $(idButton + " .assign-button").data("entry", data);
+                                                collapsibleLocal.data("entry", data);
                                                 $(idButton + " .assign-button").click(function () {
-                                                    
-                                                    console.log("paso por " + $(this).data("entry").name);
+                                                
                                                     if (selectLocal.use === 0) {
                                                         
                                                         $(":mobile-pagecontainer").pagecontainer("change", "#page-visual");
@@ -151,7 +161,7 @@ var selectLocal = {
                                                 
                                                     } else {
                                                         
-                                                        // TODO comprobar si ya esta asignada
+                                                        // TODO comprobar si ya esta asignada => desasignar
                                                         // TODO comprobar si ya hay otra localización con ese BSSID
                                                         var local;
                                                         
@@ -165,6 +175,12 @@ var selectLocal = {
                                                         visual.loadLocation(data);
                                                     }
                                                 });
+                                                
+                                                numberLocalRead++;
+                                                
+                                                if (numberLocalRead === numberLocal) {
+                                                    callback();
+                                                }
                                             };
                                         }, function () {
                                             console.log("Error!!");
@@ -173,6 +189,7 @@ var selectLocal = {
                                         console.log("Error getFile");
                                     });
                                 
+                                    
                                 }
                             }
                     
@@ -184,6 +201,7 @@ var selectLocal = {
                             $(".header-select-local").text("No se han encontrado Localizaciones.");
                         }
                             
+                       
                     },
                     function (error) {
                     });

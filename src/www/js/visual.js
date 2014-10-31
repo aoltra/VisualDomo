@@ -16,7 +16,6 @@
 var visual = {
     
     // MEMBERS
-    
     floorEdit: -1,
     floorCurrent: null,
     odcEdit: -1,
@@ -26,9 +25,10 @@ var visual = {
     saved: false,
     headerHeight: 0,
     dragPort: null,
+    use: 0,             // current use 0: config local, 1: visual mode
+    
     
     // FUNCTIONS
-    
     // Visual Constructor
     initialize: function () {
         "use strict";
@@ -305,8 +305,25 @@ var visual = {
      
     },
     
-    updateName: function (name) {
+    setUse: function (use) {
+        "use strict";
         
+        visual.use = use;
+        
+        console.log("USO VISUAL: " + visual.use);
+        
+        if (visual.use === 0) {
+            $(".odc-panel").css('visibility: visible');
+            $(".odcontrol-panel").css('visibility: visible');
+        } else {
+            $(".odc-panel").css('visibility: hidden');
+            $(".odcontrol-panel").css('visibility: hidden');
+        }
+        
+    },
+    
+    updateName: function (name) {
+        "use strict";
             
         $("#page-visual #header-visual-location").text("VisualDomo - " + name);
     },
