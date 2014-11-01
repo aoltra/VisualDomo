@@ -10,7 +10,7 @@
  */
 
 /* JSLint options */
-/*global helpFile, $, LocalFileSystem, app, console */
+/*global helpFile, $, LocalFileSystem, app, console, Floor, ODControl */
 
 // Constructor
 function Location(BSSID, name, description) {
@@ -22,7 +22,7 @@ function Location(BSSID, name, description) {
 	this.name = name;							// name 
 	this.description = description;			    // description (should include location)
 	this.BSSID = BSSID;						    // Identifier wlan
-    this.SSID = "";	       					    // Identifier wlan
+    this.SSID = "";                             // Identifier wlan
     
     // floors
     this.floors = [];
@@ -135,17 +135,29 @@ function Location(BSSID, name, description) {
     
     Location.prototype.create = function (data) {
     
-        var odc, floor, flrs, odcs;
+        var odc, floor, flrs, odcs, port, ports;
         
-        this.name = data.name;		
-        this.description = data.description;				
-        this.BSSID = data.BSSID;	
+        this.name = data.name;
+        this.description = data.description;
+        this.BSSID = data.BSSID;
         
         odcs = this.odcontrols;
         flrs = this.floors;
         
         data.odcontrols.forEach(function (entry) {
             odc = new ODControl("", entry.name, "", entry.IP, entry.user, entry.password);
+            
+            ports = odc.ports;
+            
+            entry.ports.forEach(function (entry) {
+                port = new Port("","","",""); 
+                
+                console.log("PUERTTOOOOOOO    " + JSON.stringify(entry));
+                port.create(entry);
+                
+                ports.push(port);
+                
+            });
             odcs.push(odc);
         });
         

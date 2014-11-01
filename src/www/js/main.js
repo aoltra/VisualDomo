@@ -143,9 +143,10 @@ var app = {
                 if (selectLocal.currentLocal !== null) {
                     var floorSelect;
                     
-                    visual.setUse(1);
-                    visual.loadLocation(selectLocal.currentLocal);
-                    $(":mobile-pagecontainer").pagecontainer("change", "#page-visual");                    
+//                    visual.setUse(1);
+//                    visual.loadLocation(selectLocal.currentLocal);
+//                    $(":mobile-pagecontainer").pagecontainer("change", "#page-visual");
+//                    
                 }
             }
 

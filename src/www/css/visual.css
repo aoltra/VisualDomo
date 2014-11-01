@@ -202,9 +202,9 @@
 }
 
 .scrollable {
-            overflow-y: scroll;
-         //   -webkit-overflow-scrolling: touch;
-}
+    overflow-y: scroll;
+    //   -webkit-overflow-scrolling: touch;
+    }
 
 .ports-panel {
     position: absolute;
@@ -224,7 +224,7 @@
 }
 
 .port-icon {
-    font-family: 'Entypo', cursive;
+    font-family: 'VisualDomo', cursive;
     font-size: 45px;
     line-height: 45px;
     position: absolute;

@@ -97,8 +97,25 @@ function Port(name, type, input, funct) {
         
         console.log("lo tengoª!!  " + clickX + " " + clickY + " " + this.posX + " "  + this.posY + " " + this.height + " "  +(this.posY - this.height) +  "  " + (clickY - (this.posY - this.height)));
         
-        this.posX = clickX; 
+        this.posX = clickX;
         this.posY = clickY;
         return true;
+    };
+    
+    Port.prototype.create = function (data) { 
+        
+        this.name = data.name;
+        this.type = data.type;
+        this.input = data.input;
+        this.funct = data.funct;
+
+        this.level = data.level;
+        this.posX = data.posX;
+        this.posY = data.posY;
+    
+        this.placed = data.placed;
+    
+        this.width = data.width;
+        this.height = data.height;
     };
 }
