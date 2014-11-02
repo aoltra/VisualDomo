@@ -361,6 +361,8 @@ var visual = {
                 return;
             }
 
+            console.log("TOUCH!!");
+            
             //Assume only one touch/only process one touch even if there's more
             var touch = event.targetTouches[0], i, j, odc, exit = false;
            
@@ -371,6 +373,8 @@ var visual = {
                 for (j = 0; j < odc.ports.length; j++) {
 
                     if (odc.ports[j].placed === true && odc.ports[j].level === visual.floorCurrent.level) {
+                        
+                         console.log("tocandoooooooo 1 + " + j);
                         if (odc.ports[j].detectHit(touch.pageX, touch.pageY - visual.headerHeight, false)) {
 
                             console.log("tocandoooooooo");
@@ -546,8 +550,6 @@ var visual = {
                             port.value = parts[2];
                         }
                         
-                        
-                       
                         if (parts[1].charAt(0) === 'A') {
                             type = 'a';
                         } else {
@@ -942,8 +944,7 @@ var visual = {
         $("#odc-panel #odc-list .collapsible-item").each(function (index) {
             var odcdata, odc, lsc, ports;
             
-            console.log("PASOOO");
-                
+            console.log("PASOOOoooooooooOOOOOOOOOOoooooooOOOOOOoooooOOOOOOoooooOOOOO");
             
             odcdata = $(this).data("entry");
             
@@ -961,10 +962,6 @@ var visual = {
                 
                 portdata.value = value;
                 odc.ports[index].value = value;
-            /*    port = new Port("", "", "", "");
-                port.create(portdata);
-               
-                odc.addPort(port);*/
                 
                 console.log("INEDEXXXX " + index + "  " + value);
                 

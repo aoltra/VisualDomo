@@ -175,8 +175,8 @@ var selectLocal = {
                                                         local.save();
                                                         helpFile.deleteFile(app.root, path + name + ".vdlt", function () {}, helpFile.errorHandler);
                                                         $(":mobile-pagecontainer").pagecontainer("change", "#page-visual");
-                                                        visual.setUse(1);
                                                         visual.loadLocation(data);
+                                                        visual.setUse(1);
                                                     }
                                                 });
                                                 

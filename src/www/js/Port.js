@@ -140,11 +140,11 @@ function Port(name, type, input, funct) {
         }*/
         
         if (clickX < this.posX - this.width * 0.6 ||  clickX > (this.posX + this.width * 0.6)) {
-         //   console.log("SALFO X!! " + this.name + " " + clickX + " " + this.posX + " "  + this.width);
+            console.log("SALFO X!! " + this.name + " " + clickX + " " + this.posX + " "  + this.width);
             return false;
         }
-        if (clickY > (this.posY + this.heightT) ||  clickY < (this.posY - this.heightI)) {
-       //         console.log("SALFO Y!!" + this.name + " " + clickY + " " + this.posY + " "  + this.height + " "  + (this.posY + this.height));
+        if (clickY > (this.posY + this.heightT + 3) ||  clickY < (this.posY - this.heightI)) {
+                console.log("SALFO Y!!" + this.name + " " + clickY + " " + this.posY + " "  + this.height + " "  + (this.posY + this.height));
             return false;
         }
         
