@@ -489,7 +489,7 @@ var visual = {
         "use strict";
         
         var nODC, collapsible, header, text, ports, lsc, collapsiblePort, divPort,
-            type, input;
+            type, input, placed, funct;
         
         console.log("ADD ODCONTROL");
     
@@ -564,7 +564,14 @@ var visual = {
                         
                         odcontrol.addPort(port);
                         
-                        divPort = $("<div class='collapsible-port'><span class='port-icon' >" + type + " " + input + "</span><span class='port-content'>" + parts[0] + "</span></div>");
+                        if (port.placed === true) {
+                            placed = 'q';
+                        } else {
+                            placed = ' ';
+                            funct = 'f';
+                        }
+                        
+                        divPort = $("<div class='collapsible-port'><span class='port-icon' >" + type + " " + input + " </span><span class='port-content'>" + parts[0] + "</span><span class='port-placed'>" + placed + "</span><span class='port-funct'>" + funct + "</span></div>");
                         $(divPort).data("entry", port);
                         $(collapsiblePort).append(divPort);
                     }
@@ -576,13 +583,20 @@ var visual = {
                 console.log("Colocando puerto en canvas");
                 
                 if (visual.floorCurrent === null) {
-                    app.showAlert("No es posible ubicar el puerto", "No hay ninguna planta en el area principal.");
+                    app.alert("No es posible ubicar el puerto", true);
+                    
+                    window.setTimeout(function () {
+                        app.alert("", false);
+                    }, 1250);
+                    
                 } else {
                     $(this).data("entry").level = visual.floorCurrent.level;
                     $(this).data("entry").placed = true;
                     
                     $(this).data("entry").posY = Math.round($('.main-canvas')[0].getContext('2d').canvas.height * 0.5);
                     $(this).data("entry").posX = Math.round($('.main-canvas')[0].getContext('2d').canvas.width * 0.5);
+                    
+                    $(this).find(".port-placed").text('q');
 
                     visual.drawCanvas();
                 }
@@ -944,15 +958,12 @@ var visual = {
         $("#odc-panel #odc-list .collapsible-item").each(function (index) {
             var odcdata, odc, lsc, ports;
             
-            console.log("PASOOOoooooooooOOOOOOOOOOoooooooOOOOOOoooooOOOOOOoooooOOOOO");
-            
             odcdata = $(this).data("entry");
             
             odc = visual.local.odcontrols[odcdata.ID];
             
             lsc = odc.readPorts();
             ports = lsc.split('\n');
-            
             
             $(this).find(".collapsible-port").each(function (index) {
                 var portdata, port, value;
@@ -964,9 +975,7 @@ var visual = {
                 odc.ports[index].value = value;
                 
                 console.log("INEDEXXXX " + index + "  " + value);
-                
-                
-                
+                  
             });
             
             

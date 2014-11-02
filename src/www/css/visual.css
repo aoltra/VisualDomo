@@ -219,9 +219,9 @@
 }
 
 .collapsible-port {
-    height: 45px;
+    height: 44px;
     width: 90%;
-    margin-bottom: 4px;
+    margin-bottom: 3px;
     display: block;
     position: relative;
 }
@@ -238,6 +238,24 @@
     position: absolute;
     left: 80px;
     padding: 0;
-    height: 45px;
+    height: 44px;
     padding-top: 15px;
+    min-width:  40%;
+    //line-height: 45px;
+}
+
+.port-placed {
+    font-family: 'VisualDomo', cursive;
+    font-size: 44px;
+    line-height: 44px;
+    position: absolute;
+    left: 75%;
+}
+
+.port-funct {
+    font-family: 'VisualDomo', cursive;
+    font-size: 44px;
+    line-height: 44px;
+    position: absolute;
+    left: 90%;
 }
