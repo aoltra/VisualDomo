@@ -19,6 +19,7 @@ var app = {
     root: null,
     networkState: null,
     updateTime: 45000,
+    functionPortsFonts: [ 'a', 'j', 'z', 's', 't', 'r' ],
     
     // Application Constructor
     initialize: function () {
@@ -229,6 +230,7 @@ var app = {
             request.open("GET", "http://" + url, false, user, pass);
         }
 
+        console.log("UUUUUUUU   " + url);
         request.send(null);
         
         if (syn === false) {

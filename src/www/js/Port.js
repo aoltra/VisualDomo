@@ -21,12 +21,16 @@ function Port(name, type, input, funct) {
     var BASICA = 0,
         BASICD = 1,
         LAMP = 2,
-        TEMPERATURE = 3;
+        TEMPERATURE = 3,
+        BLINDS = 4,
+        AUDIO = 5;
     
     this.name = name;
     this.type = type;
     this.input = input;
     this.funct = funct;
+    
+    this.units = "";
     
     this.level = -1;
     this.posX = -1000;
@@ -52,58 +56,68 @@ function Port(name, type, input, funct) {
         this.funct = BASICA;
     }
     
-   /* if (this.type === 'A') {
-        this.height = this.width;
-        this.lineWidth = 8;
-    } else {
-        this.lineWidth = 4;
-        this.width = 18;
-    }*/
-    
     Port.prototype.draw = function (ctx) {
   
-        var radius, widthIcon, widthText, heightIcon, heightText;
+        var widthIcon, widthText, heightIcon, heightText;
         
-      //  ctx.beginPath();
-    //    ctx.lineWidth = this.lineWidth;
-          
-      /*  switch (this.type) {
-        case 'D':   
-            radius = 4;
-            ctx.strokeStyle = '#00a354';   
-            helpDraw.roundRect(ctx, this.posX - this.width, this.posY - this.height, 2 * this.width, 2 * this.height, radius, false, false);
-            break;
+        ctx.font = fontSizeIcon +"px VisualDomo";
+        console.log("DIGITAAAAALLLL " + this.funct + "<<" + this.name);
         
-        case 'A':
-            ctx.strokeStyle = '#00a354';
-          //  this.height = this.width;
-        //    ctx.arc(this.posX, this.posY, 2 * this.width, 0.66 * Math.PI, 0.33 * Math.PI, false);
-            ctx.font = "bold " + fontSize +"px VisualDomo";
-            ctx.fillText("j",this.posX,this.posY);
-            break;
-        }*/
-        console.log("DIGITAAAAALLLL " + this.funct + "<<");
-        switch (this.funct) {
-            case BASICD: 
-                ctx.font = fontSizeIcon +"px VisualDomo";
-                if (this.value === "ON") {
-                    widthIcon = ctx.measureText("k").width;
-                    ctx.fillText("k", this.posX - widthIcon * 0.5, this.posY);
-                } else {
-                    widthIcon = ctx.measureText("j").width;
-                    ctx.fillText("j", this.posX - widthIcon * 0.5, this.posY);   
-                }   
-                break;
-                
-             case BASICA:
-                ctx.font = fontSizeIcon +"px VisualDomo";
-                widthIcon = ctx.measureText("a").width;
-                ctx.fillText("a", this.posX - widthIcon * 0.5, this.posY);  
-             
-                break;
-        
-        
+        if (this.funct === 1)
+        {
+            if (this.value === "ON") {
+                widthIcon = ctx.measureText("k").width;
+                ctx.fillText("k", this.posX - widthIcon * 0.5, this.posY);
+            } else {
+                widthIcon = ctx.measureText("j").width;
+                ctx.fillText("j", this.posX - widthIcon * 0.5, this.posY);   
+            }   
         }
+        else {
+            widthIcon = ctx.measureText(app.functionPortsFonts[this.funct]).width;
+            ctx.fillText(app.functionPortsFonts[this.funct], this.posX - widthIcon * 0.5, this.posY);
+        }
+        
+//        switch (this.funct) {
+//            case 0:
+//                widthIcon = ctx.measureText("a").width;
+//                ctx.fillText("a", this.posX - widthIcon * 0.5, this.posY);  
+//                break;
+//                
+//            case 1:
+//                if (this.value === "ON") {
+//                    widthIcon = ctx.measureText("k").width;
+//                    ctx.fillText("k", this.posX - widthIcon * 0.5, this.posY);
+//                } else {
+//                    widthIcon = ctx.measureText("j").width;
+//                    ctx.fillText("j", this.posX - widthIcon * 0.5, this.posY);   
+//                }   
+//                break;
+//        
+//            case 2:
+//                widthIcon = ctx.measureText("z").width;
+//                ctx.fillText("z", this.posX - widthIcon * 0.5, this.posY);  
+//                break;
+//                
+//            case 3:
+//                 console.log("DIGITAAAAALLLL " + this.funct + "<<>>");
+//                widthIcon = ctx.measureText("s").width;
+//                ctx.fillText("s", this.posX - widthIcon * 0.5, this.posY);
+//                 console.log("DIGITAAAAALLLL " + this.funct + "<<>><<>>");
+//                break;
+//                
+//            case 4:
+//                widthIcon = ctx.measureText("r").width;
+//                ctx.fillText("r", this.posX - widthIcon * 0.5, this.posY);  
+//                break;
+//                
+//            case 5:
+//                 console.log("DIGITAAAAALLLL " + this.funct + "<<>>");
+//                widthIcon = ctx.measureText("t").width;
+//                ctx.fillText("t", this.posX - widthIcon * 0.5, this.posY);  
+//                break;
+//        
+//        }
         
         ctx.font = "bold " + fontSize +"px Arial";
         widthText = ctx.measureText(this.name).width;
@@ -113,19 +127,6 @@ function Port(name, type, input, funct) {
         this.heightI = fontSizeIcon;
         this.heightT = fontSize;
     
-        
-//        ctx.stroke();
-//        
-//        ctx.beginPath();
-//        ctx.lineWidth = 4;
-//        ctx.moveTo(this.posX - this.width, this.posY - this.height);
-//        ctx.lineTo(this.posX + this.width, this.posY + this.height);
-//        ctx.moveTo(this.posX - this.width, this.posY + this.height);
-//        ctx.lineTo(this.posX + this.width, this.posY - this.height);
-//        ctx.stroke();
-        
-        // ctx.fillStyle = "blue";
-       
     };
     
     Port.prototype.detectHit = function (clickX, clickY, move) {
@@ -179,7 +180,13 @@ function Port(name, type, input, funct) {
         this.min = data.min;
         
         this.value = data.value;
+        
+        this.units = data.units;
     };
     
+    Port.prototype.icon = function () {
+        return app.functionPortsFonts[this.funct];
+    };
+
 
 }

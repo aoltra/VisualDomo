@@ -301,20 +301,28 @@
                     </div>
                     
                     <!-- aport function configuration -->
-                    <div data-role="popup" id="popup-conf-aport" class="ui-content" data-theme="b" data-position-to="window" data-dismissible="false" data-overlay-theme="b">
+                    <div data-role="popup" id="popup-conf-port" class="ui-content" data-theme="b" data-position-to="window" data-dismissible="false" data-overlay-theme="b">
                         <div data-role="header" data-theme="b" class="ui-corner-top">
-                            <h1>Configuración función puerto analógico</h1>
+                            <h1>Configuración puerto analógico</h1>
                         </div>
                         <div data-role="content" data-theme="b" class="ui-corner-bottom ui-content">
-                            <h4>Introduzca los datos de configuración de la localización</h4>
+                            <h4>Introduzca los datos de configuración del puerto</h4>
 
-                            <form name="aport-conf" action="" method="post">
-                                <label for="value" class="ui-hidden-accessible">Función</label>
-                                <input type="text" name="value" id="value" placeholder="Valor" maxlength="15">
+                            <form name="port-conf" action="" method="post">
+                                <label for="units" class="ui-hidden-accessible">Unidades</label>
+                                <input type="text" name="units" id="units" placeholder="Unidades" maxlength="15">
+                                <label for="funct" class="ui-hidden-accessible">Función</label>
+                                <select name="funct" id="funct">
+                                    <option value="2">Luces</option>
+                                    <option value="4">Persianas</option>
+                                    <option value="3">Temperatura</option>
+                                    <option value="5">Audio</option>
+                                    <option value="0" selected>Básico</option>
+                                </select>
 
                                 <div class="ui-grid-a">
-                                    <div class="ui-block-a"><input type="button" name="ok" id="aport-conf-ok" value="Aceptar" data-theme="b" data-icon="check" data-iconpos="right"></div>
-                                    <div class="ui-block-b"><input type="button" name="cancel" id="aport-conf-cancel" value="Cancelar" data-theme="b" data-icon="back" data-iconpos="right"></div>
+                                    <div class="ui-block-a"><input type="button" name="ok" id="port-conf-ok" value="Aceptar" data-theme="b" data-icon="check" data-iconpos="right"></div>
+                                    <div class="ui-block-b"><input type="button" name="cancel" id="port-conf-cancel" value="Cancelar" data-theme="b" data-icon="back" data-iconpos="right"></div>
                                 </div>
                             </form>
                         </div>

@@ -245,7 +245,7 @@ var visual = {
            
         });
         
-         $("#popup-conf-aport-value #aport-value-conf-ok").click(function (event) {
+        $("#popup-conf-aport-value #aport-value-conf-ok").click(function (event) {
 
             var localPort = {}, odc, port;
              
@@ -373,8 +373,6 @@ var visual = {
                 for (j = 0; j < odc.ports.length; j++) {
 
                     if (odc.ports[j].placed === true && odc.ports[j].level === visual.floorCurrent.level) {
-                        
-                         console.log("tocandoooooooo 1 + " + j);
                         if (odc.ports[j].detectHit(touch.pageX, touch.pageY - visual.headerHeight, false)) {
 
                             console.log("tocandoooooooo");
@@ -473,7 +471,6 @@ var visual = {
             $("#noODC").css("display", "none");
         }
 
-        
         location.odcontrols.forEach(function (entry) {
             odc = new ODControl(visual.local.numberODC(), entry.name, "", entry.IP, entry.user, entry.password);
             visual.local.addODControl(odc);
@@ -568,8 +565,9 @@ var visual = {
                             placed = 'q';
                         } else {
                             placed = ' ';
-                            funct = 'f';
                         }
+                        
+                        funct = port.icon();
                         
                         divPort = $("<div class='collapsible-port'><span class='port-icon' >" + type + " " + input + " </span><span class='port-content'>" + parts[0] + "</span><span class='port-placed'>" + placed + "</span><span class='port-funct'>" + funct + "</span></div>");
                         $(divPort).data("entry", port);
@@ -579,8 +577,10 @@ var visual = {
             });
             
             // put it in center of canvas
-            $(".collapsible-port").click(function (event) {
+            $(".collapsible-port .port-content").click(function (event) {
                 console.log("PUT PORT IN CANVAS");
+                
+                var port = $(this).parent();
                 
                 if (visual.floorCurrent === null) {
                     app.alert("No es posible ubicar el puerto", true);
@@ -590,19 +590,19 @@ var visual = {
                     }, 1250);
                     
                 } else {
-                    $(this).data("entry").level = visual.floorCurrent.level;
-                    $(this).data("entry").placed = true;
+                    port.data("entry").level = visual.floorCurrent.level;
+                    port.data("entry").placed = true;
                     
-                    $(this).data("entry").posY = Math.round($('.main-canvas')[0].getContext('2d').canvas.height * 0.5);
-                    $(this).data("entry").posX = Math.round($('.main-canvas')[0].getContext('2d').canvas.width * 0.5);
+                    port.data("entry").posY = Math.round($('.main-canvas')[0].getContext('2d').canvas.height * 0.5);
+                    port.data("entry").posX = Math.round($('.main-canvas')[0].getContext('2d').canvas.width * 0.5);
                     
-                    $(this).find(".port-placed").text('q');
+                    port.find(".port-placed").text('q');
 
                     visual.drawCanvas();
                 }
             });
             
-            // put it in center of canvas
+            // remove port in canvas
             $(".collapsible-port .port-placed").click(function (event) {
                 console.log("DELETE PORT IN CANVAS");
                 
@@ -615,16 +615,72 @@ var visual = {
                 $("#popup-confirm #delete").click(function () {
                     port.data("entry").placed = false;
                     port.find(".port-placed").text(' ');
+                    
                     visual.drawCanvas();
                     console.log("DELETING PORT...");
+                    
+                    $('#popup-confirm').popup('close');
                 });
                 
-                e.stopPropagation();
+                event.stopPropagation();
             });
             
-        
-            $(".collapsible-port").on("taphold", function (event) {
-                      
+            // configure port 
+            $(".collapsible-port .port-funct").click(function (event) {
+                console.log("CONFIGUR PORT");
+                
+                var port = $(this).parent(), confPort = {}, select, valfunc;
+                
+                $('#popup-conf-port form')[0].reset();
+                $('#popup-conf-port #units').val(port.data('entry').units);
+                
+              //  $("select option[value='B']").attr("selected", "selected");  
+                if (port.data('entry').funct === 1) {
+                    valfunc = 0;
+                } else {
+                    valfunc = port.data('entry').funct;
+                }
+                 
+                select = $("#popup-conf-port select option[value='" + valfunc  + "']");
+                $(select).attr("selected","selected");
+                
+                $('#popup-conf-port').popup('open');
+    
+                $("#popup-conf-port #port-conf-ok").click(function () {
+                    
+                    $.each($('#popup-conf-port form').serializeArray(), function () {
+
+                        if (confPort[this.name]) {
+                            if (!confPort[this.name].push) {
+                                confPort[this.name] = [confPort[this.name]];
+                            }
+                            confPort[this.name].push(this.value || '');
+                        } else {
+                            confPort[this.name] = this.value || '';
+                        }
+                    });
+                
+                    port.data("entry").units = confPort.units;
+                    if (confPort.funct == 0 && port.data("entry").type === 'D') {
+                        port.data("entry").funct = 1;
+                    } else {
+                        port.data("entry").funct = confPort.funct;
+                    }
+                    
+                    port.find(".port-funct").text(app.functionPortsFonts[port.data("entry").funct]);
+                    visual.drawCanvas();
+                    
+                    $('#popup-conf-port').popup('close');
+                  
+                });
+                                                          
+                // cancel button
+                $("#popup-conf-port #port-conf-cancel").click(function (event) {
+                    $('#popup-conf-port').popup('close');
+                    $('#popup-conf-port form')[0].reset();
+                });
+                                                          
+                event.stopPropagation();
             });
             
             $(collapsible).collapsible();
@@ -645,7 +701,11 @@ var visual = {
                     
             visual.odcEdit = $(this).data("entry");
             
-            var divToolBarODC = "<div class='odc-edit-toolbar'><div class='ui-grid-c'><div class='ui-block-a button'><p id='up-odc'>&laquo;</p></div><div class='ui-block-b button'><p id='edit-odc'>i</p></div><div class='ui-block-c button'><p id='delete-odc'>n</p></div><div class='ui-block-d button'><p id='down-odc'>&raquo;</p></div></div></div>",
+            var divToolBarODC = "<div class='odc-edit-toolbar'><div class='ui-grid-b'>" +
+                "<div class='ui-block-a button'><p id='edit-odc'>i</p></div>" +
+                "<div class='ui-block-b button'><p id='delete-odc'>n</p></div>" +
+                "<div class='ui-block-c button'><p id='reload-odc'>o</p></div>" +
+                "</div></div>",
                 div = ".collapsible-item#odc-" + visual.odcEdit;
             
             $(divToolBarODC).appendTo(header);
