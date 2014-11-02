@@ -26,6 +26,7 @@ var visual = {
     headerHeight: 0,
     dragPort: null,
     use: 0,             // current use 0: config local, 1: visual mode
+    refreshLoop: null,
     
     
     // FUNCTIONS
@@ -267,10 +268,17 @@ var visual = {
         // Drag and drop canvas
         canvas = $('.main-canvas')[0];
         canvas.addEventListener('touchmove', function (event) {
+            
+            if (visual.use === 1) { 
+                 return; 
+            }
+            
+            console.log("DRAG!!");
+            
             //Assume only one touch/only process one touch even if there's more
             var touch = event.targetTouches[0], i, j, odc, exit = false;
  
-            if (visual.dragPort !== null && visual.dragPort.detectHit(touch.pageX, touch.pageY - visual.headerHeight)) {
+            if (visual.dragPort !== null && visual.dragPort.detectHit(touch.pageX, touch.pageY - visual.headerHeight, true)) {
                 visual.drawCanvas();
             } else {
                 // Is touch close enough to our object?
@@ -281,7 +289,7 @@ var visual = {
                     for (j = 0; j < odc.ports.length; j++) {
 
                         if (odc.ports[j].placed === true && odc.ports[j].level === visual.floorCurrent.level) {
-                            if (odc.ports[j].detectHit(touch.pageX, touch.pageY - visual.headerHeight)) {
+                            if (odc.ports[j].detectHit(touch.pageX, touch.pageY - visual.headerHeight, true)) {
 
                                 visual.dragPort = odc.ports[j];
                                 // Redraw the canvas
@@ -300,6 +308,96 @@ var visual = {
             event.preventDefault();
         }, false);
             
+        
+//        canvas.addEventListener('taphold', function (event) {
+//            //Assume only one touch/only process one touch even if there's more
+//            var touch = event.targetTouches[0], i, j, odc, exit = false;
+// 
+//           
+//            for (i = 0; i < visual.local.odcontrols.length; i++) {
+//
+//                odc = visual.local.odcontrols[i];
+//
+//                for (j = 0; j < odc.ports.length; j++) {
+//
+//                    if (odc.ports[j].placed === true && odc.ports[j].level === visual.floorCurrent.level) {
+//                        if (odc.ports[j].detectHit(touch.pageX, touch.pageY - visual.headerHeight)) {
+//
+//                                odc.ports[j].showConfigurePort();
+//                                // Redraw the canvas
+//                                visual.drawCanvas();
+//                                exit = true;
+//                                break;
+//                        }
+//                    }
+//                }
+//
+//                if (exit) {
+//                    break;
+//                }
+//            }
+//            
+//            event.preventDefault();
+//        }, false);
+        
+        
+         canvas.addEventListener('touchstart', function (event) {
+             
+             if (visual.use === 0) { 
+                 return; 
+             }
+             
+            //Assume only one touch/only process one touch even if there's more
+            var touch = event.targetTouches[0], i, j, odc, exit = false;
+ 
+           
+            for (i = 0; i < visual.local.odcontrols.length; i++) {
+
+                odc = visual.local.odcontrols[i];
+
+                for (j = 0; j < odc.ports.length; j++) {
+
+                    if (odc.ports[j].placed === true && odc.ports[j].level === visual.floorCurrent.level) {
+                        if (odc.ports[j].detectHit(touch.pageX, touch.pageY - visual.headerHeight, false)) {
+
+                            console.log("tocandoooooooo");
+                            if (odc.ports[j].input === 'O') 
+                            {
+                                if (odc.ports[j].type === 'D') {
+                                    if (odc.ports[j].value === "ON") {
+                                        odc.ports[j].value = "OFF";
+                                    } else {
+                                        odc.ports[j].value = "ON";
+                                    }
+                                } else {
+                                    $('#popup-conf-aport').popup('open');
+
+                                }
+                                
+                                odc.setPort(odc.ports[j]);
+                            } else {
+                                app.alert("Puerto de entrada. No es posible modificarlo", true);
+                                    
+                                window.setTimeout(function () {
+                                    app.alert("", false);
+                                }, 1550);
+                            }
+                                
+                            // Redraw the canvas
+                            visual.drawCanvas();
+                            exit = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (exit) {
+                    break;
+                }
+            }
+            
+            event.preventDefault();
+        }, false);
             
       //  draw();
      
@@ -313,11 +411,24 @@ var visual = {
         console.log("USO VISUAL: " + visual.use);
         
         if (visual.use === 0) {
-            $("#odcontrol-panel").css('display', 'inline');
+            $("#odcontrol-panel").css('visibility', 'hidden');
+            clearTimeout(visual.refreshLoop);
         } else {
-            $("#odcontrol-panel").css('display', 'none');
+            $("#odcontrol-panel").css('visibility', 'visible');
+            visual.updatePorts();
+            visual.refreshPorts();
         }
         
+    },
+    
+    refreshPorts: function () {
+        "use strict";
+        
+        visual.refreshLoop = window.setTimeout(function () {
+            visual.updatePorts();
+            visual.refreshPorts();
+        }, app.updateTime);
+      
     },
     
     updateName: function (name) {
@@ -345,7 +456,7 @@ var visual = {
 
         
         location.odcontrols.forEach(function (entry) {
-            odc = new ODControl("", entry.name, "", entry.IP, entry.user, entry.password);
+            odc = new ODControl(visual.local.numberODC(), entry.name, "", entry.IP, entry.user, entry.password);
             visual.local.addODControl(odc);
             visual.addODControl(odc, entry.ports);
         });
@@ -364,13 +475,13 @@ var visual = {
         console.log("ADD ODCONTROL");
     
         nODC = visual.local.numberODC();
-        collapsible = $("<div data-role='collapsible' data-mini='true' data-inset='false' class='collapsible-item' id='odc-" + nODC + "'></div>");
+        collapsible = $("<div data-role='collapsible' data-mini='true' data-inset='false' class='collapsible-item' id='odc-" + odcontrol.ID + "'></div>");
         $("#odc-panel #odc-list").append(collapsible);
         
         header = $("<h1>" + odcontrol.name + "</h1>");
         $(collapsible).append(header);
         
-        $(collapsible).data("numero", nODC);
+    //    $(collapsible).data("numero", nODC);
         $(collapsible).data("entry", odcontrol);
       
         text = "ODControl (" + nODC + ")";
@@ -415,7 +526,7 @@ var visual = {
                         if (parts[1].charAt(0) === 'A') {
                             type = 'a';
                         } else {
-                            type = 'b';
+                            type = 'j';
                         }
                         
                         if (parts[1].charAt(1) === 'I') {
@@ -471,7 +582,7 @@ var visual = {
                     
             visual.odcEdit = $(this).data("entry");
             
-            var divToolBarODC = "<div class='odc-edit-toolbar'><div class='ui-grid-c'><div class='ui-block-a button'><p id='up-odc'>&laquo;</p></div><div class='ui-block-b button'><p id='edit-odc'>i</p></div><div class='ui-block-c button'><p id='delete-odc'>X</p></div><div class='ui-block-d button'><p id='down-odc'>&raquo;</p></div></div></div>",
+            var divToolBarODC = "<div class='odc-edit-toolbar'><div class='ui-grid-c'><div class='ui-block-a button'><p id='up-odc'>&laquo;</p></div><div class='ui-block-b button'><p id='edit-odc'>i</p></div><div class='ui-block-c button'><p id='delete-odc'>n</p></div><div class='ui-block-d button'><p id='down-odc'>&raquo;</p></div></div></div>",
                 div = ".collapsible-item#odc-" + visual.odcEdit;
             
             $(divToolBarODC).appendTo(header);
@@ -541,7 +652,7 @@ var visual = {
             visual.floorEdit = $(this).data("entry").level;
             visual.divEdit = $(this);
             
-            var divToolBar = "<div class='floor-edit-toolbar'><div class='ui-grid-c'><div class='ui-block-a button'><p id='left-shift-floor'>&laquo;</p></div><div class='ui-block-b button'><p id='edit-floor'>i</p></div><div class='ui-block-c button'><p id='delete-floor'>X</p></div><div class='ui-block-d button'><p id='right-shift-floor'>&raquo;</p></div></div></div>",
+            var divToolBar = "<div class='floor-edit-toolbar'><div class='ui-grid-c'><div class='ui-block-a button'><p id='left-shift-floor'>m</p></div><div class='ui-block-b button'><p id='edit-floor'>i</p></div><div class='ui-block-c button'><p id='delete-floor'>n</p></div><div class='ui-block-d button'><p id='right-shift-floor'>l</p></div></div></div>",
                 div = ".floor-canvas#L" + visual.floorEdit;
             
             $(divToolBar).appendTo(div);
@@ -787,14 +898,59 @@ var visual = {
         }
        
         visual.local.odcontrols.forEach(function (odc) {
-             console.log("loooo ");
             odc.ports.forEach(function (port) {
-                 console.log("loooo2 " + port.placed + "  " + port.level + "  " + visual.floorCurrent.level);
+              //   console.log("loooo2 " + port.placed + "  " + port.level + "  " + visual.floorCurrent.level);
                 if (port.placed === true && port.level === visual.floorCurrent.level) {
-                    console.log("lo dibujamos "  + port.name + " " + port.posX + "," + port.posY);
+                //    console.log("lo dibujamos "  + port.name + " " + port.posX + "," + port.posY);
                     port.draw(ctx);
                 }
             });
         });
+    },
+    
+    updatePorts: function () {
+        "use strict";
+
+        // add odcs and ports
+        $("#odc-panel #odc-list .collapsible-item").each(function (index) {
+            var odcdata, odc, lsc, ports;
+            
+            console.log("PASOOO");
+                
+            
+            odcdata = $(this).data("entry");
+            
+            odc = visual.local.odcontrols[odcdata.ID];
+            
+            lsc = odc.readPorts();
+            ports = lsc.split('\n');
+            
+            
+            $(this).find(".collapsible-port").each(function (index) {
+                var portdata, port, value;
+                
+                value = ports[index].split(":")[2];
+                portdata = $(this).data("entry");
+                
+                portdata.value = value;
+                odc.ports[index].value = value;
+            /*    port = new Port("", "", "", "");
+                port.create(portdata);
+               
+                odc.addPort(port);*/
+                
+                console.log("INEDEXXXX " + index + "  " + value);
+                
+                
+                
+            });
+            
+            
+        });
+         
+
+        visual.drawCanvas();
+          
+          
     }
 };

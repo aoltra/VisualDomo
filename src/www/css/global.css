@@ -46,7 +46,7 @@
 
 html { 
     height:100%;  /* Fix banding gradient backgroung problem in Chrome */
-    min-height:100%; 
+//    min-height:100%; 
 }
 
 .ui-page-theme-b {

@@ -138,13 +138,16 @@
     // border: solid #ddd 2px;
 }
 
-.floor-edit-toolbar .button p {
-    font-family: 'Entypo', bold;
+.floor-edit-toolbar .button p, .odc-edit-toolbar .button p {
+    font-family: 'VisualDomo';
     color: #DDD;
     font-size: 45px;
     text-align: center;
     vertical-align:  middle; 
+    margin: 0;
 }
+
+
 
 #add-floor {
     background: rgba(240,240,250,0.5);

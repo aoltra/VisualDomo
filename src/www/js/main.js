@@ -18,6 +18,7 @@ var app = {
     BSSID: null,
     root: null,
     networkState: null,
+    updateTime: 30000,
     
     // Application Constructor
     initialize: function () {

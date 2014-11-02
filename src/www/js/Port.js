@@ -16,7 +16,12 @@
 function Port(name, type, input, funct) {
     "use strict";
     
-    var fontSize = 16;
+    var fontSize = 16,
+        fontSizeIcon = 85;
+    var BASICA = 0,
+        BASICD = 1,
+        LAMP = 2,
+        TEMPERATURE = 3;
     
     this.name = name;
     this.type = type;
@@ -37,25 +42,32 @@ function Port(name, type, input, funct) {
     this.stateOn = "";  // only digital ports
     
     this.width = 10;
-    this.height = 10;
+    this.heightI = this.heightT = 10;
     
+    if (this.type === 'D' && this.funct === "") {
+        this.funct = BASICD;
+    }
     
-    if (this.type === 'A') {
+    if (this.type === 'A' && this.funct === "") {
+        this.funct = BASICA;
+    }
+    
+   /* if (this.type === 'A') {
         this.height = this.width;
         this.lineWidth = 8;
     } else {
         this.lineWidth = 4;
         this.width = 18;
-    }
+    }*/
     
     Port.prototype.draw = function (ctx) {
   
-        var radius;
+        var radius, widthIcon, widthText, heightIcon, heightText;
         
-        ctx.beginPath();
-        ctx.lineWidth = this.lineWidth;
-        
-        switch (this.type) {
+      //  ctx.beginPath();
+    //    ctx.lineWidth = this.lineWidth;
+          
+      /*  switch (this.type) {
         case 'D':   
             radius = 4;
             ctx.strokeStyle = '#00a354';   
@@ -64,41 +76,85 @@ function Port(name, type, input, funct) {
         
         case 'A':
             ctx.strokeStyle = '#00a354';
-            this.height = this.width;
-            ctx.arc(this.posX, this.posY, 2 * this.width, 0.66 * Math.PI, 0.33 * Math.PI, false);
+          //  this.height = this.width;
+        //    ctx.arc(this.posX, this.posY, 2 * this.width, 0.66 * Math.PI, 0.33 * Math.PI, false);
+            ctx.font = "bold " + fontSize +"px VisualDomo";
+            ctx.fillText("j",this.posX,this.posY);
             break;
+        }*/
+        console.log("DIGITAAAAALLLL " + this.funct + "<<");
+        switch (this.funct) {
+            case BASICD: 
+                ctx.font = fontSizeIcon +"px VisualDomo";
+                if (this.value === "ON") {
+                    widthIcon = ctx.measureText("k").width;
+                    ctx.fillText("k", this.posX - widthIcon * 0.5, this.posY);
+                } else {
+                    widthIcon = ctx.measureText("j").width;
+                    ctx.fillText("j", this.posX - widthIcon * 0.5, this.posY);   
+                }   
+                break;
+                
+             case BASICA:
+                ctx.font = fontSizeIcon +"px VisualDomo";
+                widthIcon = ctx.measureText("a").width;
+                ctx.fillText("a", this.posX - widthIcon * 0.5, this.posY);  
+             
+                break;
+        
+        
         }
         
-        ctx.stroke();
+        ctx.font = "bold " + fontSize +"px Arial";
+        widthText = ctx.measureText(this.name).width;
+        ctx.fillText(this.name, this.posX - widthText * 0.5, this.posY + fontSize + 3 );
         
-        ctx.beginPath();
-        ctx.lineWidth = 4;
-        ctx.moveTo(this.posX - this.width, this.posY - this.height);
-        ctx.lineTo(this.posX + this.width, this.posY + this.height);
-        ctx.moveTo(this.posX - this.width, this.posY + this.height);
-        ctx.lineTo(this.posX + this.width, this.posY - this.height);
-        ctx.stroke();
+        this.width = widthIcon;
+        this.heightI = fontSizeIcon;
+        this.heightT = fontSize;
+    
+        
+//        ctx.stroke();
+//        
+//        ctx.beginPath();
+//        ctx.lineWidth = 4;
+//        ctx.moveTo(this.posX - this.width, this.posY - this.height);
+//        ctx.lineTo(this.posX + this.width, this.posY + this.height);
+//        ctx.moveTo(this.posX - this.width, this.posY + this.height);
+//        ctx.lineTo(this.posX + this.width, this.posY - this.height);
+//        ctx.stroke();
         
         // ctx.fillStyle = "blue";
-        ctx.font = "bold " + fontSize +"px Arial";
-        ctx.fillText(this.name, this.posX - this.width, this.posY + this.height + fontSize + 3);
+       
     };
     
-    Port.prototype.detectHit = function (clickX, clickY) {
+    Port.prototype.detectHit = function (clickX, clickY, move) {
     
-        if (Math.abs(clickX - (this.posX - this.width - this.lineWidth))  > 2 * (this.width + this.lineWidth)) {
+     /*   if (Math.abs(clickX - (this.posX - this.width - this.lineWidth))  > 2 * (this.width + this.lineWidth)) {
             console.log("SALFO X!! " + this.name + " " + clickX + " " + this.posX + " "  + this.width);
             return false;
         }
         if (Math.abs(clickY - (this.posY - this.height - this.lineWidth)) > 2 * (this.height + this.lineWidth)) {
                 console.log("SALFO Y!!" + this.name + " " + clickY + " " + this.posY + " "  + this.height + " "  + (this.posY - this.height));
             return false;
+        }*/
+        
+        if (clickX < this.posX - this.width * 0.6 ||  clickX > (this.posX + this.width * 0.6)) {
+            console.log("SALFO X!! " + this.name + " " + clickX + " " + this.posX + " "  + this.width);
+            return false;
+        }
+        if (clickY > (this.posY + this.heightT) ||  clickY < (this.posY - this.heightI)) {
+                console.log("SALFO Y!!" + this.name + " " + clickY + " " + this.posY + " "  + this.height + " "  + (this.posY + this.height));
+            return false;
         }
         
         console.log("lo tengoª!!  " + clickX + " " + clickY + " " + this.posX + " "  + this.posY + " " + this.height + " "  +(this.posY - this.height) +  "  " + (clickY - (this.posY - this.height)));
         
-        this.posX = clickX;
-        this.posY = clickY;
+        if (move) {
+            this.posX = clickX;
+            this.posY = clickY;
+        }
+        
         return true;
     };
     
@@ -118,4 +174,6 @@ function Port(name, type, input, funct) {
         this.width = data.width;
         this.height = data.height;
     };
+    
+
 }

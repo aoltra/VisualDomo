@@ -110,11 +110,9 @@ function Location(BSSID, name, description) {
         floors.forEach(function (entry) {
 
             var def = new $.Deferred();
-            console.log("FLO1  " + JSON.stringify(entry));
+
             window.resolveLocalFileSystemURL(entry.URL,
                 function (fileEntry) {
-                    console.log("FLO2  " + JSON.stringify(fileEntry));
-                    console.log("FLO3  " + JSON.stringify(dirEntry));
                     fileEntry.copyTo(dirEntry, fileEntry.name,
                         function (newFileEntry) {
                             entry.URL =  newFileEntry.nativeURL;

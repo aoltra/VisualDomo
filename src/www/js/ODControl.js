@@ -49,4 +49,13 @@ function ODControl(ID, name, description, IP, user, pass) {
         this.ports.push(port);
 	};
     
+    ODControl.prototype.setPort = function (port) {
+        var command;
+        
+        command = "/set+" + port.name + "+" + port.value;
+        console.log("COMANDOO " + command);
+        
+        return app.httpGetRequestToODControl(IP + command, false, "user", "opendomo", null);
+    
+    };
 }

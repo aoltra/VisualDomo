@@ -43,6 +43,8 @@
             <span class='ui-icon-loading'></span>
 			<h1>...</h1>
         </div>
+            
+        
         <div data-role="page" id="page-main" data-theme="b"> 
             <div class="sp-logo">
                 <div class="sp-image">
@@ -274,6 +276,26 @@
                                 <div class="ui-grid-a">
                                     <div class="ui-block-a"><input type="button" name="ok" id="local-conf-ok" value="Aceptar" data-theme="b" data-icon="check" data-iconpos="right"></div>
                                     <div class="ui-block-b"><input type="button" name="cancel" id="local-conf-cancel" value="Cancelar" data-theme="b" data-icon="back" data-iconpos="right"></div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    
+                    <!-- aport configuration -->
+                    <div data-role="popup" id="popup-conf-aport" class="ui-content" data-theme="b" data-position-to="window" data-dismissible="false" data-overlay-theme="b">
+                        <div data-role="header" data-theme="b" class="ui-corner-top">
+                            <h1>Configuración puerto analógico</h1>
+                        </div>
+                        <div data-role="content" data-theme="b" class="ui-corner-bottom ui-content">
+                            <h4>Introduzca los datos de configuración de la localización</h4>
+
+                            <form name="aport-conf" action="" method="post">
+                                <label for="value" class="ui-hidden-accessible">Nombre</label>
+                                <input type="text" name="value" id="value" placeholder="Valor" maxlength="15">
+
+                                <div class="ui-grid-a">
+                                    <div class="ui-block-a"><input type="button" name="ok" id="aport-conf-ok" value="Aceptar" data-theme="b" data-icon="check" data-iconpos="right"></div>
+                                    <div class="ui-block-b"><input type="button" name="cancel" id="aport-conf-cancel" value="Cancelar" data-theme="b" data-icon="back" data-iconpos="right"></div>
                                 </div>
                             </form>
                         </div>
