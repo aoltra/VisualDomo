@@ -580,7 +580,7 @@ var visual = {
             
             // put it in center of canvas
             $(".collapsible-port").click(function (event) {
-                console.log("Colocando puerto en canvas");
+                console.log("PUT PORT IN CANVAS");
                 
                 if (visual.floorCurrent === null) {
                     app.alert("No es posible ubicar el puerto", true);
@@ -600,6 +600,26 @@ var visual = {
 
                     visual.drawCanvas();
                 }
+            });
+            
+            // put it in center of canvas
+            $(".collapsible-port .port-placed").click(function (event) {
+                console.log("DELETE PORT IN CANVAS");
+                
+                var port = $(this).parent();
+                
+                $('#popup-confirm h1').text("Borrar puerto");
+                $('#popup-confirm h3').text("¿Estás seguro de que quieres quitar este de la localización?");
+                $('#popup-confirm').popup('open');
+                
+                $("#popup-confirm #delete").click(function () {
+                    port.data("entry").placed = false;
+                    port.find(".port-placed").text(' ');
+                    visual.drawCanvas();
+                    console.log("DELETING PORT...");
+                });
+                
+                e.stopPropagation();
             });
             
         
