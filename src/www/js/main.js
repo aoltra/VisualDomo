@@ -18,7 +18,7 @@ var app = {
     BSSID: null,
     root: null,
     networkState: null,
-    updateTime: 30000,
+    updateTime: 45000,
     
     // Application Constructor
     initialize: function () {
@@ -171,7 +171,7 @@ var app = {
         // set content area page-visual 100% screen
         $(document).on('pageshow', '#page-visual', function () {
             var height = ($(window).height() - $(this).find('[data-role="header"]').height());
-            $(this).height($(window).height()).find('[data-role="content"]').height(height);
+          //  $(this).height($(window).height()).find('[data-role="content"]').height(height);
         });
         
         $(":mobile-pagecontainer").pagecontainer({
@@ -187,7 +187,7 @@ var app = {
         
         $("#mm-newlocation").click(function () {
             visual.setUse(0);
-            $(":mobile-pagecontainer").pagecontainer("change", "#page-visual");
+            $(":mobile-pagecontainer").pagecontainer("change", "#page-visual", { reload: "true" });
         });
         
         $("#mm-configure").click(function () {

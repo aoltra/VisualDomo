@@ -140,15 +140,15 @@ function Port(name, type, input, funct) {
         }*/
         
         if (clickX < this.posX - this.width * 0.6 ||  clickX > (this.posX + this.width * 0.6)) {
-            console.log("SALFO X!! " + this.name + " " + clickX + " " + this.posX + " "  + this.width);
+         //   console.log("SALFO X!! " + this.name + " " + clickX + " " + this.posX + " "  + this.width);
             return false;
         }
         if (clickY > (this.posY + this.heightT) ||  clickY < (this.posY - this.heightI)) {
-                console.log("SALFO Y!!" + this.name + " " + clickY + " " + this.posY + " "  + this.height + " "  + (this.posY + this.height));
+       //         console.log("SALFO Y!!" + this.name + " " + clickY + " " + this.posY + " "  + this.height + " "  + (this.posY + this.height));
             return false;
         }
         
-        console.log("lo tengoª!!  " + clickX + " " + clickY + " " + this.posX + " "  + this.posY + " " + this.height + " "  +(this.posY - this.height) +  "  " + (clickY - (this.posY - this.height)));
+     //   console.log("lo tengoª!!  " + clickX + " " + clickY + " " + this.posX + " "  + this.posY + " " + this.height + " "  +(this.posY - this.height) +  "  " + (clickY - (this.posY - this.height)));
         
         if (move) {
             this.posX = clickX;
@@ -172,7 +172,13 @@ function Port(name, type, input, funct) {
         this.placed = data.placed;
     
         this.width = data.width;
-        this.height = data.height;
+        this.heightT = data.heightT;
+        this.heightI = data.heightI;
+        
+        this.max = data.max;
+        this.min = data.min;
+        
+        this.value = data.value;
     };
     
 

@@ -128,7 +128,7 @@ var visual = {
             visual.addFloor(floor);
         });
         
-        // cancel button
+        // cancel button conf floor
         $("#popup-conf-floor :button").click(function (event) {
             $('#popup-conf-floor').popup('close');
             $('#popup-conf-floor form')[0].reset();
@@ -202,6 +202,12 @@ var visual = {
 
         });
         
+        // cancel button conf floor
+        $("#popup-conf-location :button").click(function (event) {
+            $('#popup-conf-location').popup('close');
+            $('#popup-conf-location form')[0].reset();
+        });
+        
         $("#popup-add-odcontrol #odc-add-ok").click(function (event) {
             
             var nODC, odc;
@@ -239,6 +245,48 @@ var visual = {
            
         });
         
+         $("#popup-conf-aport-value #aport-value-conf-ok").click(function (event) {
+
+            var localPort = {}, odc, port;
+             
+            $.each($('#popup-conf-aport-value form').serializeArray(), function () {
+
+                if (localPort[this.name]) {
+                    if (!localPort[this.name].push) {
+                        localPort[this.name] = [localPort[this.name]];
+                    }
+                    localPort[this.name].push(this.value || '');
+                } else {
+                    localPort[this.name] = this.value || '';
+                }
+            });
+            
+            $('#popup-conf-aport-value').popup('close');
+            
+            $('#popup-conf-aport-value form')[0].reset();
+             
+            odc = $("#popup-conf-aport-value").data('odc');
+            port = $("#popup-conf-aport-value").data('port');
+
+            odc.ports[port].value = localPort.value;
+            odc.setPort(odc.ports[port]);
+           
+        });
+        
+        // cancel button
+        $("#popup-conf-aport-value :button").click(function (event) {
+            $('#popup-conf-aport-value').popup('close');
+            $('#popup-conf-aport-value form')[0].reset();
+        });
+        
+        
+         // cancel button
+        $("#popup-conf-aport :button").click(function (event) {
+            $('#popup-conf-aport').popup('close');
+            $('#popup-conf-aport form')[0].reset();
+        });
+        
+        
         $("#odcontrol-panel").click(function (event) {
             $("#odc-panel").panel("toggle");
         });
@@ -246,8 +294,7 @@ var visual = {
         visual.local = new Location("", "", "");
         
         $("#odc-list").css("display", "none");
-        
-        
+            
         $("#page-visual").on("pageshow", function (event) {
             //BETA
             var json_config,
@@ -269,8 +316,8 @@ var visual = {
         canvas = $('.main-canvas')[0];
         canvas.addEventListener('touchmove', function (event) {
             
-            if (visual.use === 1) { 
-                 return; 
+            if (visual.use === 1) {
+                return;
             }
             
             console.log("DRAG!!");
@@ -307,49 +354,15 @@ var visual = {
             }
             event.preventDefault();
         }, false);
-            
         
-//        canvas.addEventListener('taphold', function (event) {
-//            //Assume only one touch/only process one touch even if there's more
-//            var touch = event.targetTouches[0], i, j, odc, exit = false;
-// 
-//           
-//            for (i = 0; i < visual.local.odcontrols.length; i++) {
-//
-//                odc = visual.local.odcontrols[i];
-//
-//                for (j = 0; j < odc.ports.length; j++) {
-//
-//                    if (odc.ports[j].placed === true && odc.ports[j].level === visual.floorCurrent.level) {
-//                        if (odc.ports[j].detectHit(touch.pageX, touch.pageY - visual.headerHeight)) {
-//
-//                                odc.ports[j].showConfigurePort();
-//                                // Redraw the canvas
-//                                visual.drawCanvas();
-//                                exit = true;
-//                                break;
-//                        }
-//                    }
-//                }
-//
-//                if (exit) {
-//                    break;
-//                }
-//            }
-//            
-//            event.preventDefault();
-//        }, false);
-        
-        
-         canvas.addEventListener('touchstart', function (event) {
+        canvas.addEventListener('touchstart', function (event) {
              
-             if (visual.use === 0) { 
-                 return; 
-             }
-             
+            if (visual.use === 0) {
+                return;
+            }
+
             //Assume only one touch/only process one touch even if there's more
             var touch = event.targetTouches[0], i, j, odc, exit = false;
- 
            
             for (i = 0; i < visual.local.odcontrols.length; i++) {
 
@@ -361,22 +374,28 @@ var visual = {
                         if (odc.ports[j].detectHit(touch.pageX, touch.pageY - visual.headerHeight, false)) {
 
                             console.log("tocandoooooooo");
-                            if (odc.ports[j].input === 'O') 
-                            {
+                            if (odc.ports[j].input === 'O') {
                                 if (odc.ports[j].type === 'D') {
                                     if (odc.ports[j].value === "ON") {
                                         odc.ports[j].value = "OFF";
                                     } else {
                                         odc.ports[j].value = "ON";
                                     }
+                                    
+                                    odc.setPort(odc.ports[j]);
                                 } else {
-                                    $('#popup-conf-aport').popup('open');
-
+                                    
+                                    $('#popup-conf-aport-value #value').val(odc.ports[j].value);
+                                    $('#popup-conf-aport-value h4').text("Valor entre (" + odc.ports[j].min + " / " + odc.ports[j].max + ")");
+                                    $('#popup-conf-aport-value').data('odc', odc);
+                                    $('#popup-conf-aport-value').data('port', j);
+                                    $('#popup-conf-aport-value').popup('open');
+                                    
+                                    event.stopPropagation();
                                 }
                                 
-                                odc.setPort(odc.ports[j]);
                             } else {
-                                app.alert("Puerto de entrada. No es posible modificarlo", true);
+                                app.alert("¡Puerto de entrada!", true);
                                     
                                 window.setTimeout(function () {
                                     app.alert("", false);
@@ -395,12 +414,8 @@ var visual = {
                     break;
                 }
             }
-            
             event.preventDefault();
         }, false);
-            
-      //  draw();
-     
     },
     
     setUse: function (use) {
@@ -411,10 +426,10 @@ var visual = {
         console.log("USO VISUAL: " + visual.use);
         
         if (visual.use === 0) {
-            $("#odcontrol-panel").css('visibility', 'hidden');
+            $("#odcontrol-panel").css('visibility', 'visible');
             clearTimeout(visual.refreshLoop);
         } else {
-            $("#odcontrol-panel").css('visibility', 'visible');
+            $("#odcontrol-panel").css('visibility', 'hidden');
             visual.updatePorts();
             visual.refreshPorts();
         }
@@ -507,6 +522,7 @@ var visual = {
                 } else {
                     parts[0] = entry.name;
                     parts[1] = entry.type + entry.input + "M";
+                    parts[2] = entry.value;
                 }
                 
                 console.log("Nombre " + parts[0] + "," + parts[1] + "," + parts[2] + " en " + entry);
@@ -518,10 +534,19 @@ var visual = {
                     if (parts[1].charAt(2) !== "H") {
         
                         port = new Port(parts[0], parts[1].charAt(0), parts[1].charAt(1), "");
+                        
                         if (readPorts !== null) {
                             port.create(entry);
+                        } else {
+                            if (parts[1].charAt(0) === 'A') {
+                                port.min = parts[3].split('|')[0];
+                                port.max = parts[3].split('|')[1];
+                            }
+                            
+                            port.value = parts[2];
                         }
-                        odcontrol.addPort(port);
+                        
+                        
                        
                         if (parts[1].charAt(0) === 'A') {
                             type = 'a';
@@ -534,6 +559,8 @@ var visual = {
                         } else {
                             input = 'd';
                         }
+                        
+                        odcontrol.addPort(port);
                         
                         divPort = $("<div class='collapsible-port'><span class='port-icon' >" + type + " " + input + "</span><span class='port-content'>" + parts[0] + "</span></div>");
                         $(divPort).data("entry", port);

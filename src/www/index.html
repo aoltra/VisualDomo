@@ -167,7 +167,6 @@
             </div>
             <div data-role="content">
                  
-                
                 <div class="contenedor">
                      <div id="draw-area"><canvas class="main-canvas" width="150px" height="150px"></canvas></div>
                      <!-- floor panel -->
@@ -281,16 +280,36 @@
                         </div>
                     </div>
                     
-                    <!-- aport configuration -->
+                    <!-- aport value configuration -->
+                    <div data-role="popup" id="popup-conf-aport-value" class="ui-content" data-theme="b" data-position-to="window" data-dismissible="false" data-overlay-theme="b">
+                        <div data-role="header" data-theme="b" class="ui-corner-top">
+                            <h1>Configuración valor puerto analógico</h1>
+                        </div>
+                        <div data-role="content" data-theme="b" class="ui-corner-bottom ui-content">
+                            <h4>Introduzca el valor del puerto</h4>
+
+                            <form name="aport-value-conf" action="" method="post">
+                                <label for="value" class="ui-hidden-accessible">Valor</label>
+                                <input type="text" name="value" id="value" placeholder="Valor" maxlength="15">
+
+                                <div class="ui-grid-a">
+                                    <div class="ui-block-a"><input type="button" name="ok" id="aport-value-conf-ok" value="Aceptar" data-theme="b" data-icon="check" data-iconpos="right"></div>
+                                    <div class="ui-block-b"><input type="button" name="cancel" id="aport-value-conf-cancel" value="Cancelar" data-theme="b" data-icon="back" data-iconpos="right"></div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    
+                    <!-- aport function configuration -->
                     <div data-role="popup" id="popup-conf-aport" class="ui-content" data-theme="b" data-position-to="window" data-dismissible="false" data-overlay-theme="b">
                         <div data-role="header" data-theme="b" class="ui-corner-top">
-                            <h1>Configuración puerto analógico</h1>
+                            <h1>Configuración función puerto analógico</h1>
                         </div>
                         <div data-role="content" data-theme="b" class="ui-corner-bottom ui-content">
                             <h4>Introduzca los datos de configuración de la localización</h4>
 
                             <form name="aport-conf" action="" method="post">
-                                <label for="value" class="ui-hidden-accessible">Nombre</label>
+                                <label for="value" class="ui-hidden-accessible">Función</label>
                                 <input type="text" name="value" id="value" placeholder="Valor" maxlength="15">
 
                                 <div class="ui-grid-a">
