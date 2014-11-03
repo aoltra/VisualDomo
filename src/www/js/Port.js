@@ -17,7 +17,8 @@ function Port(name, type, input, funct) {
     "use strict";
     
     var fontSize = 16,
-        fontSizeIcon = 85;
+        fontSizeIcon = 85,
+        fontSizeUnit = 24;
     var BASICA = 0,
         BASICD = 1,
         LAMP = 2,
@@ -78,6 +79,16 @@ function Port(name, type, input, funct) {
             ctx.fillText(app.functionPortsFonts[this.funct], this.posX - widthIcon * 0.5, this.posY);
         }
         
+         
+        // Draw Units
+        if (this.type == 'A') {
+        
+            var text = parseFloat(this.value).toPrecision() + " " + this.units;
+            console.log("textoooooo "+ text);
+            ctx.font = "bold " + fontSizeUnit +"px Arial";
+            ctx.fillText(text, this.posX + widthIcon * 0.6, this.posY - fontSizeUnit * 0.5);
+            
+        }
 //        switch (this.funct) {
 //            case 0:
 //                widthIcon = ctx.measureText("a").width;
