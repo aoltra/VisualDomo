@@ -111,6 +111,7 @@ ul,li  {
     overflow: hidden;
  //   display: block;
      position: relative;
+    vertical-align: center;
 }
 
 .mm-menu td.row2 {
@@ -118,13 +119,12 @@ ul,li  {
     height: 90px;
     overflow: hidden;
     position: relative;
+    vertical-align: center;
 }
 
-
-
 .mm-menu td div {
-    text-align: left;
-    width: 100%;
+/*    text-align: left;*/
+/*    width: 100%;*/
     height: 100%;
     position: relative;
     color: #283f00;
@@ -132,67 +132,111 @@ ul,li  {
 }
 
 
-.mm-icon{
+.row1 .mm-icon{
     font-family: 'VisualDomo', cursive;
-    font-size: 110px;
+    font-size: 115px;
     text-shadow: 0px 0px 2px #333;
-    line-height: 74px;
-    position: absolute;
+    line-height: 100px;
+    max-height: 110px;
+    position: relative;
     width: 75px;
     height: 100px;
     left: 6px;
-    top: 5px;
+    top: -7px;
     text-align: center;
-    display: inline-block;
+    display: inline;
+ //   border: 2px solid red;
 } 
 
-.row2 .mm-icon{
+.row2 .mm-icon {
     font-family: 'VisualDomo', cursive;
-    font-size: 95px;
+    font-size: 105px;
     text-shadow: 0px 0px 2px #333;
-    line-height: 63px;
-    position: absolute;
+    line-height: 90px;
+    position: relative;
     width: 75px;
-    height: 90px;
-    left: 6px;
-    top: 5px;
+    max-height: 90px;
+    left: 5px;
+    top: -7px;
     text-align: center;
-    display: inline-block;
+    display: inline;
+    vertical-align: center;
+//    border: 2px solid orange;
+    
 }
 
-.mm-content {
-    position: absolute;
-    left: 83px;
-    padding: 0;
-    height: 100px;
-    top: 2px;
-    display: inline-block;
+.row2 p {
+    display: inline;
+//    border: 2px solid orange;
 }
+
+.row2 .mm-main {
+    display: inline;
+ //   border: 2px solid orange;
+    line-height: 35px;
+}
+
+
+.row1 .mm-main {
+    position: absolute;
+    left: 0px;
+    top: 200px;
+    //display: inline;
+}
+
+
+.row1 .mm-content {
+/*
+    position: absolute;
+    left: 10px;
+*/
+    margin-left: 10px;
+    margin-bottom: 10px;
+    padding: 0;
+   // height: 100px;
+    top: -63px;
+  //  display: inline;
+   // text-align: left;
+ //   border: 4px solid yellow;
+}
+
+.row2 .mm-content {
+    margin-left: 10px;
+    margin-bottom: 10px;
+    top: -21px;
+}
+
 
 .row1 .mm-main {
     font-size: 35px;
-    margin: 0;
+    margin: 4px;
+    top: 0px;
+ //   border: 4px solid blue
 }
 
 .row2 .mm-main {
     font-size: 30px;
-    margin-top: 22px;
+//    margin-top: 0px;
+//    border: 2px solid orange;
+     vertical-align: center;
 }
 
-.mm-sub {
+
+p.mm-sub {
+    position: relative;
+    display: inline-block;
+    left: 0px;
+    top: 65px;
+   // width: 200px;
     margin: 4px;
     font-size: 20px;
     color: #454;
+//    border: 4px solid blue;
+    overflow: hidden;
 }
 
+
 #mm-external {
-  /*  background-image:-webkit-gradient(
-        linear,
-        left top,
-        left bottom,
-        color-stop(0.20, #cced62),
-        color-stop(0.70, #acdc29)
-    );*/
     
     background-color: #e0828a;
 }
