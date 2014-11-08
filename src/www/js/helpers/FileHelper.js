@@ -43,14 +43,16 @@ var helpFile = {
                 }
 
                 console.log('Directory ' + dirEntry.fullPath + ' created');
+            
+                if (successCallback !== null) {
+                    successCallback();
+                }
 			},
 			helpFile.errorHandler
             );
 
         
-        if (successCallback !== null) {
-            successCallback();
-        }
+       
 	},
 
 	// Read directories entries

@@ -49,12 +49,12 @@ var app = {
         
         // beforeshow events
         // lib: FileDialog
-        $(document).on("pagebeforeshow", "#file-dialog", function () {
+   /*     $(document).on("pagebeforeshow", "#file-dialog", function () {
             
             var parameters =  $(this).data("url").split('?');
             fileDialog.initialize(parameters[1]);
             
-        });
+        });*/
     },
 
     // Update DOM on a Received Event
