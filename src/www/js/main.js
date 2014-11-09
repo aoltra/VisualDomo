@@ -83,6 +83,9 @@ var app = {
                     function () {
                         
                         app.networkState = navigator.connection.type;
+                        
+                        console.log("TIPO CONEXION:" + app.networkState);
+                     
                         wifiinfo.getBSSID(
                             function (BSSID) {
                                 console.log("BSSID: " + BSSID);
@@ -105,7 +108,7 @@ var app = {
                                 console.log("Error wifiinfo.getSSID: " + error);
                             }
                         );
-                        
+                    
                         app.showMainMenu();
                     },
                     function () {   // Not used
@@ -132,12 +135,14 @@ var app = {
         selectLocal.initialize(function () {
 
             // 3G network
-            if (app.networkState === Connection.CELL_2G && app.networkState === Connection.CELL_3G && app.networkState === Connection.CELL_4G && app.networkState === Connection.CELL) {
-                $("#mm-assignlocation").css("border", "3px solid red");
-                $("#mm-configure").css("border", "3px solid red");
-                $('.sp-info #tx-SSID').text("3G");
+            if (app.networkState === Connection.CELL_2G || app.networkState === Connection.CELL_3G
+                    || app.networkState === Connection.CELL || app.networkState === '3g' 
+                    || app.networkState === '4g' || app.networkState === Connection.CELL_4G) {
+//                $("#mm-assignlocation").css("border", "3px solid red");
+//                $("#mm-configure").css("border", "3px solid red");
+                $('.sp-info #tx-SSID').text("3G/4G");
             }
-
+        
             if (app.networkState === Connection.WIFI) {
                 
                 $('.sp-info #tx-SSID').text(app.SSID);
@@ -153,8 +158,8 @@ var app = {
             }
 
             if (app.networkState === Connection.NONE || app.networkState === Connection.UNKNOWN || app.networkState === Connection.ETHERNET) {
-                $("#mm-external").css("border", "3px solid red");
-                $("#mm-assignlocation").css("border", "3px solid red");
+//                $("#mm-external").css("border", "3px solid red");
+//                $("#mm-assignlocation").css("border", "3px solid red");
                 $('.sp-info #tx-SSID').text("");
                 $('.sp-info #tx-connected').text("Sin conexión");
             }
@@ -201,7 +206,7 @@ var app = {
             $(":mobile-pagecontainer").pagecontainer("change", "#page-select-local", { reload: "true" });
         });
        
-      
+        
     },
     
     // HTTP GET request to access ODControl
