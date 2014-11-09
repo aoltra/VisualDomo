@@ -88,8 +88,10 @@ var app = {
                      
                         wifiinfo.getBSSID(
                             function (BSSID) {
-                                console.log("BSSID: " + BSSID);
-                                app.BSSID = BSSID.replace(/\"/g, '');
+                                if (BSSID !== null) {
+                                    console.log("BSSID: " + BSSID);
+                                    app.BSSID = BSSID.replace(/\"/g, '');
+                                }
                             },
                             function (error) {
                                 console.log("Error wifiinfo.getBSSID: " + error);
@@ -98,11 +100,12 @@ var app = {
                         
                         wifiinfo.getSSID(
                             function (SSID) {
-                                app.SSID = SSID.replace(/\"/g, '');
-                                if (app.SSID === "") {
-                                    app.SSID = "Sin nombre";
+                                if (SSID !== null) {
+                                    app.SSID = SSID.replace(/\"/g, '');
+                                    if (app.SSID === "") {
+                                        app.SSID = "Sin nombre";
+                                    }
                                 }
-                        
                             },
                             function (error) {
                                 console.log("Error wifiinfo.getSSID: " + error);
@@ -136,7 +139,7 @@ var app = {
 
             // 3G network
             if (app.networkState === Connection.CELL_2G || app.networkState === Connection.CELL_3G
-                    || app.networkState === Connection.CELL || app.networkState === '3g' 
+                    || app.networkState === Connection.CELL || app.networkState === '3g'
                     || app.networkState === '4g' || app.networkState === Connection.CELL_4G) {
 //                $("#mm-assignlocation").css("border", "3px solid red");
 //                $("#mm-configure").css("border", "3px solid red");
@@ -163,8 +166,7 @@ var app = {
                 $('.sp-info #tx-SSID').text("");
                 $('.sp-info #tx-connected').text("Sin conexión");
             }
-            
-            
+                    
             $('.sp-image').parent().bind('transitionend webkitTransitionEnd', function () {
                 $('.sp-info').css('visibility', 'visible');
                 $('.mm-menu').css('visibility', 'visible');
@@ -190,6 +192,19 @@ var app = {
             }
         });
         
+        $("#mm-visualize").click(function () {
+            if (selectLocal.currentLocal !== null) {
+                visual.setUse(1);
+                visual.loadLocation(selectLocal.currentLocal);
+                $(":mobile-pagecontainer").pagecontainer("change", "#page-visual", { reload: "true" });
+            } else {
+                app.alert("No está definida la localización actual", true, 1);
+                                    
+                window.setTimeout(function () {
+                    app.alert("", false);
+                }, 1350);
+            }
+        });
         
         $("#mm-newlocation").click(function () {
             visual.setUse(0);
@@ -202,11 +217,27 @@ var app = {
         });
          
         $("#mm-assignlocation").click(function () {
-            selectLocal.setUse(1);
-            $(":mobile-pagecontainer").pagecontainer("change", "#page-select-local", { reload: "true" });
+            var sSID = $('.sp-info #tx-SSID').text();
+            
+            if (sSID === "" || sSID === "3G/4G") {
+                app.alert("Es necesario estar conectado a una red Wifi", true, 1);
+                                    
+                window.setTimeout(function () {
+                    app.alert("", false);
+                }, 1350);
+            } else {
+                selectLocal.setUse(1);
+                $(":mobile-pagecontainer").pagecontainer("change", "#page-select-local", { reload: "true" });
+            }
         });
        
-        
+        $("#mm-external").click(function () {
+            app.alert("Opción no soportada en esta versión", true, 0);
+                                    
+            window.setTimeout(function () {
+                app.alert("", false);
+            }, 1350);
+        });
     },
     
     // HTTP GET request to access ODControl
@@ -235,7 +266,6 @@ var app = {
             request.open("GET", "http://" + url, false, user, pass);
         }
 
-        console.log("UUUUUUUU   " + url);
         request.send(null);
         
         if (syn === false) {
@@ -252,10 +282,30 @@ var app = {
      
         if (show === true) {
             $(".alert").css("display", "block");
-            $(".alert h1").text(txt);
+            $(".alert p").text(txt);
+            $(".alert").css("margin-left", "-" + $(".alert").width() / 2 + "px");
+           
         } else {
             $(".alert").css("display", "none");
         }
+        
+        if (params !== null) {
+        
+            switch (params) {
+            case 0:             // INFO
+                $(".alert #alert-icon").text('u');
+                break;
+
+            case 1:             // ERROR
+                $(".alert #alert-icon").text('p');
+                break;
+
+            case 2:             // WARNING
+                $(".alert #alert-icon").text('v');
+                break;
+            }
+        }
+        
     }
     
     

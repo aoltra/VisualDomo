@@ -40,10 +40,11 @@
     </head>
     <body>
         <div class="alert"> 
-            <span class='ui-icon-loading'></span>
-			<h1>...</h1>
+            <div class="info">
+                <span id='alert-icon'></span>
+                <p>...</p>
+            </div>
         </div>
-            
         
         <div data-role="page" id="page-main" data-theme="b"> 
             <div class="sp-logo">
@@ -57,54 +58,7 @@
                     <span id="tx-connected">Connected: </span>
                     <span id="tx-SSID"></span>
                 </div>
-                <div class="mm-menu">
-                 <!--   <ul>
-                        <li id="mm-external">
-
-                             <div>
-                                <span class="mm-icon">y</span>
-                                <div class="mm-content" >
-                                    <p class="mm-main">External</p>
-                                    <p class="mm-sub">Connect to external location</p>
-                                </div>
-                             </div>
-
-                        </li>
-                        <li id="mm-newlocation">
-                             <div>
-
-                                <span class="mm-icon">5</span>
-                                <div class="mm-content">
-                                    <p class="mm-main">New</p>
-                                    <p class="mm-sub">Configure a new location</p>
-                                </div>
-                             </div>
-
-                        </li>
-                        <li id="mm-assignlocation">
-
-                            <div>     
-                            <span class="mm-icon">g</span>
-                                <div class="mm-content">
-                                    <p class="mm-main">Link</p>
-                                    <p class="mm-sub">Link to a previous location</p>
-                                </div>
-                            </div> 
-                         
-                        </li>
-                         <li id="mm-configure">
-
-                            <div>       
-                                <span class="mm-icon">r</span>
-                                <div class="mm-content">
-                                    <p class="mm-main">Configure</p>
-                                    <p class="mm-sub">Configure location</p>
-                                </div>
-                            </div>
-
-                        </li> 
-                    </ul> -->
-                    
+                <div class="mm-menu">       
                     <table>
                         <tr>
                             <td align="left" id="mm-newlocation" class="row1"> 

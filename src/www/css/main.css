@@ -215,19 +215,16 @@ ul,li  {
 }
 
 .row2 .mm-main {
-    font-size: 30px;
-//    margin-top: 0px;
+    font-size: 1.875em; //30px;
 //    border: 2px solid orange;
      vertical-align: center;
 }
-
 
 p.mm-sub {
     position: relative;
     display: inline-block;
     left: 0px;
     top: 65px;
-   // width: 200px;
     margin: 4px;
     font-size: 20px;
     color: #454;
@@ -237,33 +234,14 @@ p.mm-sub {
 
 
 #mm-external {
-    
     background-color: #e0828a;
 }
 
 #mm-newlocation {
- /*   background-image:-webkit-gradient(
-        linear,
-        left top,
-        left bottom,
-        color-stop(0.2, #32bff3),
-        color-stop(0.7, #00aff1)
-    );*/
-    
     background-color: #cca7bc;
 }
 
 #mm-assignlocation {
-/*
-    background-image:-webkit-gradient(
-        linear,
-        left top,
-        left bottom,
-        color-stop(0.20, #fe9033),
-        color-stop(0.70, #ff7400)
-    );
-*/
-    
     background-color: #ab6f87;
 }
 
@@ -271,45 +249,44 @@ p.mm-sub {
     background-color: #ccdbba;
 }
 
-
 #mm-configure {
-/*
-    background-image:-webkit-gradient(
-        linear,
-        left top,
-        left bottom,
-        color-stop(0.20, #d35bb3),
-        color-stop(0.70, #d1259a)
-    );
-*/
-    
     background-color: #70bab3;
 }
 
 .alert {
+  
     display: none;
 	z-index: 9999999;
-	position: fixed;
+
+	position: absolute;
 	top: 50%;
 	left: 50%;
 	border:0;
-    width: 12.5em;
+    width: auto;
 	filter: Alpha(Opacity=70);
 	opacity: .70;
 	box-shadow: 0 1px 1px -1px #fff;
 	height: auto;
-	margin-left: -6.875em;
-	margin-top: -2.6875em;
-	padding: .625em;
+	padding: 1em;
     background-color: black;
-    -webkit-border-radius: 2.25em;
-	border-radius: 2.25em;
+    -webkit-border-radius: 0.5em;
+	border-radius: 0.5em;
 }
 
-.alert h1 {
+.alert .info {
+    display:table;
+}
+
+.alert p {
+    display: table-cell; vertical-align: middle;
 	font-size: 1em;
-	margin: 0;
-	text-align: center;
+	padding-left: 1.15em;
+}
+
+.alert #alert-icon {
+    display: table-cell; vertical-align: middle;
+    font-size: 3em;
+    font-family: 'VisualDomo', cursive;
 }
 
 
