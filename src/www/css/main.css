@@ -66,15 +66,16 @@ ul,li  {
     width: 100%;
     left: 0%;
     margin: 5% 0%;
-    font-size: 25px;
+    //font-size: 25px;
     color: #ddd;
     text-align: center;
     visibility: hidden;
+    font-size: 1.4em;
 }
 
 .sp-status-icon {
     font-family: 'VisualDomo', cursive;
-    font-size: 60px;
+    font-size: 3.75em;
     line-height: 20px;
     width: 60px;
     height: 20px;
@@ -82,6 +83,10 @@ ul,li  {
     text-align: center;
     margin-right: 6px;
 }  
+
+#tx-connected, #tx-SSID {
+    font-size: 1.4em;
+}
 
 .mm-menu {
     width: 100%;
@@ -105,7 +110,7 @@ ul,li  {
 
 .mm-menu td.row1 {
     width: 50%;
-    height: 100px;
+    height: 6.25em;//100px;
 //    box-shadow: 5px 5px 5px rgba(255,255,255,0.2);
 //    border-radius: 10px;
     overflow: hidden;
@@ -116,7 +121,7 @@ ul,li  {
 
 .mm-menu td.row2 {
     width: 33%;
-    height: 90px;
+    height: 5.625em;//90px;
     overflow: hidden;
     position: relative;
     vertical-align: center;
@@ -134,7 +139,7 @@ ul,li  {
 
 .row1 .mm-icon{
     font-family: 'VisualDomo', cursive;
-    font-size: 115px;
+    font-size: 7.18em; //115px;
     text-shadow: 0px 0px 2px #333;
     line-height: 100px;
     max-height: 110px;
@@ -150,12 +155,12 @@ ul,li  {
 
 .row2 .mm-icon {
     font-family: 'VisualDomo', cursive;
-    font-size: 105px;
+    font-size: 6.5625em;//105px;
     text-shadow: 0px 0px 2px #333;
     line-height: 90px;
     position: relative;
     width: 75px;
-    max-height: 90px;
+    max-height: 6.5625em; //90px;
     left: 5px;
     top: -7px;
     text-align: center;
@@ -176,13 +181,6 @@ ul,li  {
     line-height: 35px;
 }
 
-
-.row1 .mm-main {
-    position: absolute;
-    left: 0px;
-    top: 200px;
-    //display: inline;
-}
 
 
 .row1 .mm-content {
@@ -206,9 +204,20 @@ ul,li  {
     top: -21px;
 }
 
+/*
+.row1 .mm-main {
+    position: absolute;
+    left: 0px;
+    top: 200px;
+    //display: inline;
+}
+*/
 
 .row1 .mm-main {
-    font-size: 35px;
+    position: absolute;
+    left: 0px;
+  //  top: 200px;
+    font-size: 2.1875em;//35px;
     margin: 4px;
     top: 0px;
  //   border: 4px solid blue
@@ -226,7 +235,7 @@ p.mm-sub {
     left: 0px;
     top: 65px;
     margin: 4px;
-    font-size: 20px;
+    font-size: 1.24em;//20px;
     color: #454;
 //    border: 4px solid blue;
     overflow: hidden;
@@ -279,14 +288,37 @@ p.mm-sub {
 
 .alert p {
     display: table-cell; vertical-align: middle;
-	font-size: 1em;
+	font-size: 1.1em;
 	padding-left: 1.15em;
+    color: white;
 }
 
 .alert #alert-icon {
     display: table-cell; vertical-align: middle;
-    font-size: 3em;
+    font-size: 3.1em;
     font-family: 'VisualDomo', cursive;
+    color: white;
 }
 
+/* RESPONSIVE */
 
+@media screen and (max-device-width: 900px) and (-webkit-max-device-pixel-ratio: 4.4) {
+   .sp-logo.verticalTranslate {
+        margin-top: -52% !important;
+   }
+    
+   * { 
+        font-size: 21px;
+   }
+    
+   .row1 .mm-content {
+        top: -70px;
+    }
+    
+    .row1 .mm-main {
+        position: absolute;
+        left: 0px;
+        margin-top: -8px;
+    }   
+
+}
