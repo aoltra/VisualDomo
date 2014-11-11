@@ -276,14 +276,14 @@ var app = {
         return response;
     },
     
-    // show a alert dialog
+    // show an alert dialog
     alert: function (txt, show, params) {
         "use strict";
      
         if (show === true) {
             $(".alert").css("display", "block");
             $(".alert p").text(txt);
-            $(".alert").css("margin-left", "-" + $(".alert").width() / 2 + "px");  
+            $(".alert").css("margin-left", "-" + $(".alert").width() / 2 + "px");
         } else {
             $(".alert").css("display", "none");
         }

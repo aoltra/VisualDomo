@@ -204,15 +204,6 @@ ul,li  {
     top: -21px;
 }
 
-/*
-.row1 .mm-main {
-    position: absolute;
-    left: 0px;
-    top: 200px;
-    //display: inline;
-}
-*/
-
 .row1 .mm-main {
     position: absolute;
     left: 0px;
@@ -282,7 +273,7 @@ p.mm-sub {
 	border-radius: 0.5em;
 }
 
-.alert .info {
+.alert .info, .about .info {
     display:table;
 }
 
@@ -299,6 +290,39 @@ p.mm-sub {
     font-family: 'VisualDomo', cursive;
     color: white;
 }
+
+.about {
+  
+    display: none;
+	z-index: 9999988;
+
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	border:0;
+    width: auto;
+    max-width: 50%;
+	filter: Alpha(Opacity=85);
+	opacity: .85;
+	box-shadow: 0 1px 1px -1px #fff;
+	height: auto;
+	padding: 1em;
+    background-color: black;
+    -webkit-border-radius: 0.5em;
+	border-radius: 0.5em;
+}
+
+.about #alert-icon {
+    display: table-cell; vertical-align: middle;
+}
+
+.about table {
+    display: table-cell; vertical-align: middle;
+	font-size: 1.1em;
+	padding-left: 1.15em;
+    color: white;
+}
+
 
 /* RESPONSIVE */
 

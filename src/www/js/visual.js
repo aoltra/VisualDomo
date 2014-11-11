@@ -46,8 +46,10 @@ var visual = {
             
             if ($('#floor-panel').css('display') === 'block') {
                 height = '-=' + $('#floor-panel').height();
+                $(this).text('x');
             } else {
                 height = '+=' + $('#floor-panel').height();
+                $(this).text('y');
             }
             $("#floor-panel").slideToggle("fast");
             
@@ -135,6 +137,22 @@ var visual = {
         });
      
         $("#floor-panel #add-floor").data("entry", { "level": 999 });
+        
+        
+        $("#page-visual #config-menu #about-menu").click(function (event) {
+        
+            $("#config-menu").popup('close');
+            
+            console.log("ABOUT");
+            
+            visual.aboutShow();
+                                    
+            window.setTimeout(function () {
+                visual.aboutHide();
+            }, 5000);
+        });
+        
+        
         
         $("#page-visual #config-menu #save").click(function (event) {
         
@@ -1074,12 +1092,29 @@ var visual = {
                   
             });
             
-            
         });
          
-
         visual.drawCanvas();
-          
-          
+  
+    },
+
+    // show the about box
+    aboutShow: function () {
+        "use strict";
+        
+        $(".about").css("display", "block");
+        $(".about").css("margin-left", "-" + $(".about").width() / 2 + "px");
+        $(".about").css("margin-top", "-" + $(".about").height() / 2 + "px");
+    },
+      
+    // Hide the about box
+    aboutHide: function () {
+        
+        $(".about").css("display", "none");
+        
     }
+    
+
+
+
 };
