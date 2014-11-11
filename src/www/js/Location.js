@@ -10,7 +10,7 @@
  */
 
 /* JSLint options */
-/*global helpFile, $, LocalFileSystem, app, console, Floor, ODControl */
+/*global helpFile, $, LocalFileSystem, app, console, Floor, ODControl, Port */
 
 // Constructor
 function Location(BSSID, name, description) {
@@ -85,7 +85,7 @@ function Location(BSSID, name, description) {
 
                                     console.log("planta fin " + json);
                                     
-                                    app.alert("Grabación finalizada", true);
+                                    app.alert("Grabación finalizada", true, null);
                                     
                                     window.setTimeout(function () {
                                         app.alert("", false);
@@ -148,9 +148,8 @@ function Location(BSSID, name, description) {
             ports = odc.ports;
             
             entry.ports.forEach(function (entry) {
-                port = new Port("","","",""); 
+                port = new Port("", "", "", "");
                 
-                console.log("PUERTTOOOOOOO    " + JSON.stringify(entry));
                 port.create(entry);
                 
                 ports.push(port);

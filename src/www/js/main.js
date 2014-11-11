@@ -283,8 +283,7 @@ var app = {
         if (show === true) {
             $(".alert").css("display", "block");
             $(".alert p").text(txt);
-            $(".alert").css("margin-left", "-" + $(".alert").width() / 2 + "px");
-           
+            $(".alert").css("margin-left", "-" + $(".alert").width() / 2 + "px");  
         } else {
             $(".alert").css("display", "none");
         }
@@ -304,6 +303,8 @@ var app = {
                 $(".alert #alert-icon").text('v');
                 break;
             }
+        } else {
+            $(".alert #alert-icon").text('');
         }
         
     }

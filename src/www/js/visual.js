@@ -186,7 +186,23 @@ var visual = {
             $('#popup-conf-location').popup('close');
             $('#popup-conf-location form')[0].reset();
             
+            if (localData.name.indexOf(" ")>-1) {
+                app.alert("El nombre de la localización no puede contener espacios", true, 1);
+                                    
+                window.setTimeout(function () {
+                    app.alert("", false);
+                }, 1550);
+                
+                return false;
+            }
+            
             if (localData.name === "") {
+                app.alert("No se ha definido un nombre para la localización", true, 1);
+                                    
+                window.setTimeout(function () {
+                    app.alert("", false);
+                }, 1550);
+                
                 return false;
             } else {
             
