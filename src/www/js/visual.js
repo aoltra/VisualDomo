@@ -690,6 +690,8 @@ var visual = {
                 
                 var port = $(this).parent();
                 
+                $("#odc-panel").panel("toggle");
+                
                 $('#popup-confirm h1').text("Borrar puerto");
                 $('#popup-confirm h3').text("¿Estás seguro de que quieres quitar este de la localización?");
                 $('#popup-confirm').popup('open');
@@ -715,6 +717,8 @@ var visual = {
                 console.log("CONFIGUR PORT");
                 
                 var port = $(this).parent(), confPort = {}, select, valfunc;
+                
+                $("#odc-panel").panel("toggle");
                 
                 $('#popup-conf-port form')[0].reset();
                 $('#popup-conf-port #units').val(port.data('entry').units);
