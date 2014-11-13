@@ -495,8 +495,12 @@ var visual = {
         if (visual.use === 0) {
             $("#odcontrol-panel").css('visibility', 'visible');
             clearTimeout(visual.refreshLoop);
+            $("#config-menu #config-item").css('display', 'block');
+            $("#config-menu #save-item").css('display', 'block');
         } else {
             $("#odcontrol-panel").css('visibility', 'hidden');
+            $("#config-menu #config-item").css('display', 'none');
+            $("#config-menu #save-item").css('display', 'none');
             visual.updatePorts();
             visual.refreshPorts();
         }
