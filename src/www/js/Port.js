@@ -61,7 +61,7 @@ function Port(name, type, input, funct) {
   
         var widthIcon, widthText, heightIcon, heightText;
         
-        ctx.font = fontSizeIcon +"px VisualDomo";
+        ctx.font = fontSizeIcon + "px VisualDomo";
         console.log("DIGITAAAAALLLL " + this.funct + "<<" + this.name);
         
         if (this.funct === 1)

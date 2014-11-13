@@ -21,12 +21,13 @@ var visual = {
     odcEdit: -1,
     divEdit: null,
     local: null,
-    save: false,
+    noConfig: false,
     saved: false,
     headerHeight: 0,
     dragPort: null,
     use: 0,             // current use 0: config local, 1: visual mode
     refreshLoop: null,
+    openConfLocation: false,
     
     
     // FUNCTIONS
@@ -128,6 +129,8 @@ var visual = {
             }
             
             visual.addFloor(floor);
+            visual.saved = false;
+            visual.updateName(visual.local.name);
         });
         
         // cancel button conf floor
@@ -137,9 +140,8 @@ var visual = {
         });
      
         $("#floor-panel #add-floor").data("entry", { "level": 999 });
-        
-        
-        $("#page-visual #config-menu #about-menu").click(function (event) {
+           
+        $("#page-visual #config-menu #about-item").click(function (event) {
         
             $("#config-menu").popup('close');
             
@@ -151,10 +153,8 @@ var visual = {
                 visual.aboutHide();
             }, 5000);
         });
-        
-        
-        
-        $("#page-visual #config-menu #save").click(function (event) {
+            
+        $("#page-visual #config-menu #save-item").click(function (event) {
         
             $("#config-menu").popup('close');
             
@@ -162,14 +162,19 @@ var visual = {
             
             if (visual.local.name === "") {
                 
-                visual.save = true;
+                visual.noConfig = true;
+                visual.openConfLocation = true;
                 // Open a popup from other popup
                 $('#config-menu').on({
                     popupafterclose: function () {
-                        if (visual.save === true) {
-                            setTimeout(function () {
-                                $('#popup-conf-location').popup('open');
-                            }, 100);
+                        if (visual.openConfLocation === true) {
+                            if (visual.noConfig === true) {
+                                setTimeout(function () {
+                                    $('#popup-conf-location').popup('open');
+                                }, 100);
+                                
+                                visual.openConfLocation = false;
+                            }
                         }
                     }
                 });
@@ -181,8 +186,32 @@ var visual = {
             console.log("GRABANDO");
         });
         
+        
+        $("#page-visual #config-menu #config-item").click(function (event) {
+        
+            $("#config-menu").popup('close');
+            
+            console.log("CONF LOCAL " + visual.local.name);
+
+            visual.openConfLocation = true;
+            
+            // Open a popup from other popup
+            $('#config-menu').on({
+                popupafterclose: function () {
+                    if (visual.openConfLocation === true) {
+                        setTimeout(function () {
+                            $('#popup-conf-location').popup('open');
+                        }, 100);
+                        
+                        visual.openConfLocation = false;
+                    }
+                }
+            });
+        });
+        
         $("#page-visual #odc-add").click(function (event) {
         
+            $("#odc-panel").panel("toggle");
             $('#popup-add-odcontrol').popup('open');
         });
         
@@ -204,7 +233,7 @@ var visual = {
             $('#popup-conf-location').popup('close');
             $('#popup-conf-location form')[0].reset();
             
-            if (localData.name.indexOf(" ")>-1) {
+            if (localData.name.indexOf(" ") > -1) {
                 app.alert("El nombre de la localización no puede contener espacios", true, 1);
                                     
                 window.setTimeout(function () {
@@ -227,10 +256,10 @@ var visual = {
                 visual.local.name = localData.name;
                 visual.local.description = localData.description;
 
-                if (visual.save === true) {
+                if (visual.noConfig === true) {
                     visual.saveLocation();
                     visual.updateName(visual.local.name);
-                    visual.save = false;
+                    visual.noConfig = false;
                 }
             }
 
@@ -276,6 +305,8 @@ var visual = {
             $('#popup-add-odcontrol form')[0].reset();
             
             visual.addODControl(odc, null);
+            visual.saved = false;
+            visual.updateName(visual.local.name);
            
         });
         
@@ -431,7 +462,7 @@ var visual = {
                                 }
                                 
                             } else {
-                                app.alert("¡Puerto de entrada!", true);
+                                app.alert("¡Puerto de entrada!", true, 0);
                                     
                                 window.setTimeout(function () {
                                     app.alert("", false);
@@ -484,8 +515,22 @@ var visual = {
     
     updateName: function (name) {
         "use strict";
+        
+        var saved, complexName;
             
-        $("#page-visual #header-visual-location").text("VisualDomo - " + name);
+        if (visual.saved === false) {
+            saved = '*';
+        } else {
+            saved = '';
+        }
+        
+        if (name === "") {
+            complexName = "";
+        } else {
+            complexName = " - " + name;
+        }
+        
+        $("#page-visual #header-visual-location").text("VisualDomo" + saved + complexName);
     },
     
     loadLocation: function (location) {
@@ -617,7 +662,7 @@ var visual = {
                 var port = $(this).parent();
                 
                 if (visual.floorCurrent === null) {
-                    app.alert("No es posible ubicar el puerto", true);
+                    app.alert("No es posible ubicar el puerto", true, 0);
                     
                     window.setTimeout(function () {
                         app.alert("", false);
@@ -633,6 +678,9 @@ var visual = {
                     port.find(".port-placed").text('q');
 
                     visual.drawCanvas();
+                    
+                    visual.saved = false;
+                    visual.updateName(visual.local.name);
                 }
             });
             
@@ -654,6 +702,9 @@ var visual = {
                     console.log("DELETING PORT...");
                     
                     $('#popup-confirm').popup('close');
+                    
+                    visual.saved = false;
+                    visual.updateName(visual.local.name);
                 });
                 
                 event.stopPropagation();
@@ -1109,6 +1160,7 @@ var visual = {
       
     // Hide the about box
     aboutHide: function () {
+        "use strict";
         
         $(".about").css("display", "none");
         
