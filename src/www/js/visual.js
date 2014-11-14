@@ -788,20 +788,31 @@ var visual = {
         $(header).on("taphold",  function (event) {
             console.log("pulsacion larga");
             
-            $(".odc-edit-toolbar").slideToggle("fast");
-            $(".odc-edit-toolbar").remove();
-            $(".collapsible-item #odc-" + visual.odcEdit).removeClass("odc-edit-toolbar");
-                    
-            visual.odcEdit = $(this).data("entry");
+            var divBar = $(this).children().last();
+    
+            if (divBar.hasClass('odc-edit-toolbar') === true) {
+               
+                $(".odc-edit-toolbar").slideToggle("fast");
+                $(".odc-edit-toolbar").remove();
+        //    $(".collapsible-item #odc-" + visual.odcEdit).removeClass("odc-edit-toolbar");
+                
+            } else {
+                
+                $(".odc-edit-toolbar").slideToggle("fast");
+                $(".odc-edit-toolbar").remove();
+                
+                visual.odcEdit = $(this).data("entry");
             
-            var divToolBarODC = "<div class='odc-edit-toolbar'><div class='ui-grid-b'>" +
-                "<div class='ui-block-a button'><p id='edit-odc'>i</p></div>" +
-                "<div class='ui-block-b button'><p id='delete-odc'>n</p></div>" +
-                "<div class='ui-block-c button'><p id='reload-odc'>o</p></div>" +
-                "</div></div>",
-                div = ".collapsible-item#odc-" + visual.odcEdit;
-            
-            $(divToolBarODC).appendTo(header);
+                var divToolBarODC = "<div class='odc-edit-toolbar'><div class='ui-grid-b'>" +
+                    "<div class='ui-block-a button'><p id='edit-odc'>i</p></div>" +
+                    "<div class='ui-block-b button'><p id='delete-odc'>n</p></div>" +
+                    "<div class='ui-block-c button'><p id='reload-odc'>o</p></div>" +
+                    "</div></div>";
+                
+                //    div = ".collapsible-item#odc-" + visual.odcEdit;
+
+                $(divToolBarODC).appendTo(header);
+            }
         });
         
         
