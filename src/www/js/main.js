@@ -141,8 +141,6 @@ var app = {
             if (app.networkState === Connection.CELL_2G || app.networkState === Connection.CELL_3G
                     || app.networkState === Connection.CELL || app.networkState === '3g'
                     || app.networkState === '4g' || app.networkState === Connection.CELL_4G) {
-//                $("#mm-assignlocation").css("border", "3px solid red");
-//                $("#mm-configure").css("border", "3px solid red");
                 $('.sp-info #tx-SSID').text("3G/4G");
             }
         
@@ -280,6 +278,9 @@ var app = {
     alert: function (txt, show, params) {
         "use strict";
      
+        $('.alert #animated-icon').css('display','none');
+        $(".alert #alert-icon").text('');
+        
         if (show === true) {
             $(".alert").css("display", "block");
             $(".alert p").text(txt);
@@ -302,9 +303,14 @@ var app = {
             case 2:             // WARNING
                 $(".alert #alert-icon").text('v');
                 break;
+                    
+            case 3:             // LOADING ICON
+                $('.alert #animated-icon').css('display','block');
+                break;
             }
         } else {
             $(".alert #alert-icon").text('');
+            $('.alert #animated-icon').css('display','none');
         }
         
     }

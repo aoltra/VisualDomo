@@ -41,6 +41,7 @@
     <body>
         <div class="alert"> 
             <div class="info">
+                <span id='animated-icon'><img src="img/ajax-loader.gif"/></span>  
                 <span id='alert-icon'></span>
                 <p></p>
             </div>
@@ -192,11 +193,11 @@
                     </div>
                     
                      <!-- odcontrol configuration -->
-                     <div data-role="popup" id="popup-add-odcontrol" class="ui-content" data-theme="b" data-position-to="window" data-dismissible="false" data-overlay-theme="e">
+                     <div data-role="popup" id="popup-add-odcontrol" data-theme="b" data-position-to="window" data-dismissible="false" data-overlay-theme="a">
                         <div data-role="header" data-theme="b" class="ui-corner-top">
-                            <h1>Datos ODControl</h1>
+                            <h1>ODControl</h1>
                         </div>
-                        <div data-role="content" data-theme="b" class="ui-corner-bottom ui-content">
+                        <div class='dialog-body'>
                             <h4>Introduzca los datos del ODControl</h4>
 
                             <form name="odc-conf" action="" method="post">
@@ -218,11 +219,11 @@
                     </div>
                     
                     <!-- location configuration -->
-                    <div data-role="popup" id="popup-conf-location" class="ui-content" data-theme="b" data-position-to="window" data-dismissible="false" data-overlay-theme="b">
+                    <div data-role="popup" id="popup-conf-location"  data-theme="b"  data-dismissible="false" data-overlay-theme="a">
                         <div data-role="header" data-theme="b" class="ui-corner-top">
-                            <h1>Configuración localización</h1>
+                            <h1>Localización</h1>
                         </div>
-                        <div data-role="content" data-theme="b" class="ui-corner-bottom ui-content">
+                        <div class='dialog-body'>
                             <h4>Introduzca los datos de configuración de la localización</h4>
 
                             <form name="local-conf" action="" method="post">

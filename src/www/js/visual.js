@@ -609,11 +609,11 @@ var visual = {
                     parts[2] = entry.value;
                 }
                 
-                console.log("Nombre " + parts[0] + "," + parts[1] + "," + parts[2] + " en " + entry);
+            //    console.log("Nombre " + parts[0] + "," + parts[1] + "," + parts[2] + " en " + entry);
                 
                 if (undefined !== parts[1]) {
 
-                    console.log("partes " + parts[0] + " " + parts[1] + "  " + parts[2] + " >" + parts[1].charAt(2) + "<");
+              //      console.log("partes " + parts[0] + " " + parts[1] + "  " + parts[2] + " >" + parts[1].charAt(2) + "<");
 
                     if (parts[1].charAt(2) !== "H") {
         

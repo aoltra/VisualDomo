@@ -157,10 +157,10 @@ var selectLocal = {
                                                 collapsibleLocal.data("entry", data);
                                                 $(idButton + " .assign-button").click(function () {
                                                 
-                                                    if (selectLocal.use === 0) {
-                                                        
+                                                    if (selectLocal.use === 0) {      
+                                                       
                                                         $(":mobile-pagecontainer").pagecontainer("change", "#page-visual");
-                                                        visual.loadLocation(data);
+                                                        visual.loadLocation(data);     
                                                 
                                                     } else {
                                                         

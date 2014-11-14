@@ -30,10 +30,11 @@ function ODControl(ID, name, description, IP, user, pass) {
     this.ports = [];
 
 	// features
-	this.version = this.version || (function () {
-		var ver = app.httpGetRequestToODControl(IP + "/ver", false, "user", "opendomo", null);
-        return ver;
-	}());
+	this.version = "";
+    
+    ODControl.prototype.getVersion =  function () {
+		this.version = app.httpGetRequestToODControl(IP + "/ver", false, "user", "opendomo", null);
+	};
 
 	// save the ODControl configuration 
 	ODControl.prototype.save = function (datos) {
@@ -59,9 +60,7 @@ function ODControl(ID, name, description, IP, user, pass) {
         }
         
         command = "/set+" + port.name + "+" + value;
-        console.log("COMANDOO " + command);
-        
-        return app.httpGetRequestToODControl(IP + command, false, "user", "opendomo", null);
     
+        return app.httpGetRequestToODControl(IP + command, false, "user", "opendomo", null);
     };
 }
