@@ -210,8 +210,16 @@ var app = {
         });
         
         $("#mm-configure").click(function () {
-            selectLocal.setUse(0);
-            $(":mobile-pagecontainer").pagecontainer("change", "#page-select-local", { reload: "true" });
+            if (selectLocal.locations.length !== 0) {
+                selectLocal.setUse(0);
+                $(":mobile-pagecontainer").pagecontainer("change", "#page-select-local", { reload: "true" });
+            } else {
+                app.alert("No hay localizaciones que configurar.", true, 0);
+                                    
+                window.setTimeout(function () {
+                    app.alert("", false);
+                }, 1350);
+            }
         });
          
         $("#mm-assignlocation").click(function () {
@@ -224,8 +232,16 @@ var app = {
                     app.alert("", false);
                 }, 1350);
             } else {
-                selectLocal.setUse(1);
-                $(":mobile-pagecontainer").pagecontainer("change", "#page-select-local", { reload: "true" });
+                if (selectLocal.locations.length !== 0) {
+                    selectLocal.setUse(1);
+                    $(":mobile-pagecontainer").pagecontainer("change", "#page-select-local", { reload: "true" });
+                } else {
+                    app.alert("No hay localizaciones que enlazar.", true, 0);
+                                    
+                    window.setTimeout(function () {
+                        app.alert("", false);
+                    }, 1350);
+                }
             }
         });
        
@@ -278,8 +294,8 @@ var app = {
     alert: function (txt, show, params) {
         "use strict";
      
-    //    $('.alert #animated-icon').css('display', 'none');
-    //    $(".alert #alert-icon").text('');
+        $('.alert #animated-icon').css('display', 'none');
+        $(".alert #alert-icon").text('');
          
         if (params !== null) {
         
@@ -314,8 +330,6 @@ var app = {
         }
         
     }
-    
-    
     
     
 };

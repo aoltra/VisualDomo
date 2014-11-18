@@ -756,7 +756,7 @@ var visual = {
                 }
                  
                 select = $("#popup-conf-port select option[value='" + valfunc  + "']");
-                $(select).attr("selected","selected");
+                $(select).attr("selected", "selected");
                 
                 $('#popup-conf-port').popup('open');
     
