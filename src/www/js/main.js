@@ -278,17 +278,9 @@ var app = {
     alert: function (txt, show, params) {
         "use strict";
      
-        $('.alert #animated-icon').css('display','none');
-        $(".alert #alert-icon").text('');
-        
-        if (show === true) {
-            $(".alert").css("display", "block");
-            $(".alert p").text(txt);
-            $(".alert").css("margin-left", "-" + $(".alert").width() / 2 + "px");
-        } else {
-            $(".alert").css("display", "none");
-        }
-        
+    //    $('.alert #animated-icon').css('display', 'none');
+    //    $(".alert #alert-icon").text('');
+         
         if (params !== null) {
         
             switch (params) {
@@ -305,12 +297,20 @@ var app = {
                 break;
                     
             case 3:             // LOADING ICON
-                $('.alert #animated-icon').css('display','block');
+                $('.alert #animated-icon').css('display', 'block');
                 break;
             }
         } else {
             $(".alert #alert-icon").text('');
-            $('.alert #animated-icon').css('display','none');
+            $('.alert #animated-icon').css('display', 'none');
+        }
+        
+        if (show === true) {
+            $(".alert p").text(txt);
+            $(".alert").css("display", "block");
+            $(".alert").css("margin-left", "-" + $(".alert").width() / 2 + "px");
+        } else {
+            $(".alert").css("display", "none");
         }
         
     }

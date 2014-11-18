@@ -243,6 +243,17 @@ var visual = {
                 return false;
             }
             
+            if (selectLocal.existLocation(localData.name) === true) {
+                 
+                app.alert("Ya existe una localización con ese nombre. No es posible grabar la localización", true, 1);
+                                    
+                window.setTimeout(function () {
+                    app.alert("", false);
+                }, 1550);
+            
+                return false;
+            }
+            
             if (localData.name === "") {
                 app.alert("No se ha definido un nombre para la localización", true, 1);
                                     
@@ -251,17 +262,17 @@ var visual = {
                 }, 1550);
                 
                 return false;
-            } else {
-            
-                visual.local.name = localData.name;
-                visual.local.description = localData.description;
-
-                if (visual.noConfig === true) {
-                    visual.saveLocation();
-                    visual.updateName(visual.local.name);
-                    visual.noConfig = false;
-                }
             }
+            
+            visual.local.name = localData.name;
+            visual.local.description = localData.description;
+
+            if (visual.noConfig === true) {
+                visual.saveLocation();
+                visual.updateName(visual.local.name);
+                visual.noConfig = false;
+            }
+
 
         });
         

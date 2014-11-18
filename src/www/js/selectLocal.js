@@ -18,16 +18,19 @@ var selectLocal = {
     // MEMBERS
     use: 0,             // current use 0: select local, 1: assign local
     currentLocal: null, // local to visualize
+    locations: [],
     
     // FUNCTIONS
     // selectLocal Constructor
     initialize: function (callback) {
         "use strict";
     
+        selectLocal.locations = [];
         selectLocal.loadLocations(function () {
             $("#page-select-local #local-list .assign-button").css("background", "#cca7bc");
             $("#page-select-local #local-list .assign-button").css("font-weight", "normal");
             $("#page-select-local #local-list .assign-button").css("color", "#283f00");
+            
             callback();
         });
         
@@ -94,6 +97,7 @@ var selectLocal = {
 
                                 if (ext === 'vdlt' || ext === 'vdl') {
                                     
+                                    selectLocal.locations[numberLocal] = name;
                                     numberLocal++;
             
                                     dirEntry.getFile(value.name, null, function (fileEntry) {
@@ -157,10 +161,10 @@ var selectLocal = {
                                                 collapsibleLocal.data("entry", data);
                                                 $(idButton + " .assign-button").click(function () {
                                                 
-                                                    if (selectLocal.use === 0) {      
+                                                    if (selectLocal.use === 0) {
                                                        
                                                         $(":mobile-pagecontainer").pagecontainer("change", "#page-visual");
-                                                        visual.loadLocation(data);     
+                                                        visual.loadLocation(data);
                                                 
                                                     } else {
                                                         
@@ -213,6 +217,20 @@ var selectLocal = {
             },
             function (error) {
             });
+    },
+    
+    existLocation: function (name) {
+        "use strict";
+        
+        var i;
+        
+        for (i = 0; i < selectLocal.locations.length; i++) {
+            if (selectLocal.locations[i] === name) {
+                return true;
+            }
+        }
+            
+        return false;
     }
 };
     
