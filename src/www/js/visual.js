@@ -200,6 +200,9 @@ var visual = {
                 popupafterclose: function () {
                     if (visual.openConfLocation === true) {
                         setTimeout(function () {
+                            
+                            $('#popup-conf-location #name').val(visual.local.name);
+                            $('#popup-conf-location #description').val(visual.local.description);
                             $('#popup-conf-location').popup('open');
                         }, 100);
                         
