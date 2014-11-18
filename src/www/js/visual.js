@@ -10,7 +10,7 @@
  */
 
 /* JSLint options */
-/*global Connection, $, helpFile, helpImage, wifiinfo, console, LocalFileSystem, Location, Floor, Port, ODControl, app */
+/*global Connection, $, helpFile, helpImage, wifiinfo, console, LocalFileSystem, Location, Floor, Port, ODControl, selectLocal, app */
 /*jslint plusplus: true*/
 
 var visual = {
@@ -300,7 +300,7 @@ var visual = {
                     newodc[this.name] = this.value || '';
                 }
             });
-          */ 
+          */
             
             //odc.IP = "90.166.105.5";
             //odc.user = "user";
@@ -556,24 +556,31 @@ var visual = {
         
         var odc;
         
+        // clean previous location
+        visual.cleanCurrentLocation();
+        
+        visual.saved = true;
         visual.updateName(location.name);
         
         visual.local = null;
         visual.local = new Location(location.BSSID, location.name, location.description);
         
         visual.local.assign(location.BSSID, location.SSID);
-        
-        if (location.odcontrols.length > 0) {
-            $("#odc-list").css("display", "inline");
-            $("#noODC").css("display", "none");
-        }
-
+       
         location.odcontrols.forEach(function (entry) {
             odc = new ODControl(visual.local.numberODC(), entry.name, "", entry.IP, entry.user, entry.password);
             visual.local.addODControl(odc);
             visual.addODControl(odc, entry.ports);
         });
         
+        if (location.odcontrols.length > 0) {
+            $("#odc-list").css("display", "inline");
+            $("#noODC").css("display", "none");
+        } else {
+            $("#odc-list").css("display", "none");
+            $("#noODC").css("display", "inline");
+        }
+
         location.floors.forEach(function (entry) {
             visual.addFloor(entry);
         });
@@ -1197,9 +1204,21 @@ var visual = {
         
         $(".about").css("display", "none");
         
-    }
+    },
     
-
-
-
+    cleanCurrentLocation: function () {
+        "use strict";
+        
+        // remove floors
+        $("#floor-panel .floor-canvas").each(function (index) {
+            if ($(this).attr('id') !== "add-floor") {
+                $(this).remove();
+            }
+        });
+        
+        // remove odcontrol items
+        $("#odc-panel #odc-list").children().each(function (index) {
+            $(this).remove();                                         
+        });
+    }
 };
