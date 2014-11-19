@@ -108,81 +108,81 @@ var selectLocal = {
                                             
                                             reader.readAsText(file);
                                             reader.onloadend = function (evt) {
-                                                var URL, idButton, BSSID, addClass;
+                                                //var URL, idButton, BSSID, addClass;
                                              
                                                 data = JSON.parse(evt.target.result);
                                                 
-                                                if (data.floors.length > 0) {
-                                                    if (data.floors[0].invColor === "on") {
-                                                        addClass = " class='invert-colors' ";
-                                                    } else {
-                                                        addClass = "";
-                                                    }
-                                                    URL =  "<img width='40%' " + addClass + " src='" + data.floors[0].URL + "'/>";
-                                                } else {
-                                                    URL = "";
-                                                }
+                                                selectLocal.addLocationToCollapsible(data);
                                                 
-                                                console.log("BSSID  s  " + app.BSSID);
-                                                
-                                                if (data.BSSID !== "") {
-                                                    BSSID = "<b>" + data.BSSID  + " / " + data.SSID + "</b>";
-                                                    
-                                                    if (app.BSSID === data.BSSID) {
-                                                        selectLocal.currentLocal = data;
-                                                    }
-
-                                                } else {
-                                                    BSSID = "Sin asignar";
-                                                }
-                                                
-                                                tableInfo = "<li class='select-local-item' id='local-" + name + "'><table class='info-table'><tr><td>Nombre:</td><td width='37%'>" +
-                                                    data.name +
-                                                    "</td><td colspan='2' width='35%'>" +
-                                                    "<button class='assign-button' type='button'></button>" +
-                                                    "</td></tr><tr><td>Descripción:</td><td colspan='3'>" +
-                                                    data.description +
-                                                    "</td></tr><tr><td>Estado:</td><td>" +
-                                                    BSSID +
-                                                    "</td><td colspan='2' rowspan='3'>" +
-                                                    URL +
-                                                    "</td></tr><tr><td>Plantas:</td><td>" +
-                                                    data.floors.length +
-                                                    "</td></tr><tr><td>ODC:</td><td>" +
-                                                    data.odcontrols.length +
-                                                    "</td></tr></table></li>";
-                                      
-                                                collapsibleLocal = $(tableInfo);
-                                                
-                                                $('#local-list').append(collapsibleLocal);
-                                          
-                                                idButton = "li#local-" + name;
-                                               // $(idButton + " .assign-button").data("entry", data);
-                                                collapsibleLocal.data("entry", data);
-                                                $(idButton + " .assign-button").click(function () {
-                                                
-                                                    if (selectLocal.use === 0) {
-                                                       
-                                                        $(":mobile-pagecontainer").pagecontainer("change", "#page-visual");
-                                                        visual.loadLocation(data);
-                                                
-                                                    } else {
-                                                        
-                                                        // TODO comprobar si ya esta asignada => desasignar
-                                                        // TODO comprobar si ya hay otra localización con ese BSSID
-                                                        var local;
-                                                        
-                                                        local = new Location("", "", "");
-                                                        
-                                                        local.create(data);
-                                                        local.assign(app.BSSID, app.SSID);
-                                                        local.save();
-                                                        helpFile.deleteFile(app.root, path + name + ".vdlt", function () {}, helpFile.errorHandler);
-                                                        $(":mobile-pagecontainer").pagecontainer("change", "#page-visual");
-                                                        visual.loadLocation(data);
-                                                        visual.setUse(1);
-                                                    }
-                                                });
+//                                                if (data.floors.length > 0) {
+//                                                    if (data.floors[0].invColor === "on") {
+//                                                        addClass = " class='invert-colors' ";
+//                                                    } else {
+//                                                        addClass = "";
+//                                                    }
+//                                                    URL =  "<img width='40%' " + addClass + " src='" + data.floors[0].URL + "'/>";
+//                                                } else {
+//                                                    URL = "";
+//                                                }
+//                                                
+//                                                if (data.BSSID !== "") {
+//                                                    BSSID = "<b>" + data.BSSID  + " / " + data.SSID + "</b>";
+//                                                    
+//                                                    if (app.BSSID === data.BSSID) {
+//                                                        selectLocal.currentLocal = data;
+//                                                    }
+//
+//                                                } else {
+//                                                    BSSID = "Sin asignar";
+//                                                }
+//                                                
+//                                                tableInfo = "<li class='select-local-item' id='local-" + name + "'><table class='info-table'><tr><td>Nombre:</td><td width='37%'>" +
+//                                                    data.name +
+//                                                    "</td><td colspan='2' width='35%'>" +
+//                                                    "<button class='assign-button' type='button'></button>" +
+//                                                    "</td></tr><tr><td>Descripción:</td><td colspan='3'>" +
+//                                                    data.description +
+//                                                    "</td></tr><tr><td>Estado:</td><td>" +
+//                                                    BSSID +
+//                                                    "</td><td colspan='2' rowspan='3'>" +
+//                                                    URL +
+//                                                    "</td></tr><tr><td>Plantas:</td><td>" +
+//                                                    data.floors.length +
+//                                                    "</td></tr><tr><td>ODC:</td><td>" +
+//                                                    data.odcontrols.length +
+//                                                    "</td></tr></table></li>";
+//                                      
+//                                                collapsibleLocal = $(tableInfo);
+//                                                
+//                                                $('#local-list').append(collapsibleLocal);
+//                                          
+//                                                idButton = "li#local-" + name;
+//                                               // $(idButton + " .assign-button").data("entry", data);
+//                                                collapsibleLocal.data("entry", data);
+//                                                $(idButton + " .assign-button").click(function () {
+//                                                
+//                                                    if (selectLocal.use === 0) {
+//                                                       
+//                                                        $(":mobile-pagecontainer").pagecontainer("change", "#page-visual");
+//                                                        visual.loadLocation(data);
+//                                                
+//                                                    } else {
+//                                                        
+//                                                        // TODO comprobar si ya esta asignada => desasignar
+//                                                        // TODO comprobar si ya hay otra localización con ese BSSID
+//                                                        var local;
+//                                                        
+//                                                        local = new Location("", "", "");
+//                                                        
+//                                                        local.create(data);
+//                                                        local.assign(app.BSSID, app.SSID);
+//                                                        local.save();
+//                                                        helpFile.deleteFile(app.root, path + name + ".vdlt", function () {}, helpFile.errorHandler);
+//                                                        $(":mobile-pagecontainer").pagecontainer("change", "#page-visual");
+//                                                        visual.loadLocation(data);
+//                                                        visual.setUse(1);
+//                                                    }
+//                                                });
                                                 
                                                 numberLocalRead++;
                                                 
@@ -231,6 +231,108 @@ var selectLocal = {
         }
             
         return false;
+    },
+    
+    addLocation: function (location) {
+        "use strict";
+        
+        var i, tableInfo, addClass, URL, idButton;
+        
+        for (i = 0; i < selectLocal.locations.length; i++) {
+            if (selectLocal.locations[i] === name) {
+                return false; // it hasn't to insert
+            }
+        }
+        
+        selectLocal.locations[selectLocal.locations.length] = location.name;
+        
+        selectLocal.addLocationToCollapsible(location);
+        
+        $("#page-select-local #local-list .assign-button").css("background", "#cca7bc");
+        $("#page-select-local #local-list .assign-button").css("font-weight", "normal");
+        $("#page-select-local #local-list .assign-button").css("color", "#283f00");
+    },
+    
+    // add a new location at the end of the collapsible tree
+    addLocationToCollapsible: function (location) {
+        "use strict";
+        
+        var tableInfo, addClass, URL, idButton, BSSID,
+            path = 'VisualDomo/locations/';
+        
+        if (location.floors.length > 0) {
+            if (location.floors[0].invColor === "on") {
+                addClass = " class='invert-colors' ";
+            } else {
+                addClass = "";
+            }
+            URL =  "<img width='40%' " + addClass + " src='" + location.floors[0].URL + "'/>";
+        } else {
+            URL = "";
+        }
+        
+        if (location.BSSID !== "") {
+            BSSID = "<b>" + location.BSSID  + " / " + location.SSID + "</b>";
+
+            if (app.BSSID === location.BSSID) {
+                selectLocal.currentLocal = location;
+            }
+
+        } else {
+            BSSID = "Sin asignar";
+        }
+        
+        tableInfo = "<li class='select-local-item' id='local-" + location.name +
+                "'><table class='info-table'><tr><td>Nombre:</td><td width='37%'>" +
+                location.name +
+                "</td><td colspan='2' width='35%'>" +
+                "<button class='assign-button' type='button'></button>" +
+                "</td></tr><tr><td>Descripción:</td><td colspan='3'>" +
+                location.description +
+                "</td></tr><tr><td>Estado:</td><td>" +
+                BSSID +
+                "</td><td colspan='2' rowspan='3'>" +
+                URL +
+                "</td></tr><tr><td>Plantas:</td><td>" +
+                location.floors.length +
+                "</td></tr><tr><td>ODC:</td><td>" +
+                location.odcontrols.length +
+                "</td></tr></table></li>";
+        
+            
+        $('#local-list').append($(tableInfo));
+        idButton = "li#local-" + location.name;
+        $(tableInfo).data("entry", location);
+        
+        $('#local-list').trigger("create");
+        
+        $(idButton + " .assign-button").click(function () {
+
+            if (selectLocal.use === 0) {
+
+                $(":mobile-pagecontainer").pagecontainer("change", "#page-visual");
+                visual.loadLocation(location);
+
+            } else {
+
+                // TODO comprobar si ya esta asignada => desasignar
+                // TODO comprobar si ya hay otra localización con ese BSSID
+                var local;
+
+                local = new Location("", "", "");
+
+                local.create(location);
+                local.assign(app.BSSID, app.SSID);
+                local.save();
+                helpFile.deleteFile(app.root, path + name + ".vdlt", function () {}, helpFile.errorHandler);
+                $(":mobile-pagecontainer").pagecontainer("change", "#page-visual");
+                visual.loadLocation(location);
+                visual.setUse(1);
+            }
+        });
+
+        return true;
+    
     }
 };
     

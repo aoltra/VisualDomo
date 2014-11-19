@@ -1092,6 +1092,7 @@ var visual = {
         visual.local.save();
         
         visual.saved = true;
+        selectLocal.addLocation(visual.local);
     },
     
     drawCanvas: function () {
