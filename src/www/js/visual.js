@@ -691,8 +691,13 @@ var visual = {
                     
                     window.setTimeout(function () {
                         app.alert("", false);
-                    }, 1250);
+                    }, 1250);  
+                } else if (port.data("entry").placed === true) {
+                    app.alert("Puerto ya ubicado", true, 1);
                     
+                    window.setTimeout(function () {
+                        app.alert("", false);
+                    }, 1250);
                 } else {
                     port.data("entry").level = visual.floorCurrent.level;
                     port.data("entry").placed = true;
