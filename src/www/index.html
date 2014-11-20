@@ -54,7 +54,7 @@
                 <table>
                     <tr>
                         <td>Versión:</td>
-                        <td>0.3.2 (alfa)</td>
+                        <td>0.3.3 (alfa)</td>
                     </tr>
                     <tr>
                         <td>Fecha:</td>
@@ -135,7 +135,6 @@
                     <ul data-role="listview" data-inset="true" data-theme="b">
                         <li id="config-item" data-theme="b">Config</li>
                         <li id="save-item" data-theme="b">Save</li>
-                        <li id="main-menu" data-theme="b">Main menu</li>
                         <li id="cfgapp-item" data-theme="b">Config App</li>
                         <li id="about-item" data-theme="b">About</li>
                     </ul>
@@ -301,8 +300,10 @@
                         <div class='dialog-body'>
                             <h3 class="ui-title">¿Estás seguro de que quieres borrar esta planta?</h3>
                             <p>Esta acción no se puede deshacer.</p>
-                            <a data-role="button" data-inline="true" data-rel="back" data-theme="b">Cancelar</a>    
-                            <a id="delete" data-role="button" data-inline="true" data-rel="back" data-transition="flow" data-theme="b">Borrar</a>  
+                            <a data-role="button" id="cancel" data-inline="true" data-theme="b">Cancelar</a>    
+                            <a data-role="button" id="delete-p" data-inline="true" data-transition="flow" data-theme="b">Borrar</a>  
+                            <a data-role="button" id="delete-f" data-inline="true" data-transition="flow" data-theme="b">Borrar</a>  
+                            <a data-role="button" id="exit" data-inline="true" data-transition="flow" data-theme="b">Salir</a>  
                         </div>
 		              </div>
                 </div>          

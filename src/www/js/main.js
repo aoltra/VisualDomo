@@ -35,7 +35,9 @@ var app = {
     bindEvents: function () {
         "use strict";
         
+        document.addEventListener('backbutton', this.backButtonCallback, false);
         document.addEventListener('deviceready', this.onDeviceReady, false);
+        
     },
 
     // deviceready Event Handler
@@ -206,6 +208,7 @@ var app = {
         
         $("#mm-newlocation").click(function () {
             visual.setUse(0);
+            visual.cleanCurrentLocation();
             $(":mobile-pagecontainer").pagecontainer("change", "#page-visual", { reload: "true" });
         });
         
@@ -288,6 +291,42 @@ var app = {
         }
 
         return response;
+    },
+    
+    backButtonCallback: function () {
+        "use strict";
+        
+        // get the current page
+        var activePage = $.mobile.pageContainer.pagecontainer("getActivePage");
+
+        if (activePage[0].id === "page-visual") {
+            if (visual.use === 0 && visual.saved === false) {
+                
+                $('#popup-confirm h1').text("Salir");
+                $('#popup-confirm #delete-f').css("display", "none");
+                $('#popup-confirm #delete-p').css("display", "none");
+                $('#popup-confirm #exit').css("display", "inline");
+                $('#popup-confirm h3').text("Está localización no está grabada. Si sales perderás los cambios. ¿Estás seguro de que quieres salir?");
+                $('#popup-confirm').popup('open');
+
+                $("#popup-confirm #exit").click(function () {
+
+                    $('#popup-confirm').popup('close');
+
+                    $('#popup-confirm').on({
+                        popupafterclose: function () {
+                           // setTimeout(function () {
+                                navigator.app.backHistory();
+                            //}, 100);
+                        }
+                    });
+                });
+                
+                //event.stopPropagation();
+            } else {
+                navigator.app.backHistory();
+            }
+        }
     },
     
     // show an alert dialog

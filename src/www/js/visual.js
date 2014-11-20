@@ -36,12 +36,7 @@ var visual = {
         "use strict";
         
         var canvas;
-       /* $('.port').bind('click', function(e) {       
-            console.log("cilclclclclcl");       
-            e.stopPropagation();
-            e.stopImmediatePropagation();          
-        });    
-        */
+      
         $("#button-open-floor-panel").click(function () {
             var height;
             
@@ -120,8 +115,17 @@ var visual = {
             
             $('#popup-conf-floor form')[0].reset();
             $('#popup-conf-floor #curr-img').text("");
+            
+            if (floor.URL === "") {
+                app.alert("No se ha definido la imagen de la planta", true, 1);
+                                    
+                window.setTimeout(function () {
+                    app.alert("", false);
+                }, 1550);
+            
+                return;
+            }
 
-         
             console.log(JSON.stringify(floor));
             
             if (visual.floorEdit !== -1) {
@@ -140,7 +144,7 @@ var visual = {
         });
      
         $("#floor-panel #add-floor").data("entry", { "level": 999 });
-           
+        
         $("#page-visual #config-menu #about-item").click(function (event) {
         
             $("#config-menu").popup('close');
@@ -363,6 +367,10 @@ var visual = {
         $("#popup-conf-aport :button").click(function (event) {
             $('#popup-conf-aport').popup('close');
             $('#popup-conf-aport form')[0].reset();
+        });
+        
+        $("#popup-confirm #cancel").click(function (event) {
+            $('#popup-confirm').popup('close');
         });
         
         
@@ -691,7 +699,7 @@ var visual = {
                     
                     window.setTimeout(function () {
                         app.alert("", false);
-                    }, 1250);  
+                    }, 1250);
                 } else if (port.data("entry").placed === true) {
                     app.alert("Puerto ya ubicado", true, 1);
                     
@@ -723,10 +731,14 @@ var visual = {
                 $("#odc-panel").panel("toggle");
                 
                 $('#popup-confirm h1').text("Borrar puerto");
-                $('#popup-confirm h3').text("¿Estás seguro de que quieres quitar este de la localización?");
+                $('#popup-confirm #delete-f').css("display", "none");
+                $('#popup-confirm #delete-p').css("display", "inline");
+                $('#popup-confirm #exit').css("display", "none");
+             
+                $('#popup-confirm h3').text("¿Estás seguro de que quieres quitar este puerto de la localización?");
                 $('#popup-confirm').popup('open');
                 
-                $("#popup-confirm #delete").click(function () {
+                $("#popup-confirm #delete-p").click(function () {
                     port.data("entry").placed = false;
                     port.find(".port-placed").text(' ');
                     
@@ -917,12 +929,31 @@ var visual = {
             $(".floor-edit-toolbar").slideToggle("fast");
             
             $(".floor-edit-toolbar #delete-floor").click(function (e) {
+                var ctx;
+                
                 console.log("DELETE FLOOR");
+                
+                $('#popup-confirm h1').text("Borrar planta");
+                $('#popup-confirm #delete-f').css("display", "inline");
+                $('#popup-confirm #delete-p').css("display", "none");
+                $('#popup-confirm #exit').css("display", "none");
+
+                $('#popup-confirm h3').text("¿Estás seguro de que quieres quitar esta planta de la localización?");
                 $('#popup-confirm').popup('open');
                 
-                $("#popup-confirm #delete").click(function () {
-                    visual.divEdit.remove();
+                $("#popup-confirm #delete-f").click(function () {
+                    $('#popup-confirm').popup('close');
+                    
+                    // if deleted floor is the current floor
+                    if (visual.floorCurrent.level === visual.floorEdit) {
+                        ctx = $('.main-canvas')[0].getContext('2d');
+                        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+                    }
+                    
+                    visual.saved = false;
                     console.log("DELETE FLOOR2");
+                    
+                    visual.divEdit.remove();
                 });
                 
                 e.stopPropagation();
@@ -1209,12 +1240,13 @@ var visual = {
         "use strict";
         
         $(".about").css("display", "none");
-        
     },
     
     cleanCurrentLocation: function () {
         "use strict";
         
+        var ctx;
+            
         // remove floors
         $("#floor-panel .floor-canvas").each(function (index) {
             if ($(this).attr('id') !== "add-floor") {
@@ -1224,7 +1256,13 @@ var visual = {
         
         // remove odcontrol items
         $("#odc-panel #odc-list").children().each(function (index) {
-            $(this).remove();                                         
+            $(this).remove();
         });
+        
+        ctx = $('.main-canvas')[0].getContext('2d');
+        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+        
+        visual.saved = true;
+        visual.updateName("");
     }
 };
