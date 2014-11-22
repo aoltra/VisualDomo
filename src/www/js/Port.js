@@ -10,7 +10,7 @@
  */
 
 /* JSLint options */
-/*global helpDraw */
+/*global helpDraw, app */
 
 // Constructor
 function Port(name, type, input, funct) {
@@ -18,8 +18,8 @@ function Port(name, type, input, funct) {
     
     var fontSize = 16,
         fontSizeIcon = 85,
-        fontSizeUnit = 24;
-    var BASICA = 0,
+        fontSizeUnit = 24,
+        BASICA = 0,
         BASICD = 1,
         LAMP = 2,
         TEMPERATURE = 3,
@@ -32,6 +32,7 @@ function Port(name, type, input, funct) {
     this.funct = funct;
     
     this.units = "";
+    this.factor = 1;
     
     this.level = -1;
     this.posX = -1000;
@@ -62,30 +63,27 @@ function Port(name, type, input, funct) {
         var widthIcon, widthText, heightIcon, heightText;
         
         ctx.font = fontSizeIcon + "px VisualDomo";
-        console.log("DIGITAAAAALLLL " + this.funct + "<<" + this.name);
+      //  console.log("DIGITAAAAALLLL " + this.funct + "<<" + this.name);
         
-        if (this.funct === 1)
-        {
+        if (this.funct === 1) {
             if (this.value === "ON") {
                 widthIcon = ctx.measureText("k").width;
                 ctx.fillText("k", this.posX - widthIcon * 0.5, this.posY);
             } else {
                 widthIcon = ctx.measureText("j").width;
-                ctx.fillText("j", this.posX - widthIcon * 0.5, this.posY);   
-            }   
-        }
-        else {
+                ctx.fillText("j", this.posX - widthIcon * 0.5, this.posY);
+            }
+        } else {
             widthIcon = ctx.measureText(app.functionPortsFonts[this.funct]).width;
             ctx.fillText(app.functionPortsFonts[this.funct], this.posX - widthIcon * 0.5, this.posY);
         }
         
-         
         // Draw Units
-        if (this.type == 'A') {
+        if (this.type === 'A') {
         
-            var text = parseFloat(this.value).toPrecision() + " " + this.units;
-            console.log("textoooooo "+ text);
-            ctx.font = "bold " + fontSizeUnit +"px Arial";
+            var text = parseFloat(this.value * this.factor).toPrecision() + " " + this.units;
+     //       console.log("textoooooo " + text);
+            ctx.font = "bold " + fontSizeUnit + "px Arial";
             ctx.fillText(text, this.posX + widthIcon * 0.6, this.posY - fontSizeUnit * 0.5);
             
         }
@@ -130,9 +128,9 @@ function Port(name, type, input, funct) {
 //        
 //        }
         
-        ctx.font = "bold " + fontSize +"px Arial";
+        ctx.font = "bold " + fontSize + "px Arial";
         widthText = ctx.measureText(this.name).width;
-        ctx.fillText(this.name, this.posX - widthText * 0.5, this.posY + fontSize + 3 );
+        ctx.fillText(this.name, this.posX - widthText * 0.5, this.posY + fontSize + 3);
         
         this.width = widthIcon;
         this.heightI = fontSizeIcon;
@@ -152,11 +150,11 @@ function Port(name, type, input, funct) {
         }*/
         
         if (clickX < this.posX - this.width * 0.6 ||  clickX > (this.posX + this.width * 0.6)) {
-            console.log("SALFO X!! " + this.name + " " + clickX + " " + this.posX + " "  + this.width);
+         //   console.log("SALFO X!! " + this.name + " " + clickX + " " + this.posX + " "  + this.width);
             return false;
         }
         if (clickY > (this.posY + this.heightT + 3) ||  clickY < (this.posY - this.heightI)) {
-                console.log("SALFO Y!!" + this.name + " " + clickY + " " + this.posY + " "  + this.height + " "  + (this.posY + this.height));
+       //         console.log("SALFO Y!!" + this.name + " " + clickY + " " + this.posY + " "  + this.height + " "  + (this.posY + this.height));
             return false;
         }
         
@@ -170,7 +168,7 @@ function Port(name, type, input, funct) {
         return true;
     };
     
-    Port.prototype.create = function (data) { 
+    Port.prototype.create = function (data) {
         
         this.name = data.name;
         this.type = data.type;
@@ -193,6 +191,7 @@ function Port(name, type, input, funct) {
         this.value = data.value;
         
         this.units = data.units;
+        this.factor = data.factor;
     };
     
     Port.prototype.icon = function () {

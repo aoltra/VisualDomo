@@ -17,7 +17,8 @@ var visual = {
     
     // MEMBERS
     floorEdit: -1,
-    floorCurrent: null,
+    currentFloor: null,
+    currentPort: null,
     odcEdit: -1,
     divEdit: null,
     local: null,
@@ -28,6 +29,7 @@ var visual = {
     use: 0,             // current use 0: config local, 1: visual mode
     refreshLoop: null,
     openConfLocation: false,
+    
     
     
     // FUNCTIONS
@@ -250,7 +252,7 @@ var visual = {
                 return false;
             }
             
-            if (selectLocal.existLocation(localData.name) === true) {
+            if (selectLocal.existLocation(localData.name) !== -1) {
                  
                 app.alert("Ya existe una localización con ese nombre. No es posible grabar la localización", true, 1);
                                     
@@ -351,7 +353,7 @@ var visual = {
             odc = $("#popup-conf-aport-value").data('odc');
             port = $("#popup-conf-aport-value").data('port');
 
-            odc.ports[port].value = localPort.value;
+            odc.ports[port].value = localPort.value / odc.ports[port].factor;
             odc.setPort(odc.ports[port]);
            
         });
@@ -377,6 +379,55 @@ var visual = {
         $("#odcontrol-panel").click(function (event) {
             $("#odc-panel").panel("toggle");
         });
+        
+        $("#popup-conf-port #port-conf-ok").click(function () {
+
+            var confPort = [];
+
+            console.log("UNITTTTT " + visual.currentPort.data("entry").name + " F1 " + confPort.units + " PORT " + visual.currentPort.data("entry").units);
+
+            $.each($('#popup-conf-port form').serializeArray(), function () {
+
+                if (confPort[this.name]) {
+                    if (!confPort[this.name].push) {
+                        confPort[this.name] = [confPort[this.name]];
+                    }
+                    confPort[this.name].push(this.value || '');
+                } else {
+                    confPort[this.name] = this.value || '';
+                }
+            });
+
+            console.log("UNITTTTT " + visual.currentPort.data("entry").name + " F2 " + confPort.units + " PORT " + visual.currentPort.data("entry").units);
+            visual.currentPort.data("entry").units = confPort.units;
+             console.log("UNITTTTT "+ visual.currentPort.data("entry").name +" F3 " + confPort.units + " PORT " + visual.currentPort.data("entry").units);
+            if (confPort.funct == 0 && visual.currentPort.data("entry").type === 'D') {
+                visual.currentPort.data("entry").funct = 1;
+            } else {
+                visual.currentPort.data("entry").funct = confPort.funct;
+            }
+
+            if (confPort.factor === 0 || confPort.factor == "") {
+                confPort.factor = 1;
+            }
+            visual.currentPort.data("entry").factor = confPort.factor;
+
+            visual.currentPort.find(".port-funct").text(app.functionPortsFonts[visual.currentPort.data("entry").funct]);
+            visual.drawCanvas();
+
+            $('#popup-conf-port').popup('close');
+            $('#popup-conf-port form')[0].reset();
+            visual.currentPort = null;
+
+        });
+
+        // cancel button
+        $("#popup-conf-port #port-conf-cancel").click(function (event) {
+            $('#popup-conf-port').popup('close');
+            $('#popup-conf-port form')[0].reset();
+            visual.currentPort = null;
+        });
+
      
         visual.local = new Location("", "", "");
         
@@ -407,7 +458,7 @@ var visual = {
                 return;
             }
             
-            console.log("DRAG!!");
+          //  console.log("DRAG!!");
             
             //Assume only one touch/only process one touch even if there's more
             var touch = event.targetTouches[0], i, j, odc, exit = false;
@@ -422,7 +473,7 @@ var visual = {
 
                     for (j = 0; j < odc.ports.length; j++) {
 
-                        if (odc.ports[j].placed === true && odc.ports[j].level === visual.floorCurrent.level) {
+                        if (odc.ports[j].placed === true && odc.ports[j].level === visual.currentFloor.level) {
                             if (odc.ports[j].detectHit(touch.pageX, touch.pageY - visual.headerHeight, true)) {
 
                                 visual.dragPort = odc.ports[j];
@@ -459,10 +510,10 @@ var visual = {
 
                 for (j = 0; j < odc.ports.length; j++) {
 
-                    if (odc.ports[j].placed === true && odc.ports[j].level === visual.floorCurrent.level) {
+                    if (odc.ports[j].placed === true && odc.ports[j].level === visual.currentFloor.level) {
                         if (odc.ports[j].detectHit(touch.pageX, touch.pageY - visual.headerHeight, false)) {
 
-                            console.log("tocandoooooooo");
+                           // console.log("tocandoooooooo");
                             if (odc.ports[j].input === 'O') {
                                 if (odc.ports[j].type === 'D') {
                                     if (odc.ports[j].value === "ON") {
@@ -474,7 +525,7 @@ var visual = {
                                     odc.setPort(odc.ports[j]);
                                 } else {
                                     
-                                    $('#popup-conf-aport-value #value').val(odc.ports[j].value);
+                                    $('#popup-conf-aport-value #value').val(odc.ports[j].value * odc.ports[j].factor);
                                     $('#popup-conf-aport-value h4').text("Valor entre (" + odc.ports[j].min + " / " + odc.ports[j].max + ")");
                                     $('#popup-conf-aport-value').data('odc', odc);
                                     $('#popup-conf-aport-value').data('port', j);
@@ -694,7 +745,7 @@ var visual = {
                 
                 var port = $(this).parent();
                 
-                if (visual.floorCurrent === null) {
+                if (visual.currentFloor === null) {
                     app.alert("No es posible ubicar el puerto", true, 0);
                     
                     window.setTimeout(function () {
@@ -707,8 +758,10 @@ var visual = {
                         app.alert("", false);
                     }, 1250);
                 } else {
-                    port.data("entry").level = visual.floorCurrent.level;
+                    port.data("entry").level = visual.currentFloor.level;
                     port.data("entry").placed = true;
+                    
+                    console.log("PUERTOOO FACTIR  " + port.data("entry").factor);
                     
                     port.data("entry").posY = Math.round($('.main-canvas')[0].getContext('2d').canvas.height * 0.5);
                     port.data("entry").posX = Math.round($('.main-canvas')[0].getContext('2d').canvas.width * 0.5);
@@ -755,15 +808,18 @@ var visual = {
             });
             
             // configure port 
-            $(".collapsible-port .port-funct").click(function (event) {
+            $(".collapsible-port .port-funct").click(function () {
                 console.log("CONFIGUR PORT");
                 
-                var port = $(this).parent(), confPort = {}, select, valfunc;
+                var port = $(this).parent(), select, valfunc;
                 
                 $("#odc-panel").panel("toggle");
                 
-                $('#popup-conf-port form')[0].reset();
+                  console.log("UNITTTTT " + port.data("entry").name + "F0 PORT " + port.data("entry").units);
+                
+             //   $('#popup-conf-port form')[0].reset();
                 $('#popup-conf-port #units').val(port.data('entry').units);
+                $('#popup-conf-port #factor').val(port.data('entry').factor);
                 
               //  $("select option[value='B']").attr("selected", "selected");  
                 if (port.data('entry').funct === 1) {
@@ -775,42 +831,11 @@ var visual = {
                 select = $("#popup-conf-port select option[value='" + valfunc  + "']");
                 $(select).attr("selected", "selected");
                 
+                visual.currentPort = port;
+                
                 $('#popup-conf-port').popup('open');
     
-                $("#popup-conf-port #port-conf-ok").click(function () {
-                    
-                    $.each($('#popup-conf-port form').serializeArray(), function () {
-
-                        if (confPort[this.name]) {
-                            if (!confPort[this.name].push) {
-                                confPort[this.name] = [confPort[this.name]];
-                            }
-                            confPort[this.name].push(this.value || '');
-                        } else {
-                            confPort[this.name] = this.value || '';
-                        }
-                    });
-                
-                    port.data("entry").units = confPort.units;
-                    if (confPort.funct == 0 && port.data("entry").type === 'D') {
-                        port.data("entry").funct = 1;
-                    } else {
-                        port.data("entry").funct = confPort.funct;
-                    }
-                    
-                    port.find(".port-funct").text(app.functionPortsFonts[port.data("entry").funct]);
-                    visual.drawCanvas();
-                    
-                    $('#popup-conf-port').popup('close');
-                  
-                });
-                                                          
-                // cancel button
-                $("#popup-conf-port #port-conf-cancel").click(function (event) {
-                    $('#popup-conf-port').popup('close');
-                    $('#popup-conf-port form')[0].reset();
-                });
-                                                          
+                                                     
                 event.stopPropagation();
             });
             
@@ -945,7 +970,7 @@ var visual = {
                     $('#popup-confirm').popup('close');
                     
                     // if deleted floor is the current floor
-                    if (visual.floorCurrent.level === visual.floorEdit) {
+                    if (visual.currentFloor.level === visual.floorEdit) {
                         ctx = $('.main-canvas')[0].getContext('2d');
                         ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
                     }
@@ -1041,7 +1066,7 @@ var visual = {
             visual.floorEdit = -1;
             visual.divEdit = null;
             
-            visual.floorCurrent = $(this).data("entry");
+            visual.currentFloor = $(this).data("entry");
             
             visual.drawCanvas();
         });
@@ -1051,7 +1076,7 @@ var visual = {
     setFloorInCanvas: function (floorSelect) {
         "use strict";
         
-        visual.floorCurrent = $($("#floor-panel .floor-canvas").get(0)).data("entry");
+        visual.currentFloor = $($("#floor-panel .floor-canvas").get(0)).data("entry");
         visual.drawCanvas();
         
     },
@@ -1129,6 +1154,7 @@ var visual = {
         
         visual.saved = true;
         selectLocal.addLocation(visual.local);
+        visual.updateName(visual.local.name);
     },
     
     drawCanvas: function () {
@@ -1145,11 +1171,11 @@ var visual = {
             maxHeight,
             maxWidth;
         
-        if (visual.floorCurrent === null) {
+        if (visual.currentFloor === null) {
             return;
         }
           
-        imageObj.src = visual.floorCurrent.URL;
+        imageObj.src = visual.currentFloor.URL;
         $('.main-canvas').attr('width', $('#floor-panel').width());
         $('.main-canvas').attr('height', $('#page-visual .ui-content').height());
 
@@ -1173,19 +1199,19 @@ var visual = {
 
         ctx.drawImage(imageObj, parseInt(dx, 10), parseInt(dy, 10), parseInt(w, 10), parseInt(h, 10));
         /***
-        console.log("IMAGEN FONDO: " +  visual.floorCurrent.URL + " x: " + imageObj.naturalWidth + " y: " + imageObj.naturalHeight +  " w:" + w +  " h:" + h + "  dx:" + dx + " dy:" + dy + "ctxw: " + ctx.canvas.width + "  ctxh: " + ctx.canvas.height) ; 
+        console.log("IMAGEN FONDO: " +  visual.currentFloor.URL + " x: " + imageObj.naturalWidth + " y: " + imageObj.naturalHeight +  " w:" + w +  " h:" + h + "  dx:" + dx + " dy:" + dy + "ctxw: " + ctx.canvas.width + "  ctxh: " + ctx.canvas.height) ; 
 **/
             /*console.log("IMAGEN FONDO: " +  $(this).data("entry").url + " x: " + imageObj.naturalWidth + " y: " + imageObj.naturalHeight + "  wi: " + wi + " hi: " + hi + " ch: " + ch + " cw:" + cw + "  dx:" + dx + " dy:" + dy + "ctxw: " + ctx.canvas.width + "  ctxh: " + ctx.canvas.height) ; */
             
       //  console.log("COLOR " + $(this).data("entry").invColor);
-        if (visual.floorCurrent.invColor === "on") {
+        if (visual.currentFloor.invColor === "on") {
             helpImage.invertColor(ctx, dx, dy, imageObj);
         }
        
         visual.local.odcontrols.forEach(function (odc) {
             odc.ports.forEach(function (port) {
-              //   console.log("loooo2 " + port.placed + "  " + port.level + "  " + visual.floorCurrent.level);
-                if (port.placed === true && port.level === visual.floorCurrent.level) {
+              //   console.log("loooo2 " + port.placed + "  " + port.level + "  " + visual.currentFloor.level);
+                if (port.placed === true && port.level === visual.currentFloor.level) {
                 //    console.log("lo dibujamos "  + port.name + " " + port.posX + "," + port.posY);
                     port.draw(ctx);
                 }
