@@ -34,7 +34,6 @@ var selectLocal = {
             callback();
         });
         
-        
     },
     
     setUse: function (use) {
@@ -60,6 +59,18 @@ var selectLocal = {
         
         // change button text
         $("#page-select-local #local-list .assign-button").text(txtButton);
+        
+        if (selectLocal.use === 1) {
+           
+            selectLocal.locations.forEach(function (entry) {
+                var idButton;
+                
+                if (entry.assign === true) {
+                    idButton = "li#local-" + entry.name;
+                    $(idButton + " .assign-button").text("Desasignar");
+                }
+            });
+        }
        
         
         if (selectLocal.use === 0) {
@@ -97,7 +108,7 @@ var selectLocal = {
 
                                 if (ext === 'vdlt' || ext === 'vdl') {
                                     
-                                    selectLocal.locations[numberLocal] = name;
+                                    selectLocal.locations[numberLocal] = {"name": name, "assign": false, "BSSID": ""};
                                     numberLocal++;
             
                                     dirEntry.getFile(value.name, null, function (fileEntry) {
@@ -197,7 +208,6 @@ var selectLocal = {
                                         console.log("Error getFile");
                                     });
                                 
-                                    
                                 }
                             }
                     
@@ -209,8 +219,7 @@ var selectLocal = {
                             $(".header-select-local").text("No se han encontrado Localizaciones.");
                             callback();
                         }
-                            
-                       
+                           
                     },
                     function (error) {
                     });
@@ -225,26 +234,27 @@ var selectLocal = {
         var i;
         
         for (i = 0; i < selectLocal.locations.length; i++) {
-            if (selectLocal.locations[i] === name) {
-                return true;
+            if (selectLocal.locations[i].name === name) {
+                return i;
             }
         }
             
-        return false;
+        return -1;
     },
     
     addLocation: function (location) {
         "use strict";
         
-        var i, tableInfo, addClass, URL, idButton;
+        var i, tableInfo, addClass, URL, idButton, len;
         
         for (i = 0; i < selectLocal.locations.length; i++) {
-            if (selectLocal.locations[i] === name) {
+            if (selectLocal.locations[i].name === name) {
                 return false; // it hasn't to insert
             }
         }
         
-        selectLocal.locations[selectLocal.locations.length] = location.name;
+        len = selectLocal.locations.length;
+        selectLocal.locations[len] = {"name": location.name, "assign": false, "BSSID": ""};
         
         selectLocal.addLocationToCollapsible(location);
         
@@ -259,6 +269,8 @@ var selectLocal = {
         
         var tableInfo, addClass, URL, idButton, BSSID,
             path = 'VisualDomo/locations/';
+        
+        idButton = "li#local-" + location.name;
         
         if (location.floors.length > 0) {
             if (location.floors[0].invColor === "on") {
@@ -277,7 +289,9 @@ var selectLocal = {
             if (app.BSSID === location.BSSID) {
                 selectLocal.currentLocal = location;
             }
-
+           
+            selectLocal.locations[selectLocal.existLocation(location.name)].assign = true;
+            selectLocal.locations[selectLocal.existLocation(location.name)].BSSID = location.BSSID;
         } else {
             BSSID = "Sin asignar";
         }
@@ -289,7 +303,7 @@ var selectLocal = {
                 "<button class='assign-button' type='button'></button>" +
                 "</td></tr><tr><td>Descripción:</td><td colspan='3'>" +
                 location.description +
-                "</td></tr><tr><td>Estado:</td><td>" +
+                "</td></tr><tr><td>Estado:</td><td class='state'>" +
                 BSSID +
                 "</td><td colspan='2' rowspan='3'>" +
                 URL +
@@ -314,20 +328,67 @@ var selectLocal = {
                 visual.loadLocation(location);
 
             } else {
-
-                // TODO comprobar si ya esta asignada => desasignar
+                
                 // TODO comprobar si ya hay otra localización con ese BSSID
-                var local;
-
+                
+                var local, assign = false, i, pos, alreadyExist = false;
+                
+                for (i = 0; i < selectLocal.locations.length; i++) {
+                    if (selectLocal.locations[i].BSSID === app.BSSID) {
+                        alreadyExist = true;
+                        break;
+                    }
+                }
+                
+                
+                for (i = 0; i < selectLocal.locations.length; i++) {
+                    if (selectLocal.locations[i].name === location.name) {
+                        pos = i;
+                        if (selectLocal.locations[i].assign === true) {
+                            assign = true;
+                            break;
+                        }
+                    }
+                }
+                
                 local = new Location("", "", "");
 
                 local.create(location);
-                local.assign(app.BSSID, app.SSID);
+                if (assign === false) {
+                    local.assign(app.BSSID, app.SSID);
+                } else { // dissociate
+                    local.dissociate();
+                }
+                
+                if (assign === false && alreadyExist === true) {
+                    app.alert("Está wifi (" + app.SSID + ") ya está asiganda a una localización", true, 0);
+
+                    window.setTimeout(function () {
+                        app.alert("", false);
+                    }, 1350);
+                    return;
+                }
+                
                 local.save();
-                helpFile.deleteFile(app.root, path + name + ".vdlt", function () {}, helpFile.errorHandler);
-                $(":mobile-pagecontainer").pagecontainer("change", "#page-visual");
-                visual.loadLocation(location);
-                visual.setUse(1);
+                if (assign === false) {  // assign
+                    $(this).text("Desasignar");
+                    selectLocal.locations[pos].assign = true;
+                    selectLocal.locations[pos].BSSID = local.BSSID;
+                    BSSID = "<b>" + local.BSSID  + " / " + local.SSID + "</b>";
+                    $('li#local-' + location.name + ' .state').html(BSSID);
+                    helpFile.deleteFile(app.root, path + location.name + ".vdlt", function () {}, helpFile.errorHandler);
+                    $(":mobile-pagecontainer").pagecontainer("change", "#page-visual");
+                    visual.loadLocation(location);
+                    visual.setUse(1);
+                } else {  // dissociate
+                    helpFile.deleteFile(app.root, path + location.name + ".vdl", function () {}, helpFile.errorHandler);
+                    $(this).text("Asignar");
+                    selectLocal.locations[pos].assign = false;
+                    selectLocal.locations[pos].BSSID = "";
+                    $('li#local-' + location.name + ' .state').html("Sin asignar");
+                }
+                
+                $('#local-list').trigger("create");
             }
         });
 

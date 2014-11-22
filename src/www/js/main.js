@@ -326,6 +326,8 @@ var app = {
             } else {
                 navigator.app.backHistory();
             }
+        } else {
+            navigator.app.backHistory();    
         }
     },
     

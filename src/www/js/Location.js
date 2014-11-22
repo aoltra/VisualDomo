@@ -67,6 +67,7 @@ function Location(BSSID, name, description) {
                                 console.log("FLO000  " + JSON.stringify(dirEntry2));
                                 console.log("PRUEBAAAAA0000 " + JSON.stringify(floors));
                                 
+                                
                                 $.when(location.copyFloors(floors, dirEntry2)).done(function () {
                                     
                                     json = JSON.stringify(location);
@@ -113,6 +114,8 @@ function Location(BSSID, name, description) {
 
             window.resolveLocalFileSystemURL(entry.URL,
                 function (fileEntry) {
+                    console.log("sadsdad " + JSON.stringify(fileEntry));
+                
                     fileEntry.copyTo(dirEntry, fileEntry.name,
                         function (newFileEntry) {
                             entry.URL =  newFileEntry.nativeURL;
@@ -120,6 +123,7 @@ function Location(BSSID, name, description) {
                             def.resolve();
                             
                         }, function () { // Probably file is in locations folder already
+                            console.log("Ya hay un fichero con ese nombre");
                             def.resolve();
                         });
                 }, function () {
