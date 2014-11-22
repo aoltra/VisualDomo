@@ -324,8 +324,8 @@ var selectLocal = {
 
             if (selectLocal.use === 0) {
 
-                $(":mobile-pagecontainer").pagecontainer("change", "#page-visual");
                 visual.setUse(0);
+                $(":mobile-pagecontainer").pagecontainer("change", "#page-visual");
                 visual.loadLocation(location);
 
             } else {

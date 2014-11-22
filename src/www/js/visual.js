@@ -332,7 +332,7 @@ var visual = {
         
         $("#popup-conf-aport-value #aport-value-conf-ok").click(function (event) {
 
-            var localPort = {}, odc, port;
+            var localPort = {}, odc, port, value;
              
             $.each($('#popup-conf-aport-value form').serializeArray(), function () {
 
@@ -346,16 +346,27 @@ var visual = {
                 }
             });
             
-            $('#popup-conf-aport-value').popup('close');
-            
-            $('#popup-conf-aport-value form')[0].reset();
-             
             odc = $("#popup-conf-aport-value").data('odc');
             port = $("#popup-conf-aport-value").data('port');
+            
+            value = localPort.value / odc.ports[port].factor;
+            
+            if (value < odc.ports[port].min || value > odc.ports[port].max) {
+                app.alert("¡Valor incorrecto!", true, 0);
+                                    
+                window.setTimeout(function () {
+                    app.alert("", false);
+                }, 1550);
+             
+            } else {
+            
+                $('#popup-conf-aport-value').popup('close');
 
-            odc.ports[port].value = localPort.value / odc.ports[port].factor;
-            odc.setPort(odc.ports[port]);
-           
+                $('#popup-conf-aport-value form')[0].reset();
+
+                odc.ports[port].value = localPort.value / odc.ports[port].factor;
+                odc.setPort(odc.ports[port]);
+            }
         });
         
         // cancel button
@@ -526,7 +537,9 @@ var visual = {
                                 } else {
                                     
                                     $('#popup-conf-aport-value #value').val(odc.ports[j].value * odc.ports[j].factor);
-                                    $('#popup-conf-aport-value h4').text("Valor entre (" + odc.ports[j].min + " / " + odc.ports[j].max + ")");
+                                    $('#popup-conf-aport-value h4').text("Valor entre (" + odc.ports[j].min * odc.ports[j].factor + " / " + odc.ports[j].max * odc.ports[j].factor + ")");
+                                    
+                                    console.log("factor " + odc.ports[j].factor);
                                     $('#popup-conf-aport-value').data('odc', odc);
                                     $('#popup-conf-aport-value').data('port', j);
                                     $('#popup-conf-aport-value').popup('open');
@@ -570,7 +583,7 @@ var visual = {
             clearTimeout(visual.refreshLoop);
             $("#config-menu #config-item").css('display', 'block');
             $("#config-menu #save-item").css('display', 'block');
-            $("#add-floor").css('display', 'block');
+            $("#add-floor").css('display', 'inline-block');
         } else {
             $("#odcontrol-panel").css('visibility', 'hidden');
             $("#config-menu #config-item").css('display', 'none');

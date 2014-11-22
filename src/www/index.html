@@ -244,16 +244,16 @@
                     </div>
                     
                     <!-- aport value configuration -->
-                    <div data-role="popup" id="popup-conf-aport-value" class="ui-content" data-theme="b" data-position-to="window" data-dismissible="false" data-overlay-theme="b">
+                    <div data-role="popup" id="popup-conf-aport-value" class="ui-corner-all" data-theme="b" data-position-to="window" data-dismissible="false" data-overlay-theme="a">
                         <div data-role="header" data-theme="b" class="ui-corner-top">
-                            <h1>Configuración valor puerto analógico</h1>
+                            <h1>Valor puerto</h1>
                         </div>
-                        <div data-role="content" data-theme="b" class="ui-corner-bottom ui-content">
+                         <div class='dialog-body'>
                             <h4>Introduzca el valor del puerto</h4>
 
                             <form name="aport-value-conf" action="" method="post">
                                 <label for="value" class="ui-hidden-accessible">Valor</label>
-                                <input type="text" name="value" id="value" placeholder="Valor" maxlength="15">
+                                <input type="number" name="value" id="value" placeholder="Valor" maxlength="8">
 
                                 <div class="ui-grid-a">
                                     <div class="ui-block-a"><input type="button" name="ok" id="aport-value-conf-ok" value="Aceptar" data-theme="b" data-icon="check" data-iconpos="right"></div>
