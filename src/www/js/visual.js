@@ -608,7 +608,7 @@ var visual = {
     updateName: function (name) {
         "use strict";
         
-        var saved, complexName;
+        var saved, complexName, use;
             
         if (visual.saved === false) {
             saved = '*';
@@ -622,7 +622,13 @@ var visual = {
             complexName = " - " + name;
         }
         
-        $("#page-visual #header-visual-location").text("VisualDomo" + saved + complexName);
+        if (visual.use === 0) {
+            use = 'i';
+        } else {
+            use = 'w';
+        }
+        
+        $("#page-visual #header-visual-location").html("VisualDomo" + saved + complexName + "<div id='use'>" + use + "</div>");
     },
     
     loadLocation: function (location) {

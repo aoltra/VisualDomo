@@ -21,6 +21,20 @@
     position: fixed;
 }
 
+#use {
+    float: right;
+    text-align: right;
+    font-family: 'VisualDomo';
+    font-size: 2.5em;
+    margin-top: -0.5em;
+    margin-bottom: -0.5em;
+}
+
+#header-visual-location {
+    margin-right: 7%;
+    margin-left: 7%;   
+}
+
 .contenedor {
     position: relative;
     background-color: #0FF;
