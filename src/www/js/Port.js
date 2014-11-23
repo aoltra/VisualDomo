@@ -93,13 +93,12 @@ function Port(name, type, input, funct) {
             
             gradientPoint = this.value / (this.max - this.min);
             
-            console.log("GRADIENTEE   " + gradientPoint + "  " + this.value + " aicc "  +  widthIcon +"  ac " + (this.max - this.min));
+          //  console.log("GRADIENTEE   " + gradientPoint + "  " + this.value + " aicc "  +  widthIcon +"  ac " + (this.max - this.min));
             
             gradient.addColorStop(0, "#ccdbba");
             gradient.addColorStop(gradientPoint, "#ccdbba");
             gradient.addColorStop(gradientPoint + 0.01, "#e0828a");
             gradient.addColorStop(1, "#e0828a");
-            
             
             //ctx.fillStyle = '#e0828a';
             ctx.fillStyle = gradient;

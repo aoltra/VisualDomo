@@ -266,7 +266,7 @@
                     <!-- aport function configuration -->
                     <div data-role="popup" id="popup-conf-port" class="ui-corner-all" data-theme="b" data-position-to="window" data-dismissible="false" data-overlay-theme="a">
                         <div data-role="header" data-theme="b" class="ui-corner-top">
-                            <h1>Configuración puerto analógico</h1>
+                            <h1>Configuración puerto</h1>
                         </div>
                          <div class='dialog-body'>
                             <h4>Introduzca los datos de configuración del puerto</h4>
@@ -278,16 +278,41 @@
                                 <input type="number" name="factor" id="factor" placeholder="Multiplicador">
                                 <label for="funct" class="ui-hidden-accessible">Función</label>
                                 <select name="funct" id="funct">
-                                    <option value="2">Luces</option>
-                                    <option value="4">Persianas</option>
-                                    <option value="3">Temperatura</option>
-                                    <option value="5">Audio</option>
                                     <option value="0" selected>Básico</option>
+                                    <option value="2">Luces</option>
+                                    <option value="3">Temperatura</option>
+                                    <option value="4">Persianas</option>
+                                    <option value="5">Audio</option>
                                 </select>
 
                                 <div class="ui-grid-a">
                                     <div class="ui-block-a"><input type="button" name="ok" id="port-conf-ok" value="Aceptar" data-theme="b" data-icon="check" data-iconpos="right"></div>
                                     <div class="ui-block-b"><input type="button" name="cancel" id="port-conf-cancel" value="Cancelar" data-theme="b" data-icon="back" data-iconpos="right"></div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    
+                    <!-- VisualDomo  configuration -->
+                    <div data-role="popup" id="popup-conf-app" class="ui-corner-all" data-theme="b" data-position-to="window" data-dismissible="false" data-overlay-theme="a">
+                        <div data-role="header" data-theme="b" class="ui-corner-top">
+                            <h1>Configuración App</h1>
+                        </div>
+                         <div class='dialog-body'>
+                            <h4>Introduzca los datos de configuración de VisualDomo</h4>
+
+                            <form name="port-conf" action="" method="post">
+                                <label for="refresh" class="ui-hidden-accessible">Tiempo de refresco</label>
+                                <input type="number" name="refresh" id="refresh" placeholder="Tiempo de refresco (s)">
+                                <label for="lang" class="ui-hidden-accessible">Idioma</label>
+                                <select name="lang" id="lang">
+                                    <option value="0" selected>Español</option>
+                                    <option value="1">Inglés</option>
+                                </select>
+
+                                <div class="ui-grid-a">
+                                    <div class="ui-block-a"><input type="button" name="ok" id="app-conf-ok" value="Aceptar" data-theme="b" data-icon="check" data-iconpos="right"></div>
+                                    <div class="ui-block-b"><input type="button" name="cancel" id="app-conf-cancel" value="Cancelar" data-theme="b" data-icon="back" data-iconpos="right"></div>
                                 </div>
                             </form>
                         </div>
@@ -339,6 +364,9 @@
         <script type="text/javascript" src="js/lib/jquery.ui.touch-punch.min.js"></script>-->
         <script type="text/javascript" src="js/initjqm.js"></script>  
         <script type="text/javascript" src="js/lib/jquery.mobile-1.4.3.js"></script> 
+        
+        <!-- Settings -->
+        <script type="text/javascript" src="js/settings/Settings.js"></script>
         
         <!-- helpers -->
         <script type="text/javascript" src="js/helpers/FileHelper.js"></script>

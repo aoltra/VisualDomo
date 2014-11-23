@@ -10,7 +10,7 @@
  */
 
 /* JSLint options */
-/*global Connection, $, helpFile, helpImage, wifiinfo, console, LocalFileSystem, Location, Floor, Port, ODControl, selectLocal, app */
+/*global Connection, $, helpFile, helpImage, wifiinfo, console, LocalFileSystem, Location, Floor, Port, ODControl, selectLocal, app, Settings */
 /*jslint plusplus: true*/
 
 var visual = {
@@ -160,24 +160,72 @@ var visual = {
             }, 5000);
         });
         
-         $("#page-visual #config-menu #cfgapp-item").click(function (event) {
+        $("#page-visual #config-menu #cfgapp-item").click(function (event) {
         
             $("#config-menu").popup('close');
             
             // Open a popup from other popup
             $('#config-menu').on({
                 popupafterclose: function () {
-                  //  if (visual.openConfLocation === true) {
-                    //    if (visual.noConfig === true) {
-                            setTimeout(function () {
-                                $('#popup-conf-app').popup('open');
-                            }, 100);
+                    setTimeout(function () {
 
-                      //      visual.openConfLocation = false;
+                        var vallang, select;
+
+                        $('#popup-conf-app #refresh').val(app.updateTime / 1000);
+
+                        if (app.lang === undefined || app.lang === null) {
+                            vallang = 0;
+                        } else {
+                            vallang = app.lang;
                         }
-                   // }
-                //}
+
+                        console.log("LANG  2 " + vallang);
+                        select = $("#popup-conf-app select");// option[value='" + vallang + "']");
+                        //$(select).attr("selected", "selected");
+                        $(select).val(vallang);//prop('selected', true)
+                        $(select).selectmenu('refresh');
+                        $('#popup-conf-app').popup('open');
+                        
+                    }, 100);
+                }
             });
+        });
+        
+        $("#popup-conf-app #app-conf-ok").click(function () {
+
+            var confApp = [], settings;
+
+            $.each($('#popup-conf-app form').serializeArray(), function () {
+
+                if (confApp[this.name]) {
+                    if (!confApp[this.name].push) {
+                        confApp[this.name] = [confApp[this.name]];
+                    }
+                    confApp[this.name].push(this.value || '');
+                } else {
+                    confApp[this.name] = this.value || '';
+                }
+            });
+          
+            app.updateTime = confApp.refresh * 1000;
+            app.lang = confApp.lang;
+            
+            console.log("LANG  3 " + app.lang);
+            
+            settings = Settings.getSettings();
+            if ($.isEmptyObject(settings)) {
+                settings = new Settings();
+            }
+            settings.refreshTime =  app.updateTime;
+            settings.language =  app.lang;
+            settings.save();
+
+            $('#popup-conf-app').popup('close');
+        });
+        
+        // cancel button app config
+        $("#popup-conf-app :button").click(function (event) {
+            $('#popup-conf-app').popup('close');
         });
             
         $("#page-visual #config-menu #save-item").click(function (event) {
@@ -431,9 +479,9 @@ var visual = {
                 }
             });
 
-            console.log("UNITTTTT " + visual.currentPort.data("entry").name + " F2 " + confPort.units + " PORT " + visual.currentPort.data("entry").units);
+           // console.log("UNITTTTT " + visual.currentPort.data("entry").name + " F2 " + confPort.units + " PORT " + visual.currentPort.data("entry").units);
             visual.currentPort.data("entry").units = confPort.units;
-             console.log("UNITTTTT "+ visual.currentPort.data("entry").name +" F3 " + confPort.units + " PORT " + visual.currentPort.data("entry").units);
+        //     console.log("UNITTTTT "+ visual.currentPort.data("entry").name +" F3 " + confPort.units + " PORT " + visual.currentPort.data("entry").units);
             if (confPort.funct == 0 && visual.currentPort.data("entry").type === 'D') {
                 visual.currentPort.data("entry").funct = 1;
             } else {
@@ -860,7 +908,7 @@ var visual = {
                 
                 $("#odc-panel").panel("toggle");
                 
-                  console.log("UNITTTTT " + port.data("entry").name + "F0 PORT " + port.data("entry").units);
+                //  console.log("UNITTTTT " + port.data("entry").name + "F0 PORT " + port.data("entry").units);
                 
              //   $('#popup-conf-port form')[0].reset();
                 $('#popup-conf-port #units').val(port.data('entry').units);
@@ -872,9 +920,9 @@ var visual = {
                     valfunc = port.data('entry').funct;
                 }
                  
-                select = $("#popup-conf-port select option[value='" + valfunc  + "']");
-                $(select).attr("selected", "selected");
-                
+                select = $("#popup-conf-port select"); // option[value='" + valfunc  + "']");
+                $(select).val(valfunc); //attr("selected", "selected");
+                $(select).selectmenu('refresh');
                 visual.currentPort = port;
                 
                 $('#popup-conf-port').popup('open');

@@ -10,7 +10,7 @@
  */
 
 /* JSLint options */
-/*global Connection, $, helpFile, wifiinfo, console, LocalFileSystem, visual, fileDialog, selectLocal */
+/*global Connection, $, helpFile, wifiinfo, console, LocalFileSystem, visual, fileDialog, selectLocal, Settings */
 
 var app = {
     
@@ -20,6 +20,7 @@ var app = {
     networkState: null,
     updateTime: 45000,
     functionPortsFonts: [ 'a', 'j', 'z', 's', 't', 'r' ],
+    lang: 0,                // Spanish
     
     // Application Constructor
     initialize: function () {
@@ -46,8 +47,18 @@ var app = {
     // function, we must explicitly call 'app.receivedEvent(...);'
     onDeviceReady: function () {
         "use strict";
+    
+        var settings = Settings.getSettings();
+        
+        if (!$.isEmptyObject(settings)) {
+            app.updateTime = settings.refreshTime;
+            app.lang = settings.language;
+            
+             console.log("LANG  1 " + app.lang);
+        }
         
         app.receivedEvent('deviceready');
+    
         
         // beforeshow events
         // lib: FileDialog
