@@ -68,22 +68,52 @@ function Port(name, type, input, funct) {
         if (this.funct === 1) {
             if (this.value === "ON") {
                 widthIcon = ctx.measureText("k").width;
+                ctx.fillStyle = '#ccdbba';
                 ctx.fillText("k", this.posX - widthIcon * 0.5, this.posY);
             } else {
                 widthIcon = ctx.measureText("j").width;
+                ctx.fillStyle = '#e0828a';
                 ctx.fillText("j", this.posX - widthIcon * 0.5, this.posY);
             }
+        } else if (this.type === 'D') {
+            if (this.value === "ON") {
+                ctx.fillStyle = '#ccdbba';
+            } else {
+                ctx.fillStyle = '#e0828a';
+            }
+            
+            widthIcon = ctx.measureText(app.functionPortsFonts[this.funct]).width;
+            ctx.fillText(app.functionPortsFonts[this.funct], this.posX - widthIcon * 0.5, this.posY);
         } else {
             widthIcon = ctx.measureText(app.functionPortsFonts[this.funct]).width;
+           
+            
+            var gradient = ctx.createLinearGradient(this.posX - widthIcon * 0.5, this.posY, this.posX + widthIcon * 0.5, this.posY),
+                gradientPoint;
+            
+            gradientPoint = this.value / (this.max - this.min);
+            
+            console.log("GRADIENTEE   " + gradientPoint + "  " + this.value + " aicc "  +  widthIcon +"  ac " + (this.max - this.min));
+            
+            gradient.addColorStop(0, "#ccdbba");
+            gradient.addColorStop(gradientPoint, "#ccdbba");
+            gradient.addColorStop(gradientPoint + 0.01, "#e0828a");
+            gradient.addColorStop(1, "#e0828a");
+            
+            
+            //ctx.fillStyle = '#e0828a';
+            ctx.fillStyle = gradient;
+            
             ctx.fillText(app.functionPortsFonts[this.funct], this.posX - widthIcon * 0.5, this.posY);
         }
         
         // Draw Units
         if (this.type === 'A') {
         
-            var text = parseFloat(this.value * this.factor).toPrecision() + " " + this.units;
-     //       console.log("textoooooo " + text);
+            var text = Math.round(parseFloat(this.value * this.factor)).toFixed(1) + " " + this.units;
+     
             ctx.font = "bold " + fontSizeUnit + "px Arial";
+            ctx.fillStyle = '#e0828a';
             ctx.fillText(text, this.posX + widthIcon * 0.6, this.posY - fontSizeUnit * 0.5);
             
         }

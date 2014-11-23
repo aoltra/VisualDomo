@@ -326,7 +326,10 @@ var selectLocal = {
 
                 visual.setUse(0);
                 $(":mobile-pagecontainer").pagecontainer("change", "#page-visual");
-                visual.loadLocation(location);
+                visual.loadLocation(location, function () {
+                    
+                    
+                });
 
             } else {
                 
@@ -379,8 +382,11 @@ var selectLocal = {
                     $('li#local-' + location.name + ' .state').html(BSSID);
                     helpFile.deleteFile(app.root, path + location.name + ".vdlt", function () {}, helpFile.errorHandler);
                     $(":mobile-pagecontainer").pagecontainer("change", "#page-visual");
-                    visual.loadLocation(location);
                     visual.setUse(1);
+                    visual.loadLocation(location, function () {
+                        visual.updatePorts();
+                        visual.refreshPorts();
+                    });
                 } else {  // dissociate
                     helpFile.deleteFile(app.root, path + location.name + ".vdl", function () {}, helpFile.errorHandler);
                     $(this).text("Asignar");

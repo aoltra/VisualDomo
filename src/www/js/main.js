@@ -195,7 +195,10 @@ var app = {
         $("#mm-visualize").click(function () {
             if (selectLocal.currentLocal !== null) {
                 visual.setUse(1);
-                visual.loadLocation(selectLocal.currentLocal);
+                visual.loadLocation(selectLocal.currentLocal, function () {
+                    visual.updatePorts();
+                    visual.refreshPorts();
+                });
                 $(":mobile-pagecontainer").pagecontainer("change", "#page-visual", { reload: "true" });
             } else {
                 app.alert("No está definida la localización actual", true, 1);
@@ -316,7 +319,7 @@ var app = {
                     $('#popup-confirm').on({
                         popupafterclose: function () {
                            // setTimeout(function () {
-                                navigator.app.backHistory();
+                            navigator.app.backHistory();
                             //}, 100);
                         }
                     });
@@ -327,7 +330,7 @@ var app = {
                 navigator.app.backHistory();
             }
         } else {
-            navigator.app.backHistory();    
+            navigator.app.backHistory();
         }
     },
     

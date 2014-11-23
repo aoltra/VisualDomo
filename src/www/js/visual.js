@@ -159,6 +159,26 @@ var visual = {
                 visual.aboutHide();
             }, 5000);
         });
+        
+         $("#page-visual #config-menu #cfgapp-item").click(function (event) {
+        
+            $("#config-menu").popup('close');
+            
+            // Open a popup from other popup
+            $('#config-menu').on({
+                popupafterclose: function () {
+                  //  if (visual.openConfLocation === true) {
+                    //    if (visual.noConfig === true) {
+                            setTimeout(function () {
+                                $('#popup-conf-app').popup('open');
+                            }, 100);
+
+                      //      visual.openConfLocation = false;
+                        }
+                   // }
+                //}
+            });
+        });
             
         $("#page-visual #config-menu #save-item").click(function (event) {
         
@@ -252,17 +272,6 @@ var visual = {
                 return false;
             }
             
-            if (selectLocal.existLocation(localData.name) !== -1) {
-                 
-                app.alert("Ya existe una localización con ese nombre. No es posible grabar la localización", true, 1);
-                                    
-                window.setTimeout(function () {
-                    app.alert("", false);
-                }, 1550);
-            
-                return false;
-            }
-            
             if (localData.name === "") {
                 app.alert("No se ha definido un nombre para la localización", true, 1);
                                     
@@ -271,6 +280,19 @@ var visual = {
                 }, 1550);
                 
                 return false;
+            }
+            
+            if (localData.name !== visual.local.name) {
+                if (selectLocal.existLocation(localData.name) !== -1) {
+
+                    app.alert("Ya existe una localización con ese nombre. No es posible grabar la localización", true, 1);
+
+                    window.setTimeout(function () {
+                        app.alert("", false);
+                    }, 1550);
+
+                    return false;
+                }
             }
             
             visual.local.name = localData.name;
@@ -631,7 +653,7 @@ var visual = {
         $("#page-visual #header-visual-location").html("VisualDomo" + saved + complexName + "<div id='use'>" + use + "</div>");
     },
     
-    loadLocation: function (location) {
+    loadLocation: function (location, callback) {
         "use strict";
         
         var odc;
@@ -664,6 +686,8 @@ var visual = {
         location.floors.forEach(function (entry) {
             visual.addFloor(entry);
         });
+        
+        callback();
     },
     
     addODControl: function (odcontrol, readPorts) {
