@@ -1381,6 +1381,7 @@ var visual = {
         ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
         
         visual.saved = true;
+        visual.noConfig = false;
         visual.updateName("");
     }
 };
