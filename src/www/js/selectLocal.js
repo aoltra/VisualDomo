@@ -248,7 +248,7 @@ var selectLocal = {
         var i, tableInfo, addClass, URL, idButton, len;
         
         for (i = 0; i < selectLocal.locations.length; i++) {
-            if (selectLocal.locations[i].name === name) {
+            if (selectLocal.locations[i].name === location.name) {
                 return false; // it hasn't to insert
             }
         }
