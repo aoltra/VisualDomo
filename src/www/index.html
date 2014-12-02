@@ -53,21 +53,21 @@
                 <span id='opendomo-icon'><img src="img/VisualDomo_logo_sin%20texto_small.png"/></span>
                 <table>
                     <tr>
-                        <td>Versión:</td>
+                        <td id="version">Versión:</td>
                         <td>0.4.0 (alfa)</td>
                     </tr>
                     <tr>
-                        <td>Fecha:</td>
+                        <td id="date">Fecha:</td>
                         <td>Nov 2014</td>
                     </tr>
                     <tr>
-                        <td>Autor:</td>
+                        <td id="author">Autor:</td>
                         <td>Alfredo Oltra</td>
                     </tr>
                 </table>
             </div>
-            <p>VisualDomo allows a visual control of the ODControl devices from OpenDomo Services SL company.</p>
-            <p>VisualDomo is written using HTML, CSS and JavaScript with the support of several frameworks like jQuery, jQuery Mobile and Cordova (also known as PhoneGap).</p>
+            <p id="desc1">VisualDomo allows a visual control of the ODControl devices from OpenDomo Services SL company.</p>
+            <p id="desc2">VisualDomo is written using HTML, CSS and JavaScript with the support of several frameworks like jQuery, jQuery Mobile and Cordova (also known as PhoneGap).</p>
         </div>
         
         <div data-role="page" id="page-main" data-theme="b"> 
@@ -88,7 +88,7 @@
                             <td align="left" id="mm-newlocation" class="row1"> 
                                 <span class="mm-icon">g</span>
                                 <div class="mm-content">
-                                    <p class="mm-main">New</p>
+                                    <p class="mm-main" id="new">New</p>
                                     <p class="mm-sub">Create a new location</p>
                                 </div>
                             </td>
@@ -364,9 +364,11 @@
         <script type="text/javascript" src="js/lib/jquery.ui.touch-punch.min.js"></script>-->
         <script type="text/javascript" src="js/initjqm.js"></script>  
         <script type="text/javascript" src="js/lib/jquery.mobile-1.4.3.js"></script> 
-        
+        <script type="text/javascript" src="js/settings/jquery.auderoTextChanger.min.js"></script> 
+
         <!-- Settings -->
         <script type="text/javascript" src="js/settings/Settings.js"></script>
+        <script type="text/javascript" src="js/settings/Translation.js"></script>
         
         <!-- helpers -->
         <script type="text/javascript" src="js/helpers/FileHelper.js"></script>

@@ -400,6 +400,11 @@ var visual = {
            
         });
         
+        $("#popup-add-odcontrol :button").click(function (event) {
+            $('#popup-add-odcontrol').popup('close');
+            $('#popup-add-odcontrol form')[0].reset();
+        });
+        
         $("#popup-conf-aport-value #aport-value-conf-ok").click(function (event) {
 
             var localPort = {}, odc, port, value;

@@ -10,7 +10,7 @@
  */
 
 /* JSLint options */
-/*global Connection, $, helpFile, wifiinfo, console, LocalFileSystem, visual, fileDialog, selectLocal, Settings */
+/*global Connection, $, helpFile, wifiinfo, console, LocalFileSystem, visual, fileDialog, selectLocal, Settings, Translation */
 
 var app = {
     
@@ -48,13 +48,18 @@ var app = {
     onDeviceReady: function () {
         "use strict";
     
-        var settings = Settings.getSettings();
+        var settings = Settings.getSettings(), key, translation;
         
         if (!$.isEmptyObject(settings)) {
             app.updateTime = settings.refreshTime;
             app.lang = settings.language;
             
-             console.log("LANG  1 " + app.lang);
+            console.log("LANG  1 " + app.lang);
+            
+            translation = Translation[app.lang];
+            for (key in translation) {
+                $('#' + key).auderoTextChanger(translation[key]);
+            }
         }
         
         app.receivedEvent('deviceready');
@@ -116,7 +121,7 @@ var app = {
                                 if (SSID !== null) {
                                     app.SSID = SSID.replace(/\"/g, '');
                                     if (app.SSID === "") {
-                                        app.SSID = "Sin nombre";
+                                        app.SSID = Translation[app.lang].message_0004;
                                     }
                                 }
                             },
@@ -175,7 +180,7 @@ var app = {
 //                $("#mm-external").css("border", "3px solid red");
 //                $("#mm-assignlocation").css("border", "3px solid red");
                 $('.sp-info #tx-SSID').text("");
-                $('.sp-info #tx-connected').text("Sin conexión");
+                $('.sp-info #tx-connected').text(Translation[app.lang].message_0003);
             }
                     
             $('.sp-image').parent().bind('transitionend webkitTransitionEnd', function () {
@@ -212,7 +217,7 @@ var app = {
                 });
                 $(":mobile-pagecontainer").pagecontainer("change", "#page-visual", { reload: "true" });
             } else {
-                app.alert("No está definida la localización actual", true, 1);
+                app.alert(Translation[app.lang].message_0005, true, 1);
                                     
                 window.setTimeout(function () {
                     app.alert("", false);
@@ -231,7 +236,7 @@ var app = {
                 selectLocal.setUse(0);
                 $(":mobile-pagecontainer").pagecontainer("change", "#page-select-local", { reload: "true" });
             } else {
-                app.alert("No hay localizaciones que configurar.", true, 0);
+                app.alert(Translation[app.lang].message_0006, true, 0);
                                     
                 window.setTimeout(function () {
                     app.alert("", false);
@@ -243,7 +248,7 @@ var app = {
             var sSID = $('.sp-info #tx-SSID').text();
             
             if (sSID === "" || sSID === "3G/4G") {
-                app.alert("Es necesario estar conectado a una red Wifi", true, 1);
+                app.alert(Translation[app.lang].message_0007, true, 1);
                                     
                 window.setTimeout(function () {
                     app.alert("", false);
@@ -253,7 +258,7 @@ var app = {
                     selectLocal.setUse(1);
                     $(":mobile-pagecontainer").pagecontainer("change", "#page-select-local", { reload: "true" });
                 } else {
-                    app.alert("No hay localizaciones que enlazar.", true, 0);
+                    app.alert(Translation[app.lang].message_0001, true, 0);
                                     
                     window.setTimeout(function () {
                         app.alert("", false);
@@ -263,7 +268,7 @@ var app = {
         });
        
         $("#mm-external").click(function () {
-            app.alert("Opción no soportada en esta versión", true, 0);
+            app.alert(Translation[app.lang].message_0002, true, 0);
                                     
             window.setTimeout(function () {
                 app.alert("", false);
@@ -320,7 +325,7 @@ var app = {
                 $('#popup-confirm #delete-f').css("display", "none");
                 $('#popup-confirm #delete-p').css("display", "none");
                 $('#popup-confirm #exit').css("display", "inline");
-                $('#popup-confirm h3').text("Está localización no está grabada. Si sales perderás los cambios. ¿Estás seguro de que quieres salir?");
+                $('#popup-confirm h3').text(Translation[app.lang].message_0008);
                 $('#popup-confirm').popup('open');
 
                 $("#popup-confirm #exit").click(function () {
