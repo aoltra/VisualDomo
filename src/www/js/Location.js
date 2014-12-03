@@ -147,14 +147,14 @@ function Location(BSSID, name, description) {
         flrs = this.floors;
         
         data.odcontrols.forEach(function (entry) {
-            odc = new ODControl("", entry.name, "", entry.IP, entry.user, entry.password);
+            odc = new ODControl(entry.ID, entry.name, "", entry.IP, entry.user, entry.password);
             
             ports = odc.ports;
             
-            entry.ports.forEach(function (entry) {
+            entry.ports.forEach(function (entry2) {
                 port = new Port("", "", "", "");
                 
-                port.create(entry);
+                port.create(entry2);
                 
                 ports.push(port);
                 
@@ -202,5 +202,32 @@ function Location(BSSID, name, description) {
     Location.prototype.numberODC = function () {
         return this.odcontrols.length;
     };
-
+    
+    Location.prototype.nextODCID = function () {
+        var max = 0;
+        
+        this.odcontrols.forEach(function (entry) {
+            
+            if (entry.ID > max) {
+                max = entry.ID;
+            }
+        });
+        
+        return max + 1;
+    };
+    
+    Location.prototype.removeODC = function (id) {
+        var i;
+        
+        for (i = 0; i < this.odcontrols.length; i = i + 1) {
+            
+            if (this.odcontrols[i].ID === id) {
+                this.odcontrols.splice(i, 1);
+                break;
+            }
+        }
+       
+    };
+    
+    
 }

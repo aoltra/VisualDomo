@@ -392,10 +392,9 @@ var visual = {
             badIP = false;
             dirIP.forEach(function (entry) {
                 
-                 console.log("jkhjhkhj 3" + entry + "  " + Number(entry) + " " + entry %1 );
                 if (Number(entry) != entry || entry % 1 != 0) {
                     badIP =  true;
-                } else if (entry>255 || entry < 0) {
+                } else if (entry > 255 || entry < 0) {
                     badIP =  true;
                 }
             });
@@ -415,8 +414,8 @@ var visual = {
             newodc.pass = "opendomo";
             newodc.user = "user";
             
-            odc = new ODControl("", newodc.name, "", newodc.ip, newodc.user, newodc.pass);
-             
+            odc = new ODControl(visual.local.nextODCID(), newodc.name, "", newodc.ip, newodc.user, newodc.pass);
+             console.log("ODC id " + odc.ID);
             visual.local.addODControl(odc);
             nODC = visual.local.numberODC();
             if (nODC > 0) {
@@ -756,7 +755,7 @@ var visual = {
         visual.local.assign(location.BSSID, location.SSID);
        
         location.odcontrols.forEach(function (entry) {
-            odc = new ODControl(visual.local.numberODC(), entry.name, "", entry.IP, entry.user, entry.password);
+            odc = new ODControl(entry.IP, entry.name, "", entry.IP, entry.user, entry.password);
             visual.local.addODControl(odc);
             visual.addODControl(odc, entry.ports);
         });
@@ -892,7 +891,7 @@ var visual = {
                     port.data("entry").level = visual.currentFloor.level;
                     port.data("entry").placed = true;
                     
-                    console.log("PUERTOOO FACTIR  " + port.data("entry").factor);
+                    console.log("PUERTO FACTOR  " + port.data("entry").factor);
                     
                     port.data("entry").posY = Math.round($('.main-canvas')[0].getContext('2d').canvas.height * 0.5);
                     port.data("entry").posX = Math.round($('.main-canvas')[0].getContext('2d').canvas.width * 0.5);
@@ -982,7 +981,7 @@ var visual = {
             console.log("pulsacion larga");
             
             var divBar = $(this).children().last();
-    
+            
             if (divBar.hasClass('odc-edit-toolbar') === true) {
                
                 $(".odc-edit-toolbar").slideToggle("fast");
@@ -1005,10 +1004,53 @@ var visual = {
                 //    div = ".collapsible-item#odc-" + visual.odcEdit;
 
                 $(divToolBarODC).appendTo(header);
+                
+                $(this).find("#reload-odc").click(function () {
+                
+                    app.alert("Función no soportada en esta versión", true, 1);
+
+                    window.setTimeout(function () {
+                        app.alert("", false);
+                    }, 1550);
+                
+                });
+                
+                $(this).find("#delete-odc").click(function () {
+                
+                    $("#odc-panel").panel("toggle");
+                    
+                    $('#popup-confirm h1').text("Borrar ODControl");
+                    $('#popup-confirm #delete-f').css("display", "inline");
+                    $('#popup-confirm #delete-p').css("display", "none");
+                    $('#popup-confirm #exit').css("display", "none");
+
+                    $('#popup-confirm h3').text("¿Estás seguro de que quieres quitar este ODControl (" + odcontrol.name +") de la localización?");
+                    $('#popup-confirm').popup('open');
+                
+                    $("#popup-confirm #delete-f").click(function () {
+                        $('#popup-confirm').popup('close');
+
+                        $(collapsible).remove();
+                        
+                        visual.local.removeODC(odcontrol.ID);
+                        
+                        nODC = visual.local.numberODC();
+                        if (nODC > 0) {
+                            $("#odc-list").css("display", "inline");
+                            $("#noODC").css("display", "none");
+                        } else {
+                            $("#odc-list").css("display", "none");
+                            $("#noODC").css("display", "inline");
+                        }
+                        
+                        $("#page-visual #odcontrol-panel").text("ODControl (" + nODC + ")");
+                    });
+                
+                   // e.stopPropagation();
+                
+                });
             }
         });
-        
-        
     },
     
     addFloor: function (floor) {
@@ -1414,6 +1456,10 @@ var visual = {
         $("#odc-panel #odc-list").children().each(function (index) {
             $(this).remove();
         });
+                
+        $("#odc-list").css("display", "none");
+        $("#noODC").css("display", "line");
+        $("#page-visual #odcontrol-panel").text("ODControl (0)");
         
         ctx = $('.main-canvas')[0].getContext('2d');
         ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
