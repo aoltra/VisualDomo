@@ -363,9 +363,9 @@ var visual = {
         
         $("#popup-add-odcontrol #odc-add-ok").click(function (event) {
             
-            var nODC, odc;
+            var nODC, odc, newodc = {}, badIP, dirIP;
 
-        /*    $.each($('#popup-add-odcontrol form').serializeArray(), function () {
+            $.each($('#popup-add-odcontrol form').serializeArray(), function () {
 
                 if (newodc[this.name]) {
                     if (!newodc[this.name].push) {
@@ -376,13 +376,46 @@ var visual = {
                     newodc[this.name] = this.value || '';
                 }
             });
-          */
             
-            //odc.IP = "90.166.105.5";
-            //odc.user = "user";
-            //odc.password = newodc.passowrd;
+            dirIP = newodc.ip.split('.');
+            console.log("jkhjhkhj " + JSON.stringify(dirIP));
+            if (dirIP.length != 4) {
+                app.alert("IP mal definida", true, 1);
+                                    
+                window.setTimeout(function () {
+                    app.alert("", false);
+                }, 1550);
+                
+                return false;
+            }
             
-            odc = new ODControl("", "control1", "", "90.166.105.5", "user", "opendomo");
+            badIP = false;
+            dirIP.forEach(function (entry) {
+                
+                 console.log("jkhjhkhj 3" + entry + "  " + Number(entry) + " " + entry %1 );
+                if (Number(entry) != entry || entry % 1 != 0) {
+                    badIP =  true;
+                } else if (entry>255 || entry < 0) {
+                    badIP =  true;
+                }
+            });
+            
+            if (badIP == true) {
+                app.alert("IP mal definida", true, 1);
+                                    
+                window.setTimeout(function () {
+                    app.alert("", false);
+                }, 1550);
+                
+                return false;
+            } 
+            
+            newodc.ip = "90.166.105.5";
+            newodc.name = "odcontrol1";
+            newodc.pass = "opendomo";
+            newodc.user = "user";
+            
+            odc = new ODControl("", newodc.name, "", newodc.ip, newodc.user, newodc.pass);
              
             visual.local.addODControl(odc);
             nODC = visual.local.numberODC();
