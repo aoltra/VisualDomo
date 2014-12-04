@@ -119,7 +119,7 @@ var visual = {
             $('#popup-conf-floor #curr-img').text("");
             
             if (floor.URL === "") {
-                app.alert("No se ha definido la imagen de la planta", true, 1);
+                app.alert(Translation[app.lang].message_0022, true, 1);
                                     
                 window.setTimeout(function () {
                     app.alert("", false);
@@ -311,7 +311,7 @@ var visual = {
             $('#popup-conf-location form')[0].reset();
             
             if (localData.name.indexOf(" ") > -1) {
-                app.alert("El nombre de la localización no puede contener espacios", true, 1);
+                app.alert(Translation[app.lang].message_0023, true, 1);
                                     
                 window.setTimeout(function () {
                     app.alert("", false);

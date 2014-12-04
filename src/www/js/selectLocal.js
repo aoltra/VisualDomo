@@ -46,12 +46,12 @@ var selectLocal = {
         console.log("USO SELECCION: " + selectLocal.use);
         
         if (selectLocal.use === 0) {
-            txtButton = "Seleccionar";
+            txtButton = Translation[app.lang].message_0009;
            
             $(".header-select-local").removeClass("header-select-local-link");
             $(".header-select-local").addClass("header-select-local-conf");
         } else {
-            txtButton = "Asignar";
+            txtButton = Translation[app.lang].message_0010;
            
             $(".header-select-local").removeClass("header-select-local-conf");
             $(".header-select-local").addClass("header-select-local-link");
@@ -67,16 +67,16 @@ var selectLocal = {
                 
                 if (entry.assign === true) {
                     idButton = "li#local-" + entry.name;
-                    $(idButton + " .assign-button").text("Desasignar");
+                    $(idButton + " .assign-button").text(Translation[app.lang].message_0011);
                 }
             });
         }
        
         
         if (selectLocal.use === 0) {
-            $(".header-select-local").text("Selecciona la localización a configurar:");
+            $(".header-select-local").text(Translation[app.lang].message_0012);
         } else {
-            $(".header-select-local").html("Selecciona la localización a asignar a <i>" + app.SSID + "</i>:");
+            $(".header-select-local").html(Translation[app.lang].message_0013 + " <i>" + app.SSID + "</i>:");
         }
     },
     
@@ -216,7 +216,7 @@ var selectLocal = {
                         console.log("NF:" + numberLocal);
                 
                         if (numberLocal === 0) {
-                            $(".header-select-local").text("No se han encontrado Localizaciones.");
+                            $(".header-select-local").text(Translation[app.lang].message_0014);
                             callback();
                         }
                            
@@ -293,21 +293,21 @@ var selectLocal = {
             selectLocal.locations[selectLocal.existLocation(location.name)].assign = true;
             selectLocal.locations[selectLocal.existLocation(location.name)].BSSID = location.BSSID;
         } else {
-            BSSID = "Sin asignar";
+            BSSID = Translation[app.lang].message_0015;
         }
         
         tableInfo = "<li class='select-local-item' id='local-" + location.name +
-                "'><table class='info-table'><tr><td>Nombre:</td><td width='37%'>" +
+                "'><table class='info-table'><tr><td>" + Translation[app.lang].message_0016 + "</td><td width='37%'>" +
                 location.name +
                 "</td><td colspan='2' width='35%'>" +
                 "<button class='assign-button' type='button'></button>" +
-                "</td></tr><tr><td>Descripción:</td><td colspan='3'>" +
+                "</td></tr><tr><td>" + Translation[app.lang].message_0017 + "</td><td colspan='3'>" +
                 location.description +
-                "</td></tr><tr><td>Estado:</td><td class='state'>" +
+                "</td></tr><tr><td>" + Translation[app.lang].message_0018 + "</td><td class='state'>" +
                 BSSID +
                 "</td><td colspan='2' rowspan='3'>" +
                 URL +
-                "</td></tr><tr><td>Plantas:</td><td>" +
+                "</td></tr><tr><td>" + Translation[app.lang].message_0019 + "</td><td>" +
                 location.floors.length +
                 "</td></tr><tr><td>ODC:</td><td>" +
                 location.odcontrols.length +
@@ -365,7 +365,7 @@ var selectLocal = {
                 }
                 
                 if (assign === false && alreadyExist === true) {
-                    app.alert("Está wifi (" + app.SSID + ") ya está asiganda a una localización", true, 0);
+                    app.alert(Translation[app.lang].message_0020 + app.SSID + Translation[app.lang].message_0021, true, 0);
 
                     window.setTimeout(function () {
                         app.alert("", false);
@@ -375,7 +375,7 @@ var selectLocal = {
                 
                 local.save();
                 if (assign === false) {  // assign
-                    $(this).text("Desasignar");
+                    $(this).text(Translation[app.lang].message_0015);
                     selectLocal.locations[pos].assign = true;
                     selectLocal.locations[pos].BSSID = local.BSSID;
                     BSSID = "<b>" + local.BSSID  + " / " + local.SSID + "</b>";
@@ -392,7 +392,7 @@ var selectLocal = {
                     $(this).text("Asignar");
                     selectLocal.locations[pos].assign = false;
                     selectLocal.locations[pos].BSSID = "";
-                    $('li#local-' + location.name + ' .state').html("Sin asignar");
+                    $('li#local-' + location.name + ' .state').html(Translation[app.lang].message_0015);
                 }
                 
                 $('#local-list').trigger("create");
