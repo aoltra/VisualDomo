@@ -227,6 +227,21 @@ var visual = {
         $("#popup-conf-app :button").click(function (event) {
             $('#popup-conf-app').popup('close');
         });
+        
+        $("#page-visual #config-menu #refresh-item").click(function (event) {
+              
+            $("#config-menu").popup('close');
+            
+            app.alert("Refrescando puertos", true, 1);
+            
+            visual.updatePorts();                        
+            
+            window.setTimeout(function () {
+                app.alert("", false);
+            }, 1550);
+            
+            visual.refreshPorts();
+        });
             
         $("#page-visual #config-menu #save-item").click(function (event) {
         
@@ -719,11 +734,13 @@ var visual = {
             clearTimeout(visual.refreshLoop);
             $("#config-menu #config-item").css('display', 'block');
             $("#config-menu #save-item").css('display', 'block');
+            $("#config-menu #refresh-item").css('display', 'none');
             $("#add-floor").css('display', 'inline-block');
         } else {
             $("#odcontrol-panel").css('visibility', 'hidden');
             $("#config-menu #config-item").css('display', 'none');
             $("#config-menu #save-item").css('display', 'none');
+            $("#config-menu #refresh-item").css('display', 'block');
             $("#add-floor").css('display', 'none');
             visual.updatePorts();
             visual.refreshPorts();
@@ -784,7 +801,7 @@ var visual = {
         visual.local.assign(location.BSSID, location.SSID);
        
         location.odcontrols.forEach(function (entry) {
-            odc = new ODControl(entry.IP, entry.name, "", entry.IP, entry.user, entry.password);
+            odc = new ODControl(entry.ID, entry.name, "", entry.IP, entry.user, entry.password);
             visual.local.addODControl(odc);
             visual.addODControl(odc, entry.ports);
         });
@@ -1404,12 +1421,7 @@ var visual = {
         dy = Math.abs(h - maxHeight) * 0.5;
 
         ctx.drawImage(imageObj, parseInt(dx, 10), parseInt(dy, 10), parseInt(w, 10), parseInt(h, 10));
-        /***
-        console.log("IMAGEN FONDO: " +  visual.currentFloor.URL + " x: " + imageObj.naturalWidth + " y: " + imageObj.naturalHeight +  " w:" + w +  " h:" + h + "  dx:" + dx + " dy:" + dy + "ctxw: " + ctx.canvas.width + "  ctxh: " + ctx.canvas.height) ; 
-**/
-            /*console.log("IMAGEN FONDO: " +  $(this).data("entry").url + " x: " + imageObj.naturalWidth + " y: " + imageObj.naturalHeight + "  wi: " + wi + " hi: " + hi + " ch: " + ch + " cw:" + cw + "  dx:" + dx + " dy:" + dy + "ctxw: " + ctx.canvas.width + "  ctxh: " + ctx.canvas.height) ; */
-            
-      //  console.log("COLOR " + $(this).data("entry").invColor);
+       
         if (visual.currentFloor.invColor === "on") {
             helpImage.invertColor(ctx, dx, dy, imageObj);
         }
@@ -1434,21 +1446,21 @@ var visual = {
             
             odcdata = $(this).data("entry");
             
-            odc = visual.local.odcontrols[odcdata.ID];
-            
+            odc = visual.local.odcontrols[index];
+          // console.log("ID   " + index + "  " + odcdata.ID + "  "  +JSON.stringify(visual.local));
             lsc = odc.readPorts();
             ports = lsc.split('\n');
             
-            $(this).find(".collapsible-port").each(function (index) {
+            $(this).find(".collapsible-port").each(function (index2) {
                 var portdata, port, value;
                 
-                value = ports[index].split(":")[2];
+                value = ports[index2].split(":")[2];
                 portdata = $(this).data("entry");
                 
                 portdata.value = value;
-                odc.ports[index].value = value;
+                odc.ports[index2].value = value;
                 
-                console.log("INEDEXXXX " + index + "  " + value);
+              //  console.log("INEDEXXXX " + index2 + "  " + value);
                   
             });
             
