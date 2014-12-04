@@ -437,6 +437,35 @@ var visual = {
             $('#popup-add-odcontrol form')[0].reset();
         });
         
+        $("#popup-edit-odcontrol #odc-edit-ok").click(function (event) {
+            
+            var odc, newodc = {};
+
+            $.each($('#popup-edit-odcontrol form').serializeArray(), function () {
+
+                if (newodc[this.name]) {
+                    if (!newodc[this.name].push) {
+                        newodc[this.name] = [newodc[this.name]];
+                    }
+                    newodc[this.name].push(this.value || '');
+                } else {
+                    newodc[this.name] = this.value || '';
+                }
+            });
+            
+            odc = $('#popup-edit-odcontrol').data("entry");
+            odc.name = newodc.name;
+            $('#odc-'+ odc.ID +' h1 a').text(odc.name);
+            
+            $('#popup-edit-odcontrol').popup('close');
+            $('#popup-edit-odcontrol form')[0].reset(); 
+        });
+        
+        $("#popup-edit-odcontrol :button").click(function (event) {
+            $('#popup-edit-odcontrol').popup('close');
+            $('#popup-edit-odcontrol form')[0].reset();
+        });
+        
         $("#popup-conf-aport-value #aport-value-conf-ok").click(function (event) {
 
             var localPort = {}, odc, port, value;
@@ -963,13 +992,11 @@ var visual = {
                 visual.currentPort = port;
                 
                 $('#popup-conf-port').popup('open');
-    
-                                                     
+                                         
                 event.stopPropagation();
             });
             
             $(collapsible).collapsible();
-            
         }
         
         console.log("PUERTO " + odcontrol.ports.length);
@@ -978,6 +1005,7 @@ var visual = {
         
         // if you taphold in header of ODC
         $(header).on("taphold",  function (event) {
+            
             console.log("pulsacion larga");
             
             var divBar = $(this).children().last();
@@ -986,7 +1014,6 @@ var visual = {
                
                 $(".odc-edit-toolbar").slideToggle("fast");
                 $(".odc-edit-toolbar").remove();
-        //    $(".collapsible-item #odc-" + visual.odcEdit).removeClass("odc-edit-toolbar");
                 
             } else {
                 
@@ -1000,8 +1027,6 @@ var visual = {
                     "<div class='ui-block-b button'><p id='delete-odc'>n</p></div>" +
                     "<div class='ui-block-c button'><p id='reload-odc'>o</p></div>" +
                     "</div></div>";
-                
-                //    div = ".collapsible-item#odc-" + visual.odcEdit;
 
                 $(divToolBarODC).appendTo(header);
                 
@@ -1013,6 +1038,15 @@ var visual = {
                         app.alert("", false);
                     }, 1550);
                 
+                });
+               
+                $(this).find("#edit-odc").click(function () {
+                    
+                    $("#odc-panel").panel("toggle");
+                 
+                    $('#popup-edit-odcontrol').data("entry", odcontrol);
+                    $('#popup-edit-odcontrol #name').val(odcontrol.name);
+                    $('#popup-edit-odcontrol').popup('open');
                 });
                 
                 $(this).find("#delete-odc").click(function () {

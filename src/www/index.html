@@ -191,8 +191,8 @@
                         </div>
                     </div>
                     
-                     <!-- odcontrol configuration -->
-                     <div data-role="popup" id="popup-add-odcontrol" data-theme="b" data-position-to="window" data-dismissible="false" data-overlay-theme="a">
+                    <!-- odcontrol configuration -->
+                    <div data-role="popup" id="popup-add-odcontrol" data-theme="b" data-position-to="window" data-dismissible="false" data-overlay-theme="a">
                         <div data-role="header" data-theme="b" class="ui-corner-top">
                             <h1>ODControl</h1>
                         </div>
@@ -217,6 +217,26 @@
                         </div>
                     </div>
                     
+                    <!-- odcontrol edition -->
+                    <div data-role="popup" id="popup-edit-odcontrol" data-theme="b" data-position-to="window" data-dismissible="false" data-overlay-theme="a">
+                        <div data-role="header" data-theme="b" class="ui-corner-top">
+                            <h1>ODControl</h1>
+                        </div>
+                        <div class='dialog-body'>
+                            <h4>Introduzca los datos del ODControl</h4>
+
+                            <form name="odc-conf-edit" action="" method="post">
+                                <label for="name" class="ui-hidden-accessible">Nombre</label>
+                                <input type="text" name="name" id="name" placeholder="Nombre">
+        
+                                <div class="ui-grid-a">
+                                    <div class="ui-block-a"><input type="button" name="ok" id="odc-edit-ok" value="Aceptar" data-theme="b" data-icon="check" data-iconpos="right"></div>
+                                    <div class="ui-block-b"><input type="button" name="cancel" id="odc-edit-cancel" value="Cancelar" data-theme="b" data-icon="back" data-iconpos="right"></div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    
                     <!-- location configuration -->
                     <div data-role="popup" id="popup-conf-location"  data-theme="b"  data-dismissible="false" data-overlay-theme="a">
                         <div data-role="header" data-theme="b" class="ui-corner-all">
@@ -230,11 +250,7 @@
                                 <input type="text" name="name" id="name" placeholder="Nombre" maxlength="15">
                                 <label for="description" class="ui-hidden-accessible">Descripción</label>
                                 <input type="text" name="description" id="description" placeholder="Descripción">
-<!--
-                                <label for="bssid">BSSID</label>
-                                <input type="text" name="bssid" id="bssid" placeholder="BSSID">
--->
-                            
+                        
                                 <div class="ui-grid-a">
                                     <div class="ui-block-a"><input type="button" name="ok" id="local-conf-ok" value="Aceptar" data-theme="b" data-icon="check" data-iconpos="right"></div>
                                     <div class="ui-block-b"><input type="button" name="cancel" id="local-conf-cancel" value="Cancelar" data-theme="b" data-icon="back" data-iconpos="right"></div>
