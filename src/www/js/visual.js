@@ -242,6 +242,13 @@ var visual = {
             
             visual.refreshPorts();
         });
+        
+        $("#page-visual #config-menu #help-item").click(function (event) {
+        
+            $("#config-menu").popup('close');
+            // Only Android 
+            navigator.app.loadUrl("https://github.com/aoltra/VisualDomo/blob/master/doc/Ayuda.md", {openExternal : true});
+        });
             
         $("#page-visual #config-menu #save-item").click(function (event) {
         
