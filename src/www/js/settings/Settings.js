@@ -13,7 +13,7 @@
 /*global helpFile, $*/
 
 // Constructor
-function Settings(rT, lang) {
+function Settings(rT, lang, ooos) {
     "use strict";
     
     var db = window.localStorage,
@@ -21,6 +21,7 @@ function Settings(rT, lang) {
     
     this.refreshTime = rT;
     this.language = lang;
+    this.ooosURL = ooos;
     
     this.save = function () {
         db.setItem(tableName, JSON.stringify(this));
@@ -36,5 +37,5 @@ Settings.getSettings = function () {
     
     var settings = new Settings().load();
     
-    return (settings === null) ? {} : new Settings(settings.refreshTime, settings.language);
+    return (settings === null) ? {} : new Settings(settings.refreshTime, settings.language, settings.ooosURL);
 };

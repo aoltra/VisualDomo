@@ -54,7 +54,7 @@
                 <table>
                     <tr>
                         <td id="version">Versión:</td>
-                        <td>0.4.1 (alfa)</td>
+                        <td>0.4.2 (alfa)</td>
                     </tr>
                     <tr>
                         <td id="date">Fecha:</td>
@@ -133,6 +133,7 @@
                 <a href="#config-menu" class="ui-btn-right" data-rel="popup" data-icon="grid" data-iconpos="notext">Option</a>
                 <div data-role="popup" id="config-menu">
                     <ul data-role="listview" data-inset="true" data-theme="b">
+                        <li id="opendomoos-item" data-theme="b">OpenDomoOS</li>
                         <li id="config-item" data-theme="b">Config</li>
                         <li id="save-item" data-theme="b">Save</li>
                         <li id="refresh-item" data-theme="b">Refresh</li>
@@ -320,6 +321,8 @@
                             <h4>Introduzca los datos de configuración de VisualDomo</h4>
 
                             <form name="port-conf" action="" method="post">
+                                <label for="ooos" class="ui-hidden-accessible">OpenDomoOS URL</label>
+                                <input type="text" name="ooos" id="ooos" placeholder="OpenDomoOS URL">
                                 <label for="refresh" class="ui-hidden-accessible">Tiempo de refresco</label>
                                 <input type="number" name="refresh" id="refresh" placeholder="Tiempo de refresco (s)">
                                 <label for="lang" class="ui-hidden-accessible">Idioma</label>

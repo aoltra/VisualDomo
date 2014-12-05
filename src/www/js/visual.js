@@ -171,6 +171,7 @@ var visual = {
 
                         var vallang, select;
 
+                        $('#popup-conf-app #ooos').val(app.ooosURL);
                         $('#popup-conf-app #refresh').val(app.updateTime / 1000);
 
                         if (app.lang === undefined || app.lang === null) {
@@ -181,12 +182,13 @@ var visual = {
 
                         console.log("LANG  2 " + vallang);
                         select = $("#popup-conf-app select");// option[value='" + vallang + "']");
-                        //$(select).attr("selected", "selected");
                         $(select).val(vallang);//prop('selected', true)
                         $(select).selectmenu('refresh');
                         $('#popup-conf-app').popup('open');
                         
                     }, 100);
+                    
+                    $('#config-menu').off('popupafterclose');
                 }
             });
         });
@@ -208,9 +210,8 @@ var visual = {
             });
           
             app.updateTime = confApp.refresh * 1000;
+            app.ooosURL = confApp.ooos;
             app.lang = confApp.lang;
-            
-            console.log("LANG  3 " + app.lang);
             
             settings = Settings.getSettings();
             if ($.isEmptyObject(settings)) {
@@ -218,6 +219,7 @@ var visual = {
             }
             settings.refreshTime =  app.updateTime;
             settings.language =  app.lang;
+            settings.ooosURL =  app.ooosURL;
             settings.save();
 
             $('#popup-conf-app').popup('close');
@@ -249,6 +251,22 @@ var visual = {
             // Only Android 
             navigator.app.loadUrl("https://github.com/aoltra/VisualDomo/blob/master/doc/Ayuda.md", {openExternal : true});
         });
+        
+        $("#page-visual #config-menu #opendomoos-item").click(function (event) {
+        
+            $("#config-menu").popup('close');
+            
+            if (app.ooosURL === "") {
+                app.alert(Translation[app.lang].message_0042, true, 1);
+            
+                window.setTimeout(function () {
+                    app.alert("", false);
+                }, 1550);
+            } else {
+                // Only Android 
+                navigator.app.loadUrl("http://" + app.ooosURL, {openExternal : true});
+            }
+        });
             
         $("#page-visual #config-menu #save-item").click(function (event) {
         
@@ -272,6 +290,8 @@ var visual = {
                                 visual.openConfLocation = false;
                             }
                         }
+                        
+                        $('#config-menu').off('popupafterclose');
                     }
                 });
             } else {
@@ -304,6 +324,8 @@ var visual = {
                         
                         visual.openConfLocation = false;
                     }
+                    
+                    $('#config-menu').off('popupafterclose');
                 }
             });
         });
@@ -736,18 +758,20 @@ var visual = {
         
         console.log("USO VISUAL: " + visual.use);
         
-        if (visual.use === 0) {
+        if (visual.use === 0) { // edit
             $("#odcontrol-panel").css('visibility', 'visible');
             clearTimeout(visual.refreshLoop);
             $("#config-menu #config-item").css('display', 'block');
             $("#config-menu #save-item").css('display', 'block');
             $("#config-menu #refresh-item").css('display', 'none');
+            $("#config-menu #opendomoos-item").css('display', 'none');
             $("#add-floor").css('display', 'inline-block');
-        } else {
+        } else { // visualize
             $("#odcontrol-panel").css('visibility', 'hidden');
             $("#config-menu #config-item").css('display', 'none');
             $("#config-menu #save-item").css('display', 'none');
             $("#config-menu #refresh-item").css('display', 'block');
+            $("#config-menu #opendomoos-item").css('display', 'block');
             $("#add-floor").css('display', 'none');
             visual.updatePorts();
             visual.refreshPorts();
@@ -1458,14 +1482,14 @@ var visual = {
             lsc = odc.readPorts();
             ports = lsc.split('\n');
             
-            $(this).find(".collapsible-port").each(function (index2) {
+            $(this).find(".collapsible-port").each(function (index) {
                 var portdata, port, value;
                 
-                value = ports[index2].split(":")[2];
+                value = ports[index].split(":")[2];
                 portdata = $(this).data("entry");
                 
                 portdata.value = value;
-                odc.ports[index2].value = value;
+                odc.ports[index].value = value;
                 
               //  console.log("INEDEXXXX " + index2 + "  " + value);
                   

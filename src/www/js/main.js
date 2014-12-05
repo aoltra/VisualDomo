@@ -21,6 +21,7 @@ var app = {
     updateTime: 45000,
     functionPortsFonts: [ 'a', 'j', 'z', 's', 't', 'r' ],
     lang: 0,                // Spanish
+    ooosURL: "",
     
     // Application Constructor
     initialize: function () {
@@ -53,6 +54,7 @@ var app = {
         if (!$.isEmptyObject(settings)) {
             app.updateTime = settings.refreshTime;
             app.lang = settings.language;
+            app.ooosURL = settings.ooosURL;
             
             console.log("LANG  1 " + app.lang);
             
