@@ -10,7 +10,7 @@
  */
 
 /* JSLint options */
-/*global Connection, $, helpFile, helpImage, wifiinfo, console, LocalFileSystem, Location, Floor, Port, ODControl, selectLocal, app, Settings */
+/*global Connection, $, helpFile, helpImage, wifiinfo, console, LocalFileSystem, Location, Floor, Port, ODControl, selectLocal, app, Settings, Translation */
 /*jslint plusplus: true*/
 
 var visual = {
@@ -232,9 +232,9 @@ var visual = {
               
             $("#config-menu").popup('close');
             
-            app.alert("Refrescando puertos", true, 1);
+            app.alert(Translation[app.lang].message_0024, true, 1);
             
-            visual.updatePorts();                        
+            visual.updatePorts();
             
             window.setTimeout(function () {
                 app.alert("", false);
@@ -343,7 +343,7 @@ var visual = {
             }
             
             if (localData.name === "") {
-                app.alert("No se ha definido un nombre para la localización", true, 1);
+                app.alert(Translation[app.lang].message_0025, true, 1);
                                     
                 window.setTimeout(function () {
                     app.alert("", false);
@@ -355,7 +355,7 @@ var visual = {
             if (localData.name !== visual.local.name) {
                 if (selectLocal.existLocation(localData.name) !== -1) {
 
-                    app.alert("Ya existe una localización con ese nombre. No es posible grabar la localización", true, 1);
+                    app.alert(Translation[app.lang].message_0026, true, 1);
 
                     window.setTimeout(function () {
                         app.alert("", false);
@@ -400,9 +400,9 @@ var visual = {
             });
             
             dirIP = newodc.ip.split('.');
-            console.log("jkhjhkhj " + JSON.stringify(dirIP));
+            
             if (dirIP.length != 4) {
-                app.alert("IP mal definida", true, 1);
+                app.alert(Translation[app.lang].message_0027, true, 1);
                                     
                 window.setTimeout(function () {
                     app.alert("", false);
@@ -422,19 +422,19 @@ var visual = {
             });
             
             if (badIP == true) {
-                app.alert("IP mal definida", true, 1);
+                app.alert(Translation[app.lang].message_0027, true, 1);
                                     
                 window.setTimeout(function () {
                     app.alert("", false);
                 }, 1550);
                 
                 return false;
-            } 
+            }
             
-            newodc.ip = "90.166.105.5";
-            newodc.name = "odcontrol1";
-            newodc.pass = "opendomo";
-            newodc.user = "user";
+//            newodc.ip = "90.166.105.5";
+//            newodc.name = "odcontrol1";
+//            newodc.pass = "opendomo";
+//            newodc.user = "user";
             
             odc = new ODControl(visual.local.nextODCID(), newodc.name, "", newodc.ip, newodc.user, newodc.pass);
              console.log("ODC id " + odc.ID);
@@ -480,7 +480,7 @@ var visual = {
             $('#odc-'+ odc.ID +' h1 a').text(odc.name);
             
             $('#popup-edit-odcontrol').popup('close');
-            $('#popup-edit-odcontrol form')[0].reset(); 
+            $('#popup-edit-odcontrol form')[0].reset();
         });
         
         $("#popup-edit-odcontrol :button").click(function (event) {
@@ -510,7 +510,7 @@ var visual = {
             value = localPort.value / odc.ports[port].factor;
             
             if (value < odc.ports[port].min || value > odc.ports[port].max) {
-                app.alert("¡Valor incorrecto!", true, 0);
+                app.alert(Translation[app.lang].message_0028, true, 0);
                                     
                 window.setTimeout(function () {
                     app.alert("", false);
@@ -553,7 +553,7 @@ var visual = {
 
             var confPort = [];
 
-            console.log("UNITTTTT " + visual.currentPort.data("entry").name + " F1 " + confPort.units + " PORT " + visual.currentPort.data("entry").units);
+           // console.log("UNITTTTT " + visual.currentPort.data("entry").name + " F1 " + confPort.units + " PORT " + visual.currentPort.data("entry").units);
 
             $.each($('#popup-conf-port form').serializeArray(), function () {
 
@@ -695,9 +695,9 @@ var visual = {
                                 } else {
                                     
                                     $('#popup-conf-aport-value #value').val(odc.ports[j].value * odc.ports[j].factor);
-                                    $('#popup-conf-aport-value h4').text("Valor entre (" + odc.ports[j].min * odc.ports[j].factor + " / " + odc.ports[j].max * odc.ports[j].factor + ")");
+                                    $('#popup-conf-aport-value h4').text(Translation[app.lang].message_0031 + odc.ports[j].min * odc.ports[j].factor + " / " + odc.ports[j].max * odc.ports[j].factor + ")");
                                     
-                                    console.log("factor " + odc.ports[j].factor);
+                                   // console.log("factor " + odc.ports[j].factor);
                                     $('#popup-conf-aport-value').data('odc', odc);
                                     $('#popup-conf-aport-value').data('port', j);
                                     $('#popup-conf-aport-value').popup('open');
@@ -706,7 +706,7 @@ var visual = {
                                 }
                                 
                             } else {
-                                app.alert("¡Puerto de entrada!", true, 0);
+                                app.alert(Translation[app.lang].message_0029, true, 0);
                                     
                                 window.setTimeout(function () {
                                     app.alert("", false);
@@ -929,13 +929,13 @@ var visual = {
                 var port = $(this).parent();
                 
                 if (visual.currentFloor === null) {
-                    app.alert("No es posible ubicar el puerto", true, 0);
+                    app.alert(Translation[app.lang].message_0030, true, 0);
                     
                     window.setTimeout(function () {
                         app.alert("", false);
                     }, 1250);
                 } else if (port.data("entry").placed === true) {
-                    app.alert("Puerto ya ubicado", true, 1);
+                    app.alert(Translation[app.lang].message_0032, true, 1);
                     
                     window.setTimeout(function () {
                         app.alert("", false);
@@ -944,7 +944,7 @@ var visual = {
                     port.data("entry").level = visual.currentFloor.level;
                     port.data("entry").placed = true;
                     
-                    console.log("PUERTO FACTOR  " + port.data("entry").factor);
+              //      console.log("PUERTO FACTOR  " + port.data("entry").factor);
                     
                     port.data("entry").posY = Math.round($('.main-canvas')[0].getContext('2d').canvas.height * 0.5);
                     port.data("entry").posX = Math.round($('.main-canvas')[0].getContext('2d').canvas.width * 0.5);
@@ -966,12 +966,12 @@ var visual = {
                 
                 $("#odc-panel").panel("toggle");
                 
-                $('#popup-confirm h1').text("Borrar puerto");
+                $('#popup-confirm h1').text(Translation[app.lang].message_0035);
                 $('#popup-confirm #delete-f').css("display", "none");
                 $('#popup-confirm #delete-p').css("display", "inline");
                 $('#popup-confirm #exit').css("display", "none");
              
-                $('#popup-confirm h3').text("¿Estás seguro de que quieres quitar este puerto de la localización?");
+                $('#popup-confirm h3').text(Translation[app.lang].message_0036);
                 $('#popup-confirm').popup('open');
                 
                 $("#popup-confirm #delete-p").click(function () {
@@ -1056,7 +1056,7 @@ var visual = {
                 
                 $(this).find("#reload-odc").click(function () {
                 
-                    app.alert("Función no soportada en esta versión", true, 1);
+                    app.alert(Translation[app.lang].message_0002, true, 1);
 
                     window.setTimeout(function () {
                         app.alert("", false);
@@ -1077,12 +1077,12 @@ var visual = {
                 
                     $("#odc-panel").panel("toggle");
                     
-                    $('#popup-confirm h1').text("Borrar ODControl");
+                    $('#popup-confirm h1').text(Translation[app.lang].message_0037);
                     $('#popup-confirm #delete-f').css("display", "inline");
                     $('#popup-confirm #delete-p').css("display", "none");
                     $('#popup-confirm #exit').css("display", "none");
 
-                    $('#popup-confirm h3').text("¿Estás seguro de que quieres quitar este ODControl (" + odcontrol.name +") de la localización?");
+                    $('#popup-confirm h3').text(Translation[app.lang].message_0038 + odcontrol.name + Translation[app.lang].message_0039);
                     $('#popup-confirm').popup('open');
                 
                     $("#popup-confirm #delete-f").click(function () {
@@ -1188,12 +1188,12 @@ var visual = {
                 
                 console.log("DELETE FLOOR");
                 
-                $('#popup-confirm h1').text("Borrar planta");
+                $('#popup-confirm h1').text(Translation[app.lang].message_0040);
                 $('#popup-confirm #delete-f').css("display", "inline");
                 $('#popup-confirm #delete-p').css("display", "none");
                 $('#popup-confirm #exit').css("display", "none");
 
-                $('#popup-confirm h3').text("¿Estás seguro de que quieres quitar esta planta de la localización?");
+                $('#popup-confirm h3').text(Translation[app.lang].message_0041);
                 $('#popup-confirm').popup('open');
                 
                 $("#popup-confirm #delete-f").click(function () {

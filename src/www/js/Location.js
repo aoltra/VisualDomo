@@ -10,7 +10,7 @@
  */
 
 /* JSLint options */
-/*global helpFile, $, LocalFileSystem, app, console, Floor, ODControl, Port */
+/*global helpFile, $, LocalFileSystem, app, console, Floor, ODControl, Port, Translation*/
 
 // Constructor
 function Location(BSSID, name, description) {
@@ -38,7 +38,7 @@ function Location(BSSID, name, description) {
             floors,
             location = this;
         
-        app.alert("Grabando...", true);
+        app.alert(Translation[app.lang].message_0033, true);
         
         dirname = this.name;
         floors = this.floors;
@@ -86,7 +86,7 @@ function Location(BSSID, name, description) {
 
                                     console.log("planta fin " + json);
                                     
-                                    app.alert("Grabación finalizada", true, null);
+                                    app.alert(Translation[app.lang].message_0034, true, null);
                                     
                                     window.setTimeout(function () {
                                         app.alert("", false);
@@ -123,7 +123,7 @@ function Location(BSSID, name, description) {
                             def.resolve();
                             
                         }, function () { // Probably file is in locations folder already
-                            console.log("Ya hay un fichero con ese nombre");
+                            console.log("There is already a file with this name");
                             def.resolve();
                         });
                 }, function () {
