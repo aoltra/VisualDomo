@@ -423,7 +423,7 @@ var visual = {
             
             dirIP = newodc.ip.split('.');
             
-            if (dirIP.length != 4) {
+            if (dirIP.length !== 4) {
                 app.alert(Translation[app.lang].message_0027, true, 1);
                                     
                 window.setTimeout(function () {
@@ -782,6 +782,7 @@ var visual = {
     refreshPorts: function () {
         "use strict";
         
+        clearTimeout(visual.refreshLoop);
         visual.refreshLoop = window.setTimeout(function () {
             visual.updatePorts();
             visual.refreshPorts();
@@ -1471,6 +1472,7 @@ var visual = {
     updatePorts: function () {
         "use strict";
 
+         console.log("ELEMENTOS   " + $("#odc-panel #odc-list .collapsible-item").length);
         // add odcs and ports
         $("#odc-panel #odc-list .collapsible-item").each(function (index) {
             var odcdata, odc, lsc, ports;
@@ -1478,18 +1480,30 @@ var visual = {
             odcdata = $(this).data("entry");
             
             odc = visual.local.odcontrols[index];
-          // console.log("ID   " + index + "  " + odcdata.ID + "  "  +JSON.stringify(visual.local));
+           console.log("ID   " + index + "  " + odc.ID);// + "  "  +JSON.stringify(visual.local));
             lsc = odc.readPorts();
+            console.log("lsc >> "+ lsc);
+            if (lsc.indexOf(":") == -1) {
+                
+                app.alert("ODC Error:" + lsc, true, 1);
+                                    
+                window.setTimeout(function () {
+                    app.alert("", false);
+                }, 1550);
+          
+                return;
+            }
+            
             ports = lsc.split('\n');
             
-            $(this).find(".collapsible-port").each(function (index) {
+            $(this).find(".collapsible-port").each(function (index2) {
                 var portdata, port, value;
                 
-                value = ports[index].split(":")[2];
+                value = ports[index2].split(":")[2];
                 portdata = $(this).data("entry");
                 
                 portdata.value = value;
-                odc.ports[index].value = value;
+                odc.ports[index2].value = value;
                 
               //  console.log("INEDEXXXX " + index2 + "  " + value);
                   
