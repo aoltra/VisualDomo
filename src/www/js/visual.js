@@ -459,7 +459,7 @@ var visual = {
 //            newodc.user = "user";
             
             odc = new ODControl(visual.local.nextODCID(), newodc.name, "", newodc.ip, newodc.user, newodc.pass);
-             console.log("ODC id " + odc.ID);
+            // console.log("ODC id " + odc.ID);
             visual.local.addODControl(odc);
             nODC = visual.local.numberODC();
             if (nODC > 0) {
@@ -499,7 +499,7 @@ var visual = {
             
             odc = $('#popup-edit-odcontrol').data("entry");
             odc.name = newodc.name;
-            $('#odc-'+ odc.ID +' h1 a').text(odc.name);
+            $('#odc-' + odc.ID + ' h1 a').text(odc.name);
             
             $('#popup-edit-odcontrol').popup('close');
             $('#popup-edit-odcontrol form')[0].reset();
@@ -1472,7 +1472,6 @@ var visual = {
     updatePorts: function () {
         "use strict";
 
-         console.log("ELEMENTOS   " + $("#odc-panel #odc-list .collapsible-item").length);
         // add odcs and ports
         $("#odc-panel #odc-list .collapsible-item").each(function (index) {
             var odcdata, odc, lsc, ports;
@@ -1480,10 +1479,10 @@ var visual = {
             odcdata = $(this).data("entry");
             
             odc = visual.local.odcontrols[index];
-           console.log("ID   " + index + "  " + odc.ID);// + "  "  +JSON.stringify(visual.local));
+           //console.log("ID   " + index + "  " + odc.ID);// + "  "  +JSON.stringify(visual.local));
             lsc = odc.readPorts();
-            console.log("lsc >> "+ lsc);
-            if (lsc.indexOf(":") == -1) {
+            //console.log("lsc >> "+ lsc);
+            if (lsc.indexOf(":") === -1) {
                 
                 app.alert("ODC Error:" + lsc, true, 1);
                                     

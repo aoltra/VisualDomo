@@ -60,7 +60,9 @@ var app = {
             
             translation = Translation[app.lang];
             for (key in translation) {
-                $('#' + key).auderoTextChanger(translation[key]);
+                if (translation.hasOwnProperty(key)) {
+                    $('#' + key).auderoTextChanger(translation[key]);
+                }
             }
         }
         
@@ -212,11 +214,19 @@ var app = {
         
         $("#mm-visualize").click(function () {
             if (selectLocal.currentLocal !== null) {
+                
+                app.alert(Translation[app.lang].message_0043, true, 1);
+                
                 visual.setUse(1);
                 visual.loadLocation(selectLocal.currentLocal, function () {
                     visual.updatePorts();
                     visual.refreshPorts();
                 });
+                
+                $(":mobile-pagecontainer").on("pagecontainershow", function (event, ui) {
+                    app.alert("", false);
+                });
+                
                 $(":mobile-pagecontainer").pagecontainer("change", "#page-visual", { reload: "true" });
             } else {
                 app.alert(Translation[app.lang].message_0005, true, 1);
