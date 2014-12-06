@@ -33,7 +33,7 @@ function ODControl(ID, name, description, IP, user, pass) {
 	this.version = "";
     
     ODControl.prototype.getVersion =  function () {
-		this.version = app.httpGetRequestToODControl(IP + "/ver", false, "user", "opendomo", null);
+		this.version = app.httpGetRequestToODControl(IP + "/ver", false, user, pass, null);
 	};
 
 	// save the ODControl configuration 
@@ -43,7 +43,7 @@ function ODControl(ID, name, description, IP, user, pass) {
 	};
     
     ODControl.prototype.readPorts = function () {
-        return app.httpGetRequestToODControl(IP + "/lsc", false, "user", "opendomo", null);
+        return app.httpGetRequestToODControl(IP + "/lsc", false, user, pass, null);
     };
     
     ODControl.prototype.addPort = function (port) {
@@ -61,6 +61,6 @@ function ODControl(ID, name, description, IP, user, pass) {
         
         command = "/set+" + port.name + "+" + value;
     
-        return app.httpGetRequestToODControl(IP + command, false, "user", "opendomo", null);
+        return app.httpGetRequestToODControl(IP + command, false, user, pass, null);
     };
 }

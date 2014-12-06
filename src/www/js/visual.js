@@ -453,6 +453,9 @@ var visual = {
                 return false;
             }
             
+            if (newodc.name === '') {
+                newodc.name = 'odcontrol' + visual.local.nextODCID();
+            }
 //            newodc.ip = "90.166.105.5";
 //            newodc.name = "odcontrol1";
 //            newodc.pass = "opendomo";
