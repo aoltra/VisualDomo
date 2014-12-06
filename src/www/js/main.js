@@ -215,7 +215,7 @@ var app = {
         $("#mm-visualize").click(function () {
             if (selectLocal.currentLocal !== null) {
                 
-                app.alert(Translation[app.lang].message_0043, true, 1);
+                app.alert(Translation[app.lang].message_0043, true, 3);
                 
                 visual.setUse(1);
                 visual.loadLocation(selectLocal.currentLocal, function () {
