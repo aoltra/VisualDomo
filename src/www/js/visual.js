@@ -1189,6 +1189,10 @@ var visual = {
         $(floorCanvas).on("taphold",  function (event) {
             console.log("pulsacion larga");
             
+            if (visual.use === 1) { 
+                return; 
+            }
+            
             if (visual.floorEdit !== $(this).data("entry").level) {
                 $(".floor-edit-toolbar").slideToggle("fast");
                 $(".floor-edit-toolbar").remove();
