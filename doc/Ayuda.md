@@ -116,11 +116,11 @@ La configuración de puertos permite la definición de la funcionalidad del puer
 
 El cuadro de diálogo consta de:
 
-Unidades: en el caso de puerto analógico permite definir un texto que se situará detrás del valor del puerto a modo de unidades.
-Factor. Factor por el que se multiplica el valor del puerto a la hora de representarlo y/o modificar su valor (ver [Visualización](#Visualización))
-Funcionalidad: identifica mediante un icono la posible funcionalidad del puerto. En esta versión se encuentran disponibles iconos para representar Luces, Persianas, Temperatura y Audio.
+- *Unidades*. En el caso de puerto analógico permite definir un texto que se situará detrás del valor del puerto a modo de unidades.
+- *Factor*. Factor por el que se multiplica el valor del puerto a la hora de representarlo y/o modificar su valor (ver [Visualización](#Visualización))
+- *Funcionalidad*. identifica mediante un icono la posible funcionalidad del puerto. En esta versión se encuentran disponibles iconos para representar Luces, Persianas, Temperatura y Audio.
 
-####Configuración de la localización
+###Configuración de la localización
 La configuración de la localización permite la definición del nombre y la descripción de la misma. Se puede acceder a ella desde el menú situado en la parte derecha de la cabecera. 
 
 El cuadro de diálogo de configuración consta de:
@@ -128,7 +128,7 @@ El cuadro de diálogo de configuración consta de:
 - *Nombre*. Nombre de la localización. Este nombre no puede estar vacío. Además, no permite la inclusión de espacios.
 - *Descripción*. Descripción de la localización.
 
-####Grabación de la localización
+###Grabación de la localización
 
 La grabación de la localización se desde el menú situado en la parte derecha de la cabecera. 
 
@@ -165,6 +165,6 @@ La ventana de principal muestra cada una de las plantas con los puertos ubicados
 ###Configuración de la aplicación
 Desde el menú situado a la derecha de la cabecera es posible acceder a la configuración de general de *VisualDomo*. Dicha configuración permite:
 
-- *OpenDOomoOS*. URL (sin protocolo) de acceso a OpenDomoOS 
+- *OpenDOomoOS*. URL (sin protocolo) de acceso a *OpenDomoOS* 
 - *Tiempo entre actualizaciones de estado*. Define (en segundos) el tiempo entre conexión a los *ODControl* definidos en la localización para actualizar en pantalla el estado de los puertos.
 - *Idioma*. Lenguaje en el que aparecerán los textos de la aplicación.
