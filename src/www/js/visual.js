@@ -1560,6 +1560,9 @@ var visual = {
         
         ctx = $('.main-canvas')[0].getContext('2d');
         ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+         
+        visual.local = null;
+        visual.local = new Location("", "", "");
         
         visual.saved = true;
         visual.noConfig = false;
