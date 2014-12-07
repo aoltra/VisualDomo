@@ -46,6 +46,10 @@ var Translation = {
         'port-conf-ok': 'Aceptar',
         'port-conf-cancel': 'Cancelar',
         'lights': 'Luces',
+        'blinds': 'Persianas',
+        'sound': 'Audio',
+        'temperature': 'Temperatura',
+        'basic': 'Básico',
         'config-port-intro': 'Introduzca los datos de configuración del puerto',
         'config-port-value-header': 'Valor puerto',
         'config-port-value-intro': 'Introduzca el valor del puerto',
@@ -110,7 +114,8 @@ var Translation = {
         'message_0040': 'Borrar planta',
         'message_0041': '¿Estás seguro de que quieres quitar esta planta de la localización?',
         'message_0042': 'La URL de acceso a OpenDomoOS no está definida',
-        'message_0043': 'Cargando...'
+        'message_0043': 'Cargando...',
+        'message_0044': 'Salir'
     },
     1: {            // English
         'version': 'Version:',
@@ -159,6 +164,10 @@ var Translation = {
         'port-conf-ok': 'OK',
         'port-conf-cancel': 'Cancel',
         'lights': 'Lights',
+        'blinds': 'Blinds',
+        'sound': 'Sound',
+        'temperature': 'Temperature',
+        'basic': 'Basic',
         'config-port-intro': 'Enter the configuration data of port',
         'config-port-value-header': 'Port value',
         'config-port-value-intro': 'Enter the port value',
@@ -223,7 +232,8 @@ var Translation = {
         'message_0040': 'Delete floor',
         'message_0041': 'Are you sure you want to remove this floor from this Location?',
         'message_0042': 'OpenDomoOS URL is not defined',
-        'message_0043': 'Loading...'
+        'message_0043': 'Loading...',
+        'message_0044': 'Exit'
     }
 };
 

@@ -333,7 +333,7 @@ var app = {
         if (activePage[0].id === "page-visual") {
             if (visual.use === 0 && visual.saved === false) {
                 
-                $('#popup-confirm h1').text("Salir");
+                $('#popup-confirm h1').text(Translation[app.lang].message_0044);
                 $('#popup-confirm #delete-f').css("display", "none");
                 $('#popup-confirm #delete-p').css("display", "none");
                 $('#popup-confirm #exit').css("display", "inline");
