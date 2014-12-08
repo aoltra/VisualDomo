@@ -249,7 +249,7 @@ var visual = {
         
             $("#config-menu").popup('close');
             // Only Android 
-            navigator.app.loadUrl("https://github.com/aoltra/VisualDomo/blob/master/doc/Ayuda.md", {openExternal : true});
+            navigator.app.loadUrl("https://github.com/aoltra/VisualDomo/blob/master/doc/Ayuda.md#ayuda-visualdomo", {openExternal : true});
         });
         
         $("#page-visual #config-menu #opendomoos-item").click(function (event) {
@@ -317,7 +317,7 @@ var visual = {
                     if (visual.openConfLocation === true) {
                         setTimeout(function () {
                             
-                            $('#popup-conf-location #name').val(visual.local.name);
+                            $('#popup-conf-location #name-local').val(visual.local.name);
                             $('#popup-conf-location #description').val(visual.local.description);
                             $('#popup-conf-location').popup('open');
                         }, 100);
@@ -502,6 +502,8 @@ var visual = {
             
             odc = $('#popup-edit-odcontrol').data("entry");
             odc.name = newodc.name;
+            odc.password = newodc.pass;
+            odc.user = newodc.user;
             $('#odc-' + odc.ID + ' h1 a').text(odc.name);
             
             $('#popup-edit-odcontrol').popup('close');
@@ -1097,7 +1099,11 @@ var visual = {
                     $("#odc-panel").panel("toggle");
                  
                     $('#popup-edit-odcontrol').data("entry", odcontrol);
-                    $('#popup-edit-odcontrol #name').val(odcontrol.name);
+                    $('#popup-edit-odcontrol #name-odc-edit').val(odcontrol.name);
+                    $('#popup-edit-odcontrol').data("entry", odcontrol);
+                    $('#popup-edit-odcontrol #user-odc-edit').val(odcontrol.user);
+                    $('#popup-edit-odcontrol').data("entry", odcontrol);
+                    $('#popup-edit-odcontrol #pass-odc-edit').val(odcontrol.password);
                     $('#popup-edit-odcontrol').popup('open');
                 });
                 
@@ -1189,8 +1195,8 @@ var visual = {
         $(floorCanvas).on("taphold",  function (event) {
             console.log("pulsacion larga");
             
-            if (visual.use === 1) { 
-                return; 
+            if (visual.use === 1) {
+                return;
             }
             
             if (visual.floorEdit !== $(this).data("entry").level) {
@@ -1250,7 +1256,7 @@ var visual = {
                 console.log("EDIT FLOOR " + visual.divEdit.data("entry").URL);
                 
                 $('#popup-conf-floor #level').val(visual.divEdit.data("entry").level);
-                $('#popup-conf-floor #name').val(visual.divEdit.data("entry").name);
+                $('#popup-conf-floor #name-floor').val(visual.divEdit.data("entry").name);
                 $('#popup-conf-floor #descrip').val(visual.divEdit.data("entry").descrip);
                 $('#popup-conf-floor #curr-img').text(visual.divEdit.data("entry").URL.split('/').pop());
                 $('#popup-conf-floor #URL').val(visual.divEdit.data("entry").URL);
