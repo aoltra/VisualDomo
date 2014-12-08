@@ -83,7 +83,7 @@ Una vez localizado, aparecerá un ítem en el panel izquierdo con el nombre del 
 La edición de los *ODControl* se realiza desde la barra de herramientas de *ODControl* que se puede obtener pulsando sobre el texto del nombre de *ODControl* en el panel izquierdo. Esta barra permite:
 
 - Borrar el *ODControl*.
-- *Configurar el ODControl*. Presenta el cuadro de dialogo de configuración (ver [Añadir ODControl](#Añadir ODControl)) pero únicamente da acceso a cambiar el nombre.
+- *Configurar el ODControl*. Presenta el cuadro de dialogo de configuración (ver [Añadir ODControl](#Añadir ODControl)) pero únicamente da acceso a cambiar el nombre, usuario y contraseña.
 - *Recargar ODControl*. Permite la actualización de los puertos, añadiendo nuevos y eliminado los deshabilitados (opción no soportada en esta versión).
 
 ####Ubicación de puertos
