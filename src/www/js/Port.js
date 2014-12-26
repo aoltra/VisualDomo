@@ -24,7 +24,8 @@ function Port(name, type, input, funct) {
         LAMP = 2,
         TEMPERATURE = 3,
         BLINDS = 4,
-        AUDIO = 5;
+        AUDIO = 5,
+        UNKNOW = 6;
     
     this.name = name;
     this.type = type;
@@ -58,12 +59,16 @@ function Port(name, type, input, funct) {
         this.funct = BASICA;
     }
     
+    if (this.type !== 'A' && this.type !== 'D' && this.funct === "") {
+        this.funct = UNKNOW;
+    }
+    
     Port.prototype.draw = function (ctx) {
   
         var widthIcon, widthText, heightIcon, heightText;
         
         ctx.font = fontSizeIcon + "px VisualDomo";
-      //  console.log("DIGITAAAAALLLL " + this.funct + "<<" + this.name);
+       console.log("DIGITAAAAALLLL " + this.funct + "<<" + this.name);
         
         if (this.funct === 1) {
             if (this.value === "ON") {
@@ -93,7 +98,7 @@ function Port(name, type, input, funct) {
             
             gradientPoint = this.value / (this.max - this.min);
             
-          //  console.log("GRADIENTEE   " + gradientPoint + "  " + this.value + " aicc "  +  widthIcon +"  ac " + (this.max - this.min));
+            console.log("GRADIENTEE   " + gradientPoint + "  " + this.value + " aicc "  +  widthIcon +"  ac " + (this.max - this.min));
             
             gradient.addColorStop(0, "#ccdbba");
             gradient.addColorStop(gradientPoint, "#ccdbba");
@@ -221,6 +226,11 @@ function Port(name, type, input, funct) {
         
         this.units = data.units;
         this.factor = data.factor;
+        
+        // new types
+        if (this.type !== 'A' && this.type !== 'D' && this.funct === "") {
+            this.funct = UNKNOW;
+        }
     };
     
     Port.prototype.icon = function () {

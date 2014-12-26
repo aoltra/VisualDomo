@@ -19,7 +19,7 @@ var app = {
     root: null,
     networkState: null,
     updateTime: 45000,
-    functionPortsFonts: [ 'a', 'j', 'z', 's', 't', 'r' ],
+    functionPortsFonts: [ 'a', 'j', 'z', 's', 't', 'r', '{' ],
     lang: 0,                // Spanish
     ooosURL: "",
     
