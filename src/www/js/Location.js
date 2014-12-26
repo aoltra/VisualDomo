@@ -48,9 +48,7 @@ function Location(BSSID, name, description) {
         } else {
             filename = this.name + ".vdl";
         }
-        
-  //      console.log("planta " + json);
-        
+  
         // Create VisualDomo directories
         window.requestFileSystem(LocalFileSystem.PERSISTENT, 0,
      
@@ -60,13 +58,9 @@ function Location(BSSID, name, description) {
                 
                 fileSystem.root.getDirectory(path1, {create: false, exclusive: false},
                     function (dirEntry) {
-                        
-                        console.log("FLO0  " + JSON.stringify(dirEntry));
+                
                         dirEntry.getDirectory(dirname, {create: true, exclusive: false},
                             function (dirEntry2) {
-                                console.log("FLO000  " + JSON.stringify(dirEntry2));
-                                console.log("PRUEBAAAAA0000 " + JSON.stringify(floors));
-                                
                                 
                                 $.when(location.copyFloors(floors, dirEntry2)).done(function () {
                                     
@@ -84,8 +78,6 @@ function Location(BSSID, name, description) {
                                         helpFile.errorHandler
                                         );
 
-                                    console.log("planta fin " + json);
-                                    
                                     app.alert(Translation[app.lang].message_0034, true, null);
                                     
                                     window.setTimeout(function () {
@@ -114,8 +106,7 @@ function Location(BSSID, name, description) {
 
             window.resolveLocalFileSystemURL(entry.URL,
                 function (fileEntry) {
-                    console.log("sadsdad " + JSON.stringify(fileEntry));
-                
+            
                     fileEntry.copyTo(dirEntry, fileEntry.name,
                         function (newFileEntry) {
                             entry.URL =  newFileEntry.nativeURL;

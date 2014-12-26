@@ -68,7 +68,6 @@ function Port(name, type, input, funct) {
         var widthIcon, widthText, heightIcon, heightText;
         
         ctx.font = fontSizeIcon + "px VisualDomo";
-       console.log("DIGITAAAAALLLL " + this.funct + "<<" + this.name);
         
         if (this.funct === 1) {
             if (this.value === "ON") {
@@ -96,13 +95,11 @@ function Port(name, type, input, funct) {
             var gradient = ctx.createLinearGradient(this.posX - widthIcon * 0.5, this.posY, this.posX + widthIcon * 0.5, this.posY),
                 gradientPoint;
             
-            if (this.max === this.min || this.max === undefined || this.min === undefined){
+            if (this.max === this.min || this.max === undefined || this.min === undefined) {
                 gradientPoint = 0.5;
-            } else { 
+            } else {
                 gradientPoint = this.value / (this.max - this.min);
             }
-            
-            console.log("GRADIENTEE   " + gradientPoint + "  " + this.value + " aicc "  +  widthIcon +"  ac " + (this.max - this.min) + "  "+this.max + "/" +this.min);
             
             gradient.addColorStop(0, "#ccdbba");
             gradient.addColorStop(gradientPoint, "#ccdbba");
@@ -125,46 +122,6 @@ function Port(name, type, input, funct) {
             ctx.fillText(text, this.posX + widthIcon * 0.6, this.posY - fontSizeUnit * 0.5);
             
         }
-//        switch (this.funct) {
-//            case 0:
-//                widthIcon = ctx.measureText("a").width;
-//                ctx.fillText("a", this.posX - widthIcon * 0.5, this.posY);  
-//                break;
-//                
-//            case 1:
-//                if (this.value === "ON") {
-//                    widthIcon = ctx.measureText("k").width;
-//                    ctx.fillText("k", this.posX - widthIcon * 0.5, this.posY);
-//                } else {
-//                    widthIcon = ctx.measureText("j").width;
-//                    ctx.fillText("j", this.posX - widthIcon * 0.5, this.posY);   
-//                }   
-//                break;
-//        
-//            case 2:
-//                widthIcon = ctx.measureText("z").width;
-//                ctx.fillText("z", this.posX - widthIcon * 0.5, this.posY);  
-//                break;
-//                
-//            case 3:
-//                 console.log("DIGITAAAAALLLL " + this.funct + "<<>>");
-//                widthIcon = ctx.measureText("s").width;
-//                ctx.fillText("s", this.posX - widthIcon * 0.5, this.posY);
-//                 console.log("DIGITAAAAALLLL " + this.funct + "<<>><<>>");
-//                break;
-//                
-//            case 4:
-//                widthIcon = ctx.measureText("r").width;
-//                ctx.fillText("r", this.posX - widthIcon * 0.5, this.posY);  
-//                break;
-//                
-//            case 5:
-//                 console.log("DIGITAAAAALLLL " + this.funct + "<<>>");
-//                widthIcon = ctx.measureText("t").width;
-//                ctx.fillText("t", this.posX - widthIcon * 0.5, this.posY);  
-//                break;
-//        
-//        }
         
         ctx.font = "bold " + fontSize + "px Arial";
         widthText = ctx.measureText(this.name).width;
@@ -177,26 +134,13 @@ function Port(name, type, input, funct) {
     };
     
     Port.prototype.detectHit = function (clickX, clickY, move) {
-    
-     /*   if (Math.abs(clickX - (this.posX - this.width - this.lineWidth))  > 2 * (this.width + this.lineWidth)) {
-            console.log("SALFO X!! " + this.name + " " + clickX + " " + this.posX + " "  + this.width);
-            return false;
-        }
-        if (Math.abs(clickY - (this.posY - this.height - this.lineWidth)) > 2 * (this.height + this.lineWidth)) {
-                console.log("SALFO Y!!" + this.name + " " + clickY + " " + this.posY + " "  + this.height + " "  + (this.posY - this.height));
-            return false;
-        }*/
-        
+
         if (clickX < this.posX - this.width * 0.6 ||  clickX > (this.posX + this.width * 0.6)) {
-         //   console.log("SALFO X!! " + this.name + " " + clickX + " " + this.posX + " "  + this.width);
             return false;
         }
         if (clickY > (this.posY + this.heightT + 3) ||  clickY < (this.posY - this.heightI)) {
-       //         console.log("SALFO Y!!" + this.name + " " + clickY + " " + this.posY + " "  + this.height + " "  + (this.posY + this.height));
             return false;
         }
-        
-     //   console.log("lo tengoª!!  " + clickX + " " + clickY + " " + this.posX + " "  + this.posY + " " + this.height + " "  +(this.posY - this.height) +  "  " + (clickY - (this.posY - this.height)));
         
         if (move) {
             this.posX = clickX;

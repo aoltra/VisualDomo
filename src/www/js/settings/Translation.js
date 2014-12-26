@@ -117,7 +117,8 @@ var Translation = {
         'message_0041': '¿Estás seguro de que quieres quitar esta planta de la localización?',
         'message_0042': 'La URL de acceso a OpenDomoOS no está definida',
         'message_0043': 'Cargando...',
-        'message_0044': 'Salir'
+        'message_0044': 'Salir',
+        'message_0045': 'Cargando puertos...'
     },
     1: {            // English
         'version': 'Version:',
@@ -237,7 +238,8 @@ var Translation = {
         'message_0041': 'Are you sure you want to remove this floor from this Location?',
         'message_0042': 'OpenDomoOS URL is not defined',
         'message_0043': 'Loading...',
-        'message_0044': 'Exit'
+        'message_0044': 'Exit',
+        'message_0045': 'Loading ports...'
     }
 };
 

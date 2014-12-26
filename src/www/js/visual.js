@@ -30,8 +30,6 @@ var visual = {
     refreshLoop: null,
     openConfLocation: false,
     
-    
-    
     // FUNCTIONS
     // Visual Constructor
     initialize: function () {
@@ -127,9 +125,7 @@ var visual = {
             
                 return;
             }
-
-            console.log(JSON.stringify(floor));
-            
+  
             if (visual.floorEdit !== -1) {
                 visual.divEdit.remove();
             }
@@ -179,10 +175,9 @@ var visual = {
                         } else {
                             vallang = app.lang;
                         }
-
-                        console.log("LANG  2 " + vallang);
+                        
                         select = $("#popup-conf-app select");// option[value='" + vallang + "']");
-                        $(select).val(vallang);//prop('selected', true)
+                        $(select).val(vallang);
                         $(select).selectmenu('refresh');
                         $('#popup-conf-app').popup('open');
                         
@@ -462,7 +457,6 @@ var visual = {
 //            newodc.user = "user";
             
             odc = new ODControl(visual.local.nextODCID(), newodc.name, "", newodc.ip, newodc.user, newodc.pass);
-            // console.log("ODC id " + odc.ID);
             visual.local.addODControl(odc);
             nODC = visual.local.numberODC();
             if (nODC > 0) {
@@ -580,8 +574,6 @@ var visual = {
 
             var confPort = [];
 
-           // console.log("UNITTTTT " + visual.currentPort.data("entry").name + " F1 " + confPort.units + " PORT " + visual.currentPort.data("entry").units);
-
             $.each($('#popup-conf-port form').serializeArray(), function () {
 
                 if (confPort[this.name]) {
@@ -593,10 +585,9 @@ var visual = {
                     confPort[this.name] = this.value || '';
                 }
             });
-
-           // console.log("UNITTTTT " + visual.currentPort.data("entry").name + " F2 " + confPort.units + " PORT " + visual.currentPort.data("entry").units);
+            
             visual.currentPort.data("entry").units = confPort.units;
-        //     console.log("UNITTTTT "+ visual.currentPort.data("entry").name +" F3 " + confPort.units + " PORT " + visual.currentPort.data("entry").units);
+        
             if (confPort.funct == 0 && visual.currentPort.data("entry").type === 'D') {
                 visual.currentPort.data("entry").funct = 1;
             } else {
@@ -709,7 +700,6 @@ var visual = {
                     if (odc.ports[j].placed === true && odc.ports[j].level === visual.currentFloor.level) {
                         if (odc.ports[j].detectHit(touch.pageX, touch.pageY - visual.headerHeight, false)) {
 
-                           // console.log("tocandoooooooo");
                             if (odc.ports[j].input === 'O') {
                                 if (odc.ports[j].type === 'D') {
                                     if (odc.ports[j].value === "ON") {
@@ -723,8 +713,7 @@ var visual = {
                                     
                                     $('#popup-conf-aport-value #value').val(odc.ports[j].value * odc.ports[j].factor);
                                     $('#popup-conf-aport-value h4').text(Translation[app.lang].message_0031 + odc.ports[j].min * odc.ports[j].factor + " / " + odc.ports[j].max * odc.ports[j].factor + ")");
-                                    
-                                   // console.log("factor " + odc.ports[j].factor);
+                            
                                     $('#popup-conf-aport-value').data('odc', odc);
                                     $('#popup-conf-aport-value').data('port', j);
                                     $('#popup-conf-aport-value').popup('open');
@@ -901,12 +890,10 @@ var visual = {
                     parts[1] = entry.type + entry.input + "M";
                     parts[2] = entry.value;
                 }
-                
-            //    console.log("Nombre " + parts[0] + "," + parts[1] + "," + parts[2] + " en " + entry);
-                
+            
                 if (undefined !== parts[1]) {
 
-              //      console.log("partes " + parts[0] + " " + parts[1] + "  " + parts[2] + " >" + parts[1].charAt(2) + "<");
+                    // console.log("partes " + parts[0] + " " + parts[1] + "  " + parts[2] + " >" + parts[1].charAt(2) + "<");
 
                     if (parts[1].charAt(2) !== "H") {
         
@@ -973,9 +960,7 @@ var visual = {
                 } else {
                     port.data("entry").level = visual.currentFloor.level;
                     port.data("entry").placed = true;
-                    
-              //      console.log("PUERTO FACTOR  " + port.data("entry").factor);
-                    
+              
                     port.data("entry").posY = Math.round($('.main-canvas')[0].getContext('2d').canvas.height * 0.5);
                     port.data("entry").posX = Math.round($('.main-canvas')[0].getContext('2d').canvas.width * 0.5);
                     
@@ -1028,8 +1013,6 @@ var visual = {
                 
                 $("#odc-panel").panel("toggle");
                 
-                //  console.log("UNITTTTT " + port.data("entry").name + "F0 PORT " + port.data("entry").units);
-                
              //   $('#popup-conf-port form')[0].reset();
                 $('#popup-conf-port #units').val(port.data('entry').units);
                 $('#popup-conf-port #factor').val(port.data('entry').factor);
@@ -1062,7 +1045,7 @@ var visual = {
             
             console.log("pulsacion larga");
             
-            var divBar = $(this).children().last();
+            var divBar = $(this).children().last(), divToolBarODC;
             
             if (divBar.hasClass('odc-edit-toolbar') === true) {
                
@@ -1076,7 +1059,7 @@ var visual = {
                 
                 visual.odcEdit = $(this).data("entry");
             
-                var divToolBarODC = "<div class='odc-edit-toolbar'><div class='ui-grid-b'>" +
+                divToolBarODC = "<div class='odc-edit-toolbar'><div class='ui-grid-b'>" +
                     "<div class='ui-block-a button'><p id='edit-odc'>i</p></div>" +
                     "<div class='ui-block-b button'><p id='delete-odc'>n</p></div>" +
                     "<div class='ui-block-c button'><p id='reload-odc'>o</p></div>" +
@@ -1161,9 +1144,8 @@ var visual = {
         $("#floor-panel .floor-canvas").each(function (index) {
             var data = $(this).data("entry");
        
-            console.log("nivel: " + index);
             if (data) {
-                console.log("nivel: " + index + "  " + data.level + "  " + floor.level);
+                // console.log("nivel: " + index + "  " + data.level + "  " + floor.level);
                 
                 if (data.level > floor.level) {
                     insertDiv = this;
@@ -1176,9 +1158,7 @@ var visual = {
         
         
         floorCanvas = $("<div class='floor-canvas' id='L" + floor.level + "'><img src='" + floor.URL + "'/><p>" + floor.name + " (" + floor.level + ")</p></div>").insertBefore(insertDiv);
-        
-      //  console.log("ADD FLOOR2 " + JSON.stringify(floorCanvas));
-        
+            
         $(floorCanvas).data("entry", floor);
         
         if (floor.invColor === "on") {
@@ -1216,8 +1196,6 @@ var visual = {
             $(divToolBar).appendTo(div);
             $(div).addClass("floor-edit-frame");
             
-            console.log("DIV " + div);
-            console.log("EF " + visual.floorEdit);
             
             $(".floor-edit-toolbar").slideToggle("fast");
             
@@ -1357,14 +1335,11 @@ var visual = {
         $("#floor-panel .floor-canvas").each(function (index) {
             var data = $(this).data("entry");
        
-            console.log("GFCnivel: " + index);
             if (data) {
-                console.log("GFCnivel: " + index + "  " + data.level + "  " + level);
-                
+       
                 if (data.level === level) {
                     returnDiv = $(this);
-                    
-                    console.log("ENCONTRADO  " + data.name);
+       
                     return false;           // exit foreach
                 }
             }
@@ -1473,9 +1448,7 @@ var visual = {
        
         visual.local.odcontrols.forEach(function (odc) {
             odc.ports.forEach(function (port) {
-              //   console.log("loooo2 " + port.placed + "  " + port.level + "  " + visual.currentFloor.level);
                 if (port.placed === true && port.level === visual.currentFloor.level) {
-                //    console.log("lo dibujamos "  + port.name + " " + port.posX + "," + port.posY);
                     port.draw(ctx);
                 }
             });
@@ -1492,9 +1465,10 @@ var visual = {
             odcdata = $(this).data("entry");
             
             odc = visual.local.odcontrols[index];
-           //console.log("ID   " + index + "  " + odc.ID);// + "  "  +JSON.stringify(visual.local));
+        
+           // app.alert(Translation[app.lang].message_0045, true, 3);
             lsc = odc.readPorts();
-            //console.log("lsc >> "+ lsc);
+        
             if (lsc.indexOf(":") === -1) {
                 
                 app.alert("ODC Error:" + lsc, true, 1);
@@ -1505,7 +1479,7 @@ var visual = {
           
                 return;
             }
-            
+        //    app.alert("", false);
             ports = lsc.split('\n');
             
             $(this).find(".collapsible-port").each(function (index2) {
@@ -1516,8 +1490,6 @@ var visual = {
                 
                 portdata.value = value;
                 odc.ports[index2].value = value;
-                
-              //  console.log("INEDEXXXX " + index2 + "  " + value);
                   
             });
             

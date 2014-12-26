@@ -56,7 +56,7 @@ var app = {
             app.lang = settings.language;
             app.ooosURL = settings.ooosURL;
             
-            console.log("LANG  1 " + app.lang);
+            console.log("LANG " + app.lang);
             
             translation = Translation[app.lang];
             for (key in translation) {
@@ -67,16 +67,6 @@ var app = {
         }
         
         app.receivedEvent('deviceready');
-    
-        
-        // beforeshow events
-        // lib: FileDialog
-   /*     $(document).on("pagebeforeshow", "#file-dialog", function () {
-            
-            var parameters =  $(this).data("url").split('?');
-            fileDialog.initialize(parameters[1]);
-            
-        });*/
     },
 
     // Update DOM on a Received Event
@@ -84,14 +74,6 @@ var app = {
         "use strict";
         
         console.log('Received Event: ' + id);
-
-     //   var odc1 = new ODControl(1,"odc1","prueba","local.opendomo.com","user","opendomo");
-
-     //   var text = document.createTextNode(odc1.version);
-     //   var text = odc1.version;
-     //   console.log('VERSION: ' + text);        
-     //   var child = document.getElementById('listaodc');
-     //   child.appendChild(text); 
 
         // Create VisualDomo directories
         window.requestFileSystem(LocalFileSystem.PERSISTENT, 0,
