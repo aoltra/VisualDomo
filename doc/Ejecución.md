@@ -17,6 +17,10 @@ WifiInformation
 
     cordova plugin add https://github.com/aoltra/WifiInformation
 
+Camera
+
+    cordova plugin add https://git-wip-us.apache.org/repos/asf/cordova-plugin-camera.git 
+
 ####*(Android)* 
 Desde la consola:
 
@@ -40,4 +44,4 @@ Tenemos la opción de ejecutarlo en un emulador o directamente en un dispositivo
 
     cordova run android
 
-* Por último, siempre queda la opción de distribuir a otros dispositivos el .apk generado. Se puede encontrar en *plataforms/android/bin/*
+* Por último, siempre queda la opción de distribuir a otros dispositivos el .apk generado. Se puede encontrar en *plataforms/android/ant-build/*

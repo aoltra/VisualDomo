@@ -7,7 +7,6 @@
 ######################
 local.properties
 default.properties
-project.properties
 proguard.cfg
 tmp/*
 .classpath
