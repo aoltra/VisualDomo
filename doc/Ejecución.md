@@ -21,12 +21,29 @@ Camera
 
     cordova plugin add https://git-wip-us.apache.org/repos/asf/cordova-plugin-camera.git 
 
-####*(Android)* 
-Desde la consola:
 
+####*(Android)* 
+Desde la consola (carpeta src):
+
+	En primer lugar crear la plataforma:
+
+	cordova platform add android
+
+	(si ya estuviera creada es conveniente borrarla con  *cordova platform rm android*)
+
+	Crear el ejecutable:
+    
     cordova build android
     
-####*(iOS)* Desde la consola 
+####*(iOS)* Desde la consola (carpeta src)
+
+	En primer lugar crear la plataforma:
+
+	cordova platform add ios
+
+	(si ya estuviera creada es conveniente borrarla con  *cordova platform rm ios*)
+
+	Crear el ejecutable:
 
     cordova build ios
   
