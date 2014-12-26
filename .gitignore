@@ -11,6 +11,9 @@ project.properties
 proguard.cfg
 tmp/*
 .classpath
+custom_rules.xml
+build.xml
+
 
 ############################
 # DIRECTORIOS
@@ -20,7 +23,9 @@ tmp/*
 **/ant-build/*
 **/ant-gen/*
 **/src/plugins/*
-**/src/platforms/*
+**/src/platforms/android/cordova/*
+**/src/platforms/android/cordovaLib/*
+**/src/platforms/android/src/*
 **/merges/*
 
 
