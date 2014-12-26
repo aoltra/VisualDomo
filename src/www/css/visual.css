@@ -63,10 +63,10 @@
 }
 
 #button-open-floor-panel {
-    margin-left: 50%;
+    //margin-left: 50%;
+    margin-left: 5%;
     height: auto;
     line-height: 0.55em;
-//background-color: red;
     background: transparent;
     font-size: 4.5em;
     font-family: 'VisualDomo';
