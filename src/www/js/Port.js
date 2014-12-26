@@ -96,9 +96,13 @@ function Port(name, type, input, funct) {
             var gradient = ctx.createLinearGradient(this.posX - widthIcon * 0.5, this.posY, this.posX + widthIcon * 0.5, this.posY),
                 gradientPoint;
             
-            gradientPoint = this.value / (this.max - this.min);
+            if (this.max === this.min || this.max === undefined || this.min === undefined){
+                gradientPoint = 0.5;
+            } else { 
+                gradientPoint = this.value / (this.max - this.min);
+            }
             
-            console.log("GRADIENTEE   " + gradientPoint + "  " + this.value + " aicc "  +  widthIcon +"  ac " + (this.max - this.min));
+            console.log("GRADIENTEE   " + gradientPoint + "  " + this.value + " aicc "  +  widthIcon +"  ac " + (this.max - this.min) + "  "+this.max + "/" +this.min);
             
             gradient.addColorStop(0, "#ccdbba");
             gradient.addColorStop(gradientPoint, "#ccdbba");
