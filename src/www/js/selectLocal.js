@@ -10,7 +10,7 @@
  */
 
 /* JSLint options */
-/*global Connection, $, app, helpFile, helpImage, FileReader, console, LocalFileSystem, Location, Floor, Port, ODControl, visual */
+/*global Connection, $, app, helpFile, helpImage, FileReader, console, LocalFileSystem, Location, Floor, Port, ODControl, visual, Translation */
 /*jslint plusplus: true*/
 
 var selectLocal = {
@@ -174,16 +174,20 @@ var selectLocal = {
     addLocation: function (location) {
         "use strict";
         
-        var i, tableInfo, addClass, URL, idButton, len;
+        var i, tableInfo, addClass, URL, idButton, len, assign = false;
         
         for (i = 0; i < selectLocal.locations.length; i++) {
             if (selectLocal.locations[i].name === location.name) {
-                return false; // it hasn't to insert
+                $('#local-list #local-' + location.name).remove();
+                
+                assign = selectLocal.locations[i].assign;
+                break;
+              //  return false; // it hasn't to insert
             }
         }
         
         len = selectLocal.locations.length;
-        selectLocal.locations[len] = {"name": location.name, "assign": false, "BSSID": ""};
+        selectLocal.locations[len] = {"name": location.name, "assign": assign, "BSSID": location.BSSID};
         
         selectLocal.addLocationToCollapsible(location);
         
@@ -196,7 +200,7 @@ var selectLocal = {
     addLocationToCollapsible: function (location) {
         "use strict";
         
-        var tableInfo, addClass, URL, idButton, BSSID,
+        var tableInfo, addClass, URL, idButton, BSSID, txtButton,
             path = 'VisualDomo/locations/';
         
         idButton = "li#local-" + location.name;
@@ -247,6 +251,15 @@ var selectLocal = {
         idButton = "li#local-" + location.name;
         $(tableInfo).data("entry", location);
         
+        // change button text
+        if (selectLocal.use === 0) {
+            txtButton = Translation[app.lang].message_0009;
+        } else {
+            txtButton = Translation[app.lang].message_0010;
+        }
+        
+        $("#page-select-local #local-list .assign-button").text(txtButton);
+        
         $('#local-list').trigger("create");
         
         $(idButton + " .assign-button").click(function () {
@@ -261,8 +274,6 @@ var selectLocal = {
                 });
 
             } else {
-                
-                // TODO comprobar si ya hay otra localización con ese BSSID
                 
                 var local, assign = false, i, pos, alreadyExist = false;
                 
