@@ -16,4 +16,4 @@ Puedes encontrar más información en [doc](https://github.com/aoltra/VisualDomo
 
 ##Authors / Autores
 
-Alfredo Oltra (Twitter: [@aoltra](https://twitter.com/aoltra) / [@uhurulabs](https://twitter.com/uhurulabs)
+Alfredo Oltra (Twitter: [@aoltra](https://twitter.com/aoltra) / [@uhurulabs](https://twitter.com/uhurulabs))

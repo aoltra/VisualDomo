@@ -1,3 +1,20 @@
+/* 
+ *    This file is part of VisualDomo.
+
+ *    VisualDomo is free software: you can redistribute it and/or modify
+ *    it under the terms of the GNU General Public License as published by
+ *    the Free Software Foundation, either version 3 of the License, or
+ *    (at your option) any later version.
+
+ *    VisualDomo is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *    GNU General Public License for more details.
+ *
+ *    You should have received a copy of the GNU General Public License
+ *    along with VisualDomo.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 /*
  * Author:              Alfredo Oltra
  * email:               aoltra@gmail.com, alfredo@uhurulabs.com
@@ -65,7 +82,7 @@ function Port(name, type, input, funct) {
     
     Port.prototype.draw = function (ctx) {
   
-        var widthIcon, widthText, heightIcon, heightText;
+        var widthIcon, widthText, heightIcon, heightText, gradient, gradientPoint, text;
         
         ctx.font = fontSizeIcon + "px VisualDomo";
         
@@ -92,8 +109,7 @@ function Port(name, type, input, funct) {
             widthIcon = ctx.measureText(app.functionPortsFonts[this.funct]).width;
            
             
-            var gradient = ctx.createLinearGradient(this.posX - widthIcon * 0.5, this.posY, this.posX + widthIcon * 0.5, this.posY),
-                gradientPoint;
+            gradient = ctx.createLinearGradient(this.posX - widthIcon * 0.5, this.posY, this.posX + widthIcon * 0.5, this.posY);
             
             if (this.max === this.min || this.max === undefined || this.min === undefined) {
                 gradientPoint = 0.5;
@@ -115,7 +131,7 @@ function Port(name, type, input, funct) {
         // Draw Units
         if (this.type === 'A') {
         
-            var text = Math.round(parseFloat(this.value * this.factor)).toFixed(1) + " " + this.units;
+            text = Math.round(parseFloat(this.value * this.factor)).toFixed(1) + " " + this.units;
      
             ctx.font = "bold " + fontSizeUnit + "px Arial";
             ctx.fillStyle = '#e0828a';

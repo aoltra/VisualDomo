@@ -1,3 +1,20 @@
+/* 
+ *    This file is part of VisualDomo.
+
+ *    VisualDomo is free software: you can redistribute it and/or modify
+ *    it under the terms of the GNU General Public License as published by
+ *    the Free Software Foundation, either version 3 of the License, or
+ *    (at your option) any later version.
+
+ *    VisualDomo is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *    GNU General Public License for more details.
+ *
+ *    You should have received a copy of the GNU General Public License
+ *    along with VisualDomo.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 var Translation = {
     0: {            // Español
         'version': 'Versión:',
@@ -5,6 +22,8 @@ var Translation = {
         'author': 'Autor:',
         'desc1': 'VisualDomo permite controlar de manera visual los dispositivos ODControl de la empresa OpenDomo Services SL.',
         'desc2': 'VisualDomo está escrito usando HTML, CSS y JavaScript con la ayuda de algunos framewroks como jQuery, jQuery Mobile y Cordova (también conocido como PhoneGap).',
+        'desc3': 'VisualDomo usa VisualDomo.otf, la cual es una adaptación de la fuente entypo (www.entypo.com).',
+        'desc4': 'VisualDomo está licenciado bajo GPL v3.',
         'tx-connected': 'Conectado:',
         'new': 'Nueva',
         'new-sub': 'Crea una nueva localización',
@@ -126,6 +145,8 @@ var Translation = {
         'author': 'Author:',
         'desc1': 'VisualDomo allows a visual control of the ODControl devices from OpenDomo Services SL company.',
         'desc2': 'VisualDomo is written using HTML, CSS and JavaScript with the support of several frameworks like jQuery, jQuery Mobile and Cordova (also known as PhoneGap).',
+        'desc3': 'VisualDomo uses VisualDomo.otf, which is an adaptation of entypo font (www.entypo.com).',
+        'desc4': 'VisualDomo is licensed under GPL v3.',
         'tx-connected': 'Connected:',
         'new': 'New',
         'new-sub': 'Create a new location',

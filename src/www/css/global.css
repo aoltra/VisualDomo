@@ -1,36 +1,24 @@
-/*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
+/* 
+ *    This file is part of VisualDomo.
+
+ *    VisualDomo is free software: you can redistribute it and/or modify
+ *    it under the terms of the GNU General Public License as published by
+ *    the Free Software Foundation, either version 3 of the License, or
+ *    (at your option) any later version.
+
+ *    VisualDomo is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *    GNU General Public License for more details.
  *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied.  See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ *    You should have received a copy of the GNU General Public License
+ *    along with VisualDomo.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 * {
     -webkit-tap-highlight-color: rgba(0,0,0,0); /* make transparent link selection, adjust last value opacity 0 to 1.0  */
 }
 
-/* Landscape layout (with min-width) *
-@media screen and (min-aspect-ratio: 1/1) and (min-width:400px) {
-    .app {
-        background-position:left center;
-        padding:75px 0px 75px 170px;  /* padding-top + padding-bottom + text area = image height *
-        margin:-90px 0px 0px -198px;  /* offset vertical: half of image height *
-                                      /* offset horizontal: half of image width and text area width *
-    }
-}
-*/
 @font-face {
     font-family: 'VisualDomo';
     src: url('fonts/VisualDomo.ttf') format('opentype');
@@ -39,8 +27,6 @@
 }
 
 html { 
-//    height:100%;  /* Fix banding gradient backgroung problem in Chrome */
-//    min-height:100%; 
 }
 
 .ui-page-theme-b {
@@ -49,14 +35,7 @@ html {
     -webkit-text-size-adjust: none;  /* prevent webkit from resizing text to fit */
     -webkit-user-select: none;       /* prevent copy paste, to allow, change 'none' to 'text' */
     
-   /***** 
-    background-color: #30383b !important;   
-    background-image: -webkit-linear-gradient(top,#30383b,#1f2024) !important;
-    background-image: linear-gradient(top, #30383b, #1f2024) !important;
-    ***/
     background-color: #372d40 !important;    
- //   background-image: -webkit-linear-gradient(top,#755371,#1f2024) !important;
-//    background-image: linear-gradient(top, #755371, #1f2024) !important;
     background-attachment: fixed !important;
     
     font-family:'HelveticaNeue-Light', 'HelveticaNeue', Helvetica, Arial, sans-serif;
