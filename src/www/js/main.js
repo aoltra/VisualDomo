@@ -172,10 +172,10 @@ var app = {
                 if (selectLocal.currentLocal !== null) {
                     var floorSelect;
                     
-//                    visual.setUse(1);
-//                    visual.loadLocation(selectLocal.currentLocal);
-//                    $(":mobile-pagecontainer").pagecontainer("change", "#page-visual");
-//                    
+                    visual.setUse(1);
+                    visual.loadLocation(selectLocal.currentLocal, function () {
+                        $(":mobile-pagecontainer").pagecontainer("change", "#page-visual");
+                    });
                 }
             }
 
@@ -351,6 +351,10 @@ var app = {
                 });
                 
                 //event.stopPropagation();
+            } else if (visual.use === 1) {
+                $('.sp-info').css('visibility', 'visible');
+                $('.mm-menu').css('visibility', 'visible');
+                navigator.app.backHistory();
             } else {
                 navigator.app.backHistory();
             }
